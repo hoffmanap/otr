@@ -285,7 +285,16 @@ function initMap(){
 
   const overlayLayer = L.layerGroup().addTo(map);
   let overlayCount = 0, overlayErrors = 0;
-  Object.entries(DATA.sheets).forEach(([code, s])=>{
+  // draw larger sheets first (bottom), smaller/more-precise pieces last (on top),
+  // so overlapping georeferenced edges don't bury the finer sheet's detail
+  function quadArea(s){
+    const [tlLat,tlLon]=s.topleft, [trLat,trLon]=s.topright, [blLat,blLon]=s.bottomleft;
+    const w = Math.hypot(trLat-tlLat, trLon-tlLon);
+    const h = Math.hypot(blLat-tlLat, blLon-tlLon);
+    return w*h;
+  }
+  const sheetEntries = Object.entries(DATA.sheets).sort((a,b)=>quadArea(b[1])-quadArea(a[1]));
+  sheetEntries.forEach(([code, s])=>{
     try {
       const ov = L.imageOverlay.rotated(s.img, L.latLng(s.topleft), L.latLng(s.topright), L.latLng(s.bottomleft), {opacity:0.85, interactive:false});
       ov.addTo(overlayLayer);
