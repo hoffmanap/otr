@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>OTR Anchor Picker</title>
+<style>
+  :root { color-scheme: light; }
+  body { margin: 0; font-family: system-ui, sans-serif; display: flex; height: 100vh; overflow: hidden; }
+  #side { width: 340px; flex: none; padding: 14px; box-sizing: border-box; border-right: 1px solid #ccc;
+          overflow-y: auto; background: #fafafa; }
+  #stage { flex: 1; position: relative; background: #333; overflow: hidden; }
+  canvas#main { position: absolute; top: 0; left: 0; cursor: crosshair; }
+  canvas#loupe { position: absolute; pointer-events: none; border: 2px solid #fff; border-radius: 6px;
+                 box-shadow: 0 2px 10px rgba(0,0,0,.5); display: none; z-index: 5; }
+  h2 { font-size: 15px; margin: 0 0 8px; }
+  label { display: block; font-size: 12px; font-weight: 600; margin: 10px 0 3px; color: #333; }
+  input[type=text], input[type=number] { width: 100%; box-sizing: border-box; padding: 6px; font-size: 14px; }
+  button { padding: 7px 10px; font-size: 13px; cursor: pointer; margin-top: 6px; }
+  #filePick { margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
+  th, td { border-bottom: 1px solid #ddd; padding: 3px 4px; text-align: left; }
+  th { background: #eee; position: sticky; top: 0; }
+  #rows { max-height: 300px; overflow-y: auto; border: 1px solid #ddd; margin-top: 4px; }
+  .del { color: #c00; cursor: pointer; font-weight: bold; }
+  .hint { font-size: 11px; color: #666; margin-top: 10px; line-height: 1.4; }
+  .count { font-size: 12px; margin-top: 10px; font-weight: 600; }
+  .warn { color: #b00; font-size: 12px; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<div id="side">
+  <h2>1. Load a sheet image</h2>
+  <input id="filePick" type="file" accept="image/*">
+  <div id="sheetName" style="font-size:12px;color:#555;"></div>
+
+  <h2 style="margin-top:16px;">2. Current point</h2>
+  <label>Street</label>
+  <input id="street" type="text" placeholder="e.g. Vine St">
+  <label>Block face ID</label>
+  <input id="blockId" type="text" placeholder="e.g. vine_green_elder">
+  <label>Address</label>
+  <input id="address" type="number" placeholder="e.g. 1704">
+  <div class="hint">Fill these in, then click the spot on the image. A row is added automatically and the address field clears for the next click. Street and block face stay put so you can click several anchors in a row.</div>
+
+  <h2 style="margin-top:16px;">3. Points recorded</h2>
+  <div class="count" id="count">0 points, 0 sheets</div>
+  <div id="rows">
+    <table>
+      <thead><tr><th>Sheet</th><th>Block</th><th>Addr</th><th></th></tr></thead>
+      <tbody id="rowsBody"></tbody>
+    </table>
+  </div>
+  <button id="undo">Undo last point</button>
+  <button id="exportBtn">Export CSV</button>
+  <div class="warn" id="warnBox"></div>
+
+  <div class="hint">
+    <b>Navigating the image:</b> scroll wheel to zoom in/out on your cursor. Right-click and drag to pan.
+    A magnified loupe follows your cursor so you can click precisely even when zoomed out.
+  </div>
+</div>
+
+<div id="stage">
+  <canvas id="main"></canvas>
+  <canvas id="loupe" width="180" height="180"></canvas>
+</div>
+
+<script>
+const fileInput = document.getElementById('filePick');
+const mainCanvas = document.getElementById('main');
+const ctx = mainCanvas.getContext('2d');
+const loupe = document.getElementById('loupe');
+const lctx = loupe.getContext('2d');
+const stage = document.getElementById('stage');
+const sheetNameDiv = document.getElementById('sheetName');
+const streetInput = document.getElementById('street');
+const blockInput = document.getElementById('blockId');
+const addrInput = document.getElementById('address');
+const rowsBody = document.getElementById('rowsBody');
+const countDiv = document.getElementById('count');
+const warnBox = document.getElementById('warnBox');
+
+let img = null;
+let sheetName = '';
+let scale = 1, offX = 0, offY = 0;
+let dragging = false, lastX = 0, lastY = 0;
+let points = []; // {sheet, block_id, street, address, x, y}
+
+function resizeCanvas() {
+  mainCanvas.width = stage.clientWidth;
+  mainCanvas.height = stage.clientHeight;
+  draw();
+}
+window.addEventListener('resize', resizeCanvas);
+
+fileInput.addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  sheetName = f.name;
+  sheetNameDiv.textContent = 'Loaded: ' + sheetName;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const image = new Image();
+    image.onload = () => {
+      img = image;
+      // fit image to view
+      const fitScale = Math.min(stage.clientWidth / img.width, stage.clientHeight / img.height) * 0.95;
+      scale = fitScale;
+      offX = (stage.clientWidth - img.width * scale) / 2;
+      offY = (stage.clientHeight - img.height * scale) / 2;
+      draw();
+    };
+    image.src = ev.target.result;
+  };
+  reader.readAsDataURL(f);
+});
+
+function draw() {
+  ctx.fillStyle = '#333';
+  ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
+  if (!img) return;
+  ctx.imageSmoothingEnabled = scale < 1;
+  ctx.drawImage(img, offX, offY, img.width * scale, img.height * scale);
+  // draw markers for points on this sheet
+  for (const p of points) {
+    if (p.sheet !== sheetName) continue;
+    const cx = p.x * scale + offX;
+    const cy = p.y * scale + offY;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgba(255,60,0,0.85)';
+    ctx.fill();
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 3;
+    ctx.strokeText(p.address, cx + 9, cy - 9);
+    ctx.fillText(p.address, cx + 9, cy - 9);
+  }
+}
+
+function canvasToImg(cx, cy) {
+  return { x: (cx - offX) / scale, y: (cy - offY) / scale };
+}
+
+mainCanvas.addEventListener('wheel', (e) => {
+  if (!img) return;
+  e.preventDefault();
+  const rect = mainCanvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const before = canvasToImg(mx, my);
+  const factor = e.deltaY < 0 ? 1.2 : 1 / 1.2;
+  scale *= factor;
+  scale = Math.max(0.02, Math.min(scale, 12));
+  offX = mx - before.x * scale;
+  offY = my - before.y * scale;
+  draw();
+}, { passive: false });
+
+mainCanvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+mainCanvas.addEventListener('mousedown', (e) => {
+  if (e.button === 2) { // right-drag pan
+    dragging = true; lastX = e.clientX; lastY = e.clientY;
+  }
+});
+window.addEventListener('mouseup', () => dragging = false);
+window.addEventListener('mousemove', (e) => {
+  if (dragging) {
+    offX += e.clientX - lastX;
+    offY += e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
+    draw();
+  }
+  if (img) updateLoupe(e);
+});
+
+function updateLoupe(e) {
+  const rect = mainCanvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  if (mx < 0 || my < 0 || mx > mainCanvas.width || my > mainCanvas.height) {
+    loupe.style.display = 'none';
+    return;
+  }
+  const p = canvasToImg(mx, my);
+  const srcHalf = 35; // image px shown on each side of cursor
+  loupe.style.display = 'block';
+  loupe.style.left = (e.clientX + 24) + 'px';
+  loupe.style.top = (e.clientY + 24) + 'px';
+  lctx.imageSmoothingEnabled = false;
+  lctx.fillStyle = '#000';
+  lctx.fillRect(0, 0, loupe.width, loupe.height);
+  lctx.drawImage(img, p.x - srcHalf, p.y - srcHalf, srcHalf * 2, srcHalf * 2, 0, 0, loupe.width, loupe.height);
+  lctx.strokeStyle = 'rgba(255,0,0,0.8)';
+  lctx.lineWidth = 1;
+  lctx.beginPath();
+  lctx.moveTo(loupe.width / 2, 0); lctx.lineTo(loupe.width / 2, loupe.height);
+  lctx.moveTo(0, loupe.height / 2); lctx.lineTo(loupe.width, loupe.height / 2);
+  lctx.stroke();
+}
+
+mainCanvas.addEventListener('mouseleave', () => loupe.style.display = 'none');
+
+mainCanvas.addEventListener('click', (e) => {
+  if (!img) return;
+  const street = streetInput.value.trim();
+  const blockId = blockInput.value.trim();
+  const address = addrInput.value.trim();
+  warnBox.textContent = '';
+  if (!sheetName) { warnBox.textContent = 'Load an image first.'; return; }
+  if (!blockId) { warnBox.textContent = 'Enter a block face ID first.'; return; }
+  if (!address) { warnBox.textContent = 'Enter the address number first.'; return; }
+  const rect = mainCanvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const p = canvasToImg(mx, my);
+  points.push({
+    sheet: sheetName, block_id: blockId, street: street,
+    address: address, x: p.x.toFixed(1), y: p.y.toFixed(1),
+  });
+  addrInput.value = '';
+  addrInput.focus();
+  renderRows();
+  draw();
+});
+
+function renderRows() {
+  rowsBody.innerHTML = '';
+  points.forEach((p, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${p.sheet.replace(/^OTR1950_/, '')}</td><td>${p.block_id}</td><td>${p.address}</td>` +
+                    `<td class="del" data-i="${i}">✕</td>`;
+    rowsBody.appendChild(tr);
+  });
+  const sheets = new Set(points.map(p => p.sheet));
+  countDiv.textContent = `${points.length} point(s), ${sheets.size} sheet(s)`;
+}
+
+rowsBody.addEventListener('click', (e) => {
+  if (e.target.classList.contains('del')) {
+    const i = parseInt(e.target.dataset.i, 10);
+    points.splice(i, 1);
+    renderRows();
+    draw();
+  }
+});
+
+document.getElementById('undo').addEventListener('click', () => {
+  points.pop();
+  renderRows();
+  draw();
+});
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  if (points.length === 0) { warnBox.textContent = 'No points to export yet.'; return; }
+  let csv = 'sheet,block_id,street,address,x,y\n';
+  for (const p of points) {
+    csv += `${p.sheet},${p.block_id},${p.street},${p.address},${p.x},${p.y}\n`;
+  }
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'otr_anchors.csv';
+  a.click();
+});
+
+resizeCanvas();
+</script>
+</body>
+</html>

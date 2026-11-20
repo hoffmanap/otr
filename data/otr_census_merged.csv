@@ -1,0 +1,531 @@
+sheet,block_id,street,address,source,year,n_households,n_residents,n_white,n_black,n_other_race,multifamily,enumeration_district
+vol025_sheet101.jpg,central_pkwy,E Central Pkwy,33,anchor,1910,1,27,27,0,0,0,100
+vol025_sheet101.jpg,court_odd,E. Court,3,filled,1900,3,6,6,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,3,filled,1920,1,9,9,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,3,filled,1930,1,8,8,0,0,0,66
+vol025_sheet101.jpg,court_odd,E. Court,5,filled,1900,5,20,20,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,5,filled,1920,1,3,3,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,5,filled,1930,4,11,11,0,0,1,66
+vol025_sheet101.jpg,court_odd,E. Court,7,filled,1900,2,16,16,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,7,filled,1920,2,7,7,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,9,filled,1900,2,10,10,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,13,filled,1900,2,7,7,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,13,filled,1920,2,16,16,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,13,filled,1930,4,19,19,0,0,1,66
+vol025_sheet101.jpg,court_odd,E. Court,15,filled,1930,5,17,17,0,0,1,66
+vol025_sheet101.jpg,court_odd,E. Court,17,filled,1900,3,9,9,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,17,filled,1920,1,4,0,4,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,17,filled,1930,4,15,15,0,0,1,66
+vol025_sheet101.jpg,court_odd,E. Court,21,filled,1900,2,8,8,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,21,filled,1920,1,2,2,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,21,filled,1930,1,4,4,0,0,0,66
+vol025_sheet101.jpg,court_odd,E. Court,23,filled,1900,1,2,2,0,0,0,70
+vol025_sheet101.jpg,court_odd,E. Court,23,filled,1920,1,6,6,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,23,filled,1930,2,7,7,0,0,1,66
+vol025_sheet101.jpg,court_odd,E. Court,25,filled,1900,6,12,12,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,25,filled,1920,2,10,10,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,25,filled,1930,3,7,7,0,0,1,66
+vol025_sheet101.jpg,court_odd,E. Court,27,filled,1900,6,23,23,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,27,filled,1920,1,6,6,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,27,filled,1930,2,5,5,0,0,1,66
+vol025_sheet101.jpg,court_odd,E. Court,29,filled,1900,1,18,18,0,0,0,70
+vol025_sheet101.jpg,court_odd,E. Court,29,filled,1920,1,8,8,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,29,filled,1930,3,11,11,0,0,1,66
+vol025_sheet101.jpg,court_odd,E. Court,31,filled,1920,1,2,2,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,31,filled,1930,3,4,4,0,0,1,66
+vol025_sheet101.jpg,court_odd,E. Court,33,filled,1900,5,11,11,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,33,filled,1910,1,4,4,0,0,1,60
+vol025_sheet101.jpg,court_odd,E. Court,33,filled,1920,1,2,2,0,0,1,105
+vol025_sheet101.jpg,court_odd,E. Court,33,filled,1930,6,13,13,0,0,1,66
+vol025_sheet101.jpg,court_odd,E. Court,35,filled,1900,2,4,4,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,37,filled,1900,3,14,14,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,39,filled,1900,4,19,19,0,0,1,70
+vol025_sheet101.jpg,court_odd,E. Court,41,filled,1900,1,5,5,0,0,0,70
+vol025_sheet101.jpg,court_vine_9th,E Court,2,anchor,1920,1,3,3,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,2,anchor,1930,1,1,0,1,0,0,184
+vol025_sheet101.jpg,court_vine_9th,E Court,4,filled,1900,2,6,6,0,0,0,70
+vol025_sheet101.jpg,court_vine_9th,E Court,4,filled,1930,1,1,0,1,0,0,184
+vol025_sheet101.jpg,court_vine_9th,E Court,6,filled,1900,2,6,6,0,0,1,70
+vol025_sheet101.jpg,court_vine_9th,E Court,6,filled,1920,1,2,2,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,6,filled,1930,1,15,15,0,0,0,76
+vol025_sheet101.jpg,court_vine_9th,E Court,8,filled,1900,1,10,10,0,0,0,70
+vol025_sheet101.jpg,court_vine_9th,E Court,8,filled,1910,1,2,2,0,0,1,68
+vol025_sheet101.jpg,court_vine_9th,E Court,8,filled,1930,3,7,7,0,0,1,76
+vol025_sheet101.jpg,court_vine_9th,E Court,10,filled,1900,3,8,8,0,0,1,70
+vol025_sheet101.jpg,court_vine_9th,E Court,10,filled,1910,1,3,3,0,0,1,68
+vol025_sheet101.jpg,court_vine_9th,E Court,10,filled,1920,1,5,5,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,10,filled,1930,6,17,17,0,0,1,76
+vol025_sheet101.jpg,court_vine_9th,E Court,12,filled,1900,3,11,11,0,0,1,70
+vol025_sheet101.jpg,court_vine_9th,E Court,12,filled,1920,1,5,5,0,0,1,105
+vol025_sheet101.jpg,court_vine_9th,E Court,14,filled,1900,1,4,4,0,0,0,70
+vol025_sheet101.jpg,court_vine_9th,E Court,14,filled,1910,1,3,3,0,0,1,68
+vol025_sheet101.jpg,court_vine_9th,E Court,16,filled,1910,1,6,6,0,0,0,68
+vol025_sheet101.jpg,court_vine_9th,E Court,16,filled,1920,1,3,3,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,16,filled,1930,1,2,2,0,0,0,76
+vol025_sheet101.jpg,court_vine_9th,E Court,18,filled,1910,1,6,6,0,0,0,68
+vol025_sheet101.jpg,court_vine_9th,E Court,18,filled,1920,1,2,2,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,18,filled,1930,3,5,5,0,0,1,76
+vol025_sheet101.jpg,court_vine_9th,E Court,18,filled,1940,1,1,1,0,0,1,85
+vol025_sheet101.jpg,court_vine_9th,E Court,20,filled,1930,3,7,7,0,0,1,76
+vol025_sheet101.jpg,court_vine_9th,E Court,20,filled,1940,1,5,5,0,0,1,85
+vol025_sheet101.jpg,court_vine_9th,E Court,22,filled,1920,1,2,2,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,22,filled,1930,1,2,2,0,0,0,76
+vol025_sheet101.jpg,court_vine_9th,E Court,22,filled,1940,1,3,3,0,0,1,85
+vol025_sheet101.jpg,court_vine_9th,E Court,24,filled,1920,1,3,3,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,24,filled,1930,1,3,3,0,0,0,76
+vol025_sheet101.jpg,court_vine_9th,E Court,24,filled,1940,1,4,4,0,0,1,85
+vol025_sheet101.jpg,court_vine_9th,E Court,26,filled,1910,1,1,1,0,0,1,68
+vol025_sheet101.jpg,court_vine_9th,E Court,26,filled,1920,1,3,3,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,26,filled,1930,1,2,2,0,0,0,76
+vol025_sheet101.jpg,court_vine_9th,E Court,26,filled,1940,1,3,3,0,0,0,85
+vol025_sheet101.jpg,court_vine_9th,E Court,28,filled,1910,1,5,5,0,0,0,68
+vol025_sheet101.jpg,court_vine_9th,E Court,28,filled,1920,1,3,3,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,30,filled,1900,1,4,4,0,0,1,70
+vol025_sheet101.jpg,court_vine_9th,E Court,30,filled,1910,1,2,2,0,0,1,68
+vol025_sheet101.jpg,court_vine_9th,E Court,30,filled,1930,1,10,0,0,10,0,76
+vol025_sheet101.jpg,court_vine_9th,E Court,32,anchor,1900,5,15,15,0,0,1,70
+vol025_sheet101.jpg,court_vine_9th,E Court,32,anchor,1910,1,1,1,0,0,1,68
+vol025_sheet101.jpg,court_vine_9th,E Court,32,anchor,1920,1,4,4,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,32,anchor,1930,6,9,9,0,0,1,76
+vol025_sheet101.jpg,court_vine_9th,E Court,32,anchor,1940,1,4,4,0,0,0,85
+vol025_sheet101.jpg,court_vine_9th,E Court,34,filled,1900,1,2,2,0,0,0,70
+vol025_sheet101.jpg,court_vine_9th,E Court,34,filled,1910,1,2,2,0,0,0,68
+vol025_sheet101.jpg,court_vine_9th,E Court,36,filled,1900,2,8,8,0,0,1,70
+vol025_sheet101.jpg,court_vine_9th,E Court,36,filled,1910,1,6,6,0,0,1,68
+vol025_sheet101.jpg,court_vine_9th,E Court,36,filled,1920,1,6,6,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,36,filled,1930,2,9,9,0,0,1,76
+vol025_sheet101.jpg,court_vine_9th,E Court,36,filled,1940,1,12,12,0,0,1,85
+vol025_sheet101.jpg,court_vine_9th,E Court,38,filled,1900,2,4,1,3,0,1,131
+vol025_sheet101.jpg,court_vine_9th,E Court,40,filled,1900,2,3,3,0,0,1,70
+vol025_sheet101.jpg,court_vine_9th,E Court,40,filled,1920,1,1,1,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,42,filled,1920,1,2,2,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,42,filled,1930,6,18,18,0,0,1,76
+vol025_sheet101.jpg,court_vine_9th,E Court,46,filled,1900,5,11,11,0,0,1,70
+vol025_sheet101.jpg,court_vine_9th,E Court,46,filled,1910,1,5,5,0,0,1,68
+vol025_sheet101.jpg,court_vine_9th,E Court,46,filled,1920,1,2,2,0,0,1,104
+vol025_sheet101.jpg,court_vine_9th,E Court,46,filled,1930,6,11,11,0,0,1,76
+vol025_sheet101.jpg,court_vine_9th,E Court,48,filled,1900,1,1,1,0,0,0,70
+vol025_sheet101.jpg,court_vine_9th,E Court,50,anchor,1930,1,5,5,0,0,0,76
+vol025_sheet101.jpg,court_vine_9th,E Court,50,anchor,1940,1,4,4,0,0,1,85
+vol025_sheet101.jpg,court_vine_9th,E Court,52,filled,1900,3,13,13,0,0,1,70
+vol025_sheet101.jpg,court_vine_9th,E Court,54,filled,1900,4,7,7,0,0,1,70
+vol025_sheet101.jpg,court_vine_9th,E Court,54,filled,1930,3,5,5,0,0,1,76
+vol025_sheet101.jpg,e8th,E 8th,2,anchor,1940,1,3,0,3,0,0,79
+vol025_sheet101.jpg,e8th,E 8th,4,filled,1900,3,14,12,2,0,1,71
+vol025_sheet101.jpg,e8th,E 8th,4,filled,1920,1,10,10,0,0,1,105
+vol025_sheet101.jpg,e8th,E 8th,6,filled,1900,1,1,1,0,0,0,31
+vol025_sheet101.jpg,e8th,E 8th,6,filled,1910,1,2,2,0,0,1,69
+vol025_sheet101.jpg,e8th,E 8th,8,anchor,1900,2,25,25,0,0,0,71
+vol025_sheet101.jpg,e8th,E 8th,8,anchor,1910,1,18,18,0,0,1,69
+vol025_sheet101.jpg,e8th,E 8th,8,anchor,1930,1,22,22,0,0,0,66
+vol025_sheet101.jpg,e8th,E 8th,10,filled,1900,1,2,2,0,0,0,72
+vol025_sheet101.jpg,e8th,E 8th,14,filled,1900,2,5,5,0,0,1,72
+vol025_sheet101.jpg,e8th,E 8th,16,filled,1900,1,3,3,0,0,0,72
+vol025_sheet101.jpg,e8th,E 8th,18,filled,1900,1,13,13,0,0,0,72
+vol025_sheet101.jpg,e8th,E 8th,20,filled,1910,1,32,32,0,0,1,69
+vol025_sheet101.jpg,e8th,E 8th,22,filled,1900,1,7,7,0,0,0,71
+vol025_sheet101.jpg,e8th,E 8th,24,anchor,1900,2,4,4,0,0,0,71
+vol025_sheet101.jpg,e8th,E 8th,24,anchor,1920,1,10,10,0,0,1,105
+vol025_sheet101.jpg,e8th,E 8th,24,anchor,1940,1,6,6,0,0,1,85
+vol025_sheet101.jpg,e8th,E 8th,26,anchor,1900,2,16,16,0,0,0,71
+vol025_sheet101.jpg,e8th,E 8th,30,anchor,1900,1,4,4,0,0,0,72
+vol025_sheet101.jpg,e8th,E 8th,32,filled,1900,2,5,5,0,0,0,72
+vol025_sheet101.jpg,e8th,E 8th,32,filled,1940,1,6,6,0,0,1,88
+vol025_sheet101.jpg,e8th,E 8th,36,anchor,1900,1,8,8,0,0,0,72
+vol025_sheet101.jpg,ninth_even,E 9th,2,anchor,1900,3,11,11,0,0,1,73
+vol025_sheet101.jpg,ninth_even,E 9th,4,anchor,1900,3,6,6,0,0,1,71
+vol025_sheet101.jpg,ninth_even,E 9th,4,anchor,1910,1,1,1,0,0,1,69
+vol025_sheet101.jpg,ninth_even,E 9th,4,anchor,1940,1,1,1,0,0,1,85
+vol025_sheet101.jpg,ninth_even,E 9th,6,filled,1900,2,7,7,0,0,1,72
+vol025_sheet101.jpg,ninth_even,E 9th,6,filled,1910,1,21,21,0,0,1,69
+vol025_sheet101.jpg,ninth_even,E 9th,6,filled,1930,2,13,13,0,0,1,66
+vol025_sheet101.jpg,ninth_even,E 9th,6,filled,1940,1,4,4,0,0,1,85
+vol025_sheet101.jpg,ninth_even,E 9th,8,filled,1900,2,14,14,0,0,0,72
+vol025_sheet101.jpg,ninth_even,E 9th,8,filled,1910,1,3,3,0,0,1,69
+vol025_sheet101.jpg,ninth_even,E 9th,8,filled,1920,1,6,6,0,0,1,105
+vol025_sheet101.jpg,ninth_even,E 9th,8,filled,1930,2,10,10,0,0,1,66
+vol025_sheet101.jpg,ninth_even,E 9th,8,filled,1940,1,7,7,0,0,0,85
+vol025_sheet101.jpg,ninth_even,E 9th,10,filled,1900,3,14,14,0,0,1,72
+vol025_sheet101.jpg,ninth_even,E 9th,10,filled,1910,2,12,12,0,0,1,69
+vol025_sheet101.jpg,ninth_even,E 9th,10,filled,1920,1,6,6,0,0,1,105
+vol025_sheet101.jpg,ninth_even,E 9th,10,filled,1930,2,4,4,0,0,1,66
+vol025_sheet101.jpg,ninth_even,E 9th,12,filled,1900,2,12,11,1,0,1,71
+vol025_sheet101.jpg,ninth_even,E 9th,14,anchor,1900,1,6,6,0,0,0,72
+vol025_sheet101.jpg,ninth_even,E 9th,14,anchor,1920,2,25,25,0,0,1,105
+vol025_sheet101.jpg,ninth_even,E 9th,16,filled,1900,1,3,3,0,0,0,71
+vol025_sheet101.jpg,ninth_even,E 9th,16,filled,1910,1,10,10,0,0,1,69
+vol025_sheet101.jpg,ninth_even,E 9th,16,filled,1920,1,37,37,0,0,1,105
+vol025_sheet101.jpg,ninth_even,E 9th,18,filled,1900,1,3,3,0,0,0,71
+vol025_sheet101.jpg,ninth_even,E 9th,18,filled,1910,1,2,2,0,0,1,69
+vol025_sheet101.jpg,ninth_even,E 9th,18,filled,1920,1,30,30,0,0,1,105
+vol025_sheet101.jpg,ninth_even,E 9th,20,filled,1900,1,2,2,0,0,0,72
+vol025_sheet101.jpg,ninth_even,E 9th,22,anchor,1900,1,2,2,0,0,0,72
+vol025_sheet101.jpg,ninth_even,E 9th,22,anchor,1910,1,7,7,0,0,1,69
+vol025_sheet101.jpg,ninth_even,E 9th,22,anchor,1920,1,20,20,0,0,1,105
+vol025_sheet101.jpg,ninth_even,E 9th,24,filled,1900,2,17,17,0,0,0,72
+vol025_sheet101.jpg,ninth_even,E 9th,24,filled,1910,1,12,12,0,0,1,69
+vol025_sheet101.jpg,ninth_even,E 9th,24,filled,1930,1,7,7,0,0,0,66
+vol025_sheet101.jpg,ninth_even,E 9th,26,filled,1900,1,11,10,1,0,0,71
+vol025_sheet101.jpg,ninth_even,E 9th,26,filled,1920,1,16,16,0,0,1,105
+vol025_sheet101.jpg,ninth_even,E 9th,26,filled,1930,1,18,18,0,0,0,66
+vol025_sheet101.jpg,ninth_odd,E 9th,1,anchor,1900,4,15,15,0,0,1,102
+vol025_sheet101.jpg,ninth_odd,E 9th,3,filled,1900,2,14,14,0,0,1,102
+vol025_sheet101.jpg,ninth_odd,E 9th,5,filled,1900,1,2,2,0,0,0,51
+vol025_sheet101.jpg,ninth_odd,E 9th,5,filled,1910,1,10,10,0,0,0,69
+vol025_sheet101.jpg,ninth_odd,E 9th,7,filled,1900,2,28,28,0,0,0,71
+vol025_sheet101.jpg,ninth_odd,E 9th,9,filled,1900,4,11,11,0,0,1,71
+vol025_sheet101.jpg,ninth_odd,E 9th,9,filled,1910,1,17,17,0,0,1,69
+vol025_sheet101.jpg,ninth_odd,E 9th,11,filled,1900,2,11,11,0,0,0,72
+vol025_sheet101.jpg,ninth_odd,E 9th,11,filled,1910,2,13,13,0,0,1,69
+vol025_sheet101.jpg,ninth_odd,E 9th,13,filled,1900,1,10,10,0,0,0,102
+vol025_sheet101.jpg,ninth_odd,E 9th,13,filled,1910,1,5,5,0,0,1,69
+vol025_sheet101.jpg,ninth_odd,E 9th,13,filled,1920,1,4,4,0,0,1,108
+vol025_sheet101.jpg,ninth_odd,E 9th,15,anchor,1900,3,20,20,0,0,1,71
+vol025_sheet101.jpg,ninth_odd,E 9th,15,anchor,1910,1,21,21,0,0,1,69
+vol025_sheet101.jpg,ninth_odd,E 9th,15,anchor,1920,1,24,24,0,0,1,105
+vol025_sheet101.jpg,ninth_odd,E 9th,17,filled,1900,2,10,9,1,0,0,102
+vol025_sheet101.jpg,ninth_odd,E 9th,19,filled,1900,5,23,23,0,0,1,71
+vol025_sheet101.jpg,ninth_odd,E 9th,19,filled,1920,2,13,13,0,0,1,105
+vol025_sheet101.jpg,ninth_odd,E 9th,19,filled,1930,2,8,7,1,0,1,66
+vol025_sheet101.jpg,ninth_odd,E 9th,19,filled,1940,1,2,2,0,0,0,85
+vol025_sheet101.jpg,ninth_odd,E 9th,21,filled,1900,2,3,3,0,0,0,72
+vol025_sheet101.jpg,ninth_odd,E 9th,23,filled,1900,2,21,21,0,0,0,71
+vol025_sheet101.jpg,ninth_odd,E 9th,25,filled,1900,1,2,2,0,0,0,71
+vol025_sheet101.jpg,ninth_odd,E 9th,25,filled,1930,1,1,1,0,0,0,66
+vol025_sheet101.jpg,ninth_odd,E 9th,25,filled,1940,1,1,1,0,0,1,85
+vol025_sheet101.jpg,ninth_odd,E 9th,27,anchor,1900,1,7,7,0,0,0,71
+vol025_sheet101.jpg,ninth_odd,E 9th,27,anchor,1930,1,6,6,0,0,0,66
+vol025_sheet101.jpg,ninth_odd,E 9th,27,anchor,1940,2,2,2,0,0,1,85
+vol025_sheet101.jpg,ninth_odd,E 9th,29,filled,1900,1,6,6,0,0,0,71
+vol025_sheet101.jpg,ninth_odd,E 9th,29,filled,1920,2,22,22,0,0,1,105
+vol025_sheet101.jpg,ninth_odd,E 9th,29,filled,1930,1,13,13,0,0,0,66
+vol025_sheet101.jpg,ninth_odd,E 9th,29,filled,1940,1,2,2,0,0,1,85
+vol025_sheet101.jpg,ninth_odd,E 9th,31,filled,1900,1,5,5,0,0,0,71
+vol025_sheet101.jpg,ninth_odd,E 9th,31,filled,1920,1,5,5,0,0,1,105
+vol025_sheet101.jpg,ninth_odd,E 9th,31,filled,1940,1,6,6,0,0,1,85
+vol025_sheet101.jpg,ninth_odd,E 9th,35,anchor,1900,1,4,4,0,0,0,71
+vol025_sheet101.jpg,ninth_odd,E 9th,39,filled,1920,1,1,1,0,0,1,105
+vol025_sheet101.jpg,ninth_odd,E 9th,39,filled,1930,5,6,6,0,0,1,66
+vol025_sheet101.jpg,ninth_odd,E 9th,39,filled,1940,1,1,1,0,0,1,85
+vol025_sheet101.jpg,vine,Vine,802,filled,1920,1,9,9,0,0,1,105
+vol025_sheet101.jpg,vine,Vine,804,filled,1920,1,4,4,0,0,1,105
+vol025_sheet101.jpg,vine,Vine,806,filled,1920,2,9,9,0,0,1,105
+vol025_sheet101.jpg,vine,Vine,808,filled,1920,5,20,20,0,0,1,105
+vol025_sheet101.jpg,vine,Vine,808,filled,1930,5,15,15,0,0,1,66
+vol025_sheet101.jpg,vine,Vine,822,filled,1940,3,4,4,0,0,1,85
+vol025_sheet101.jpg,vine,Vine,902,filled,1910,1,5,5,0,0,0,69
+vol025_sheet101.jpg,vine,Vine,902,filled,1920,1,11,11,0,0,1,105
+vol025_sheet101.jpg,vine,Vine,904,filled,1900,4,19,19,0,0,1,71
+vol025_sheet101.jpg,vine,Vine,904,filled,1910,1,5,5,0,0,0,69
+vol025_sheet101.jpg,vine,Vine,904,filled,1920,2,10,10,0,0,1,105
+vol025_sheet101.jpg,vine,Vine,904,filled,1930,1,1,1,0,0,0,66
+vol025_sheet101.jpg,vine,Vine,904,filled,1940,1,2,2,0,0,1,85
+vol025_sheet101.jpg,vine,Vine,906,filled,1900,4,15,15,0,0,1,71
+vol025_sheet101.jpg,vine,Vine,906,filled,1940,1,1,1,0,0,0,85
+vol025_sheet101.jpg,vine,Vine,908,filled,1900,4,33,33,0,0,1,71
+vol025_sheet101.jpg,vine,Vine,908,filled,1910,1,4,4,0,0,0,69
+vol025_sheet101.jpg,vine,Vine,908,filled,1920,1,15,15,0,0,1,105
+vol025_sheet101.jpg,vine,Vine,908,filled,1930,1,15,15,0,0,0,66
+vol025_sheet101.jpg,vine,Vine,908,filled,1940,1,20,20,0,0,1,85
+vol025_sheet101.jpg,vine,Vine,910,filled,1910,1,8,8,0,0,0,69
+vol025_sheet101.jpg,vine,Vine,910,filled,1920,3,32,32,0,0,1,105
+vol025_sheet101.jpg,vine,Vine,912,anchor,1900,1,3,3,0,0,0,71
+vol025_sheet101.jpg,vine,Vine,912,anchor,1910,1,10,10,0,0,0,69
+vol025_sheet101.jpg,vine,Vine,912,anchor,1920,1,13,13,0,0,1,105
+vol025_sheet101.jpg,walnut_north,Walnut,1007,anchor,1900,1,1,1,0,0,0,70
+vol025_sheet101.jpg,walnut_south,Walnut,803,filled,1900,1,3,3,0,0,0,71
+vol025_sheet101.jpg,walnut_south,Walnut,811,filled,1900,1,3,3,0,0,0,71
+vol025_sheet101.jpg,walnut_south,Walnut,821,filled,1900,1,9,9,0,0,0,71
+vol025_sheet101.jpg,walnut_south,Walnut,823,filled,1900,1,4,4,0,0,0,71
+vol025_sheet101.jpg,walnut_south,Walnut,829,filled,1900,1,4,4,0,0,0,71
+vol025_sheet101.jpg,walnut_south,Walnut,829,filled,1910,1,3,3,0,0,0,69
+vol025_sheet101.jpg,walnut_south,Walnut,831,filled,1900,1,8,8,0,0,0,71
+vol025_sheet101.jpg,walnut_south,Walnut,831,filled,1910,1,2,2,0,0,0,69
+vol025_sheet101.jpg,walnut_south,Walnut,833,filled,1900,2,6,6,0,0,1,71
+vol025_sheet101.jpg,walnut_south,Walnut,833,filled,1910,1,4,4,0,0,0,69
+vol025_sheet101.jpg,walnut_south,Walnut,905,filled,1900,1,3,3,0,0,0,71
+vol025_sheet101.jpg,walnut_south,Walnut,907,filled,1930,1,9,0,0,9,0,66
+vol025_sheet101.jpg,walnut_south,Walnut,909,filled,1900,1,7,7,0,0,0,71
+vol025_sheet101.jpg,walnut_south,Walnut,911,filled,1930,3,22,22,0,0,1,66
+vol025_sheet101.jpg,walnut_south,Walnut,911,filled,1940,1,15,15,0,0,0,85
+vol025_sheet101.jpg,walnut_south,Walnut,915,filled,1900,3,12,12,0,0,1,71
+vol025_sheet101.jpg,walnut_south,Walnut,915,filled,1940,1,3,3,0,0,1,85
+vol025_sheet101.jpg,walnut_south,Walnut,919,anchor,1930,2,17,13,0,4,1,66
+vol025_sheet101.jpg,walnut_south,Walnut,919,anchor,1940,1,32,26,0,6,0,85
+vol025_sheet102.jpg,8th_main_n_side,8th,118,anchor,1920,1,11,11,0,0,1,108
+vol025_sheet102.jpg,8th_main_n_side,8th,128,filled,1900,1,6,6,0,0,0,51
+vol025_sheet102.jpg,8th_walnut_n_side,8th,102,filled,1940,1,1,1,0,0,0,331
+vol025_sheet102.jpg,8th_walnut_n_side,8th,104,filled,1900,2,4,4,0,0,1,169
+vol025_sheet102.jpg,8th_walnut_n_side,8th,106,filled,1900,1,4,4,0,0,0,51
+vol025_sheet102.jpg,8th_walnut_n_side,8th,108,filled,1900,3,12,12,0,0,1,51
+vol025_sheet102.jpg,8th_walnut_n_side,8th,110,filled,1900,3,13,13,0,0,1,51
+vol025_sheet102.jpg,8th_walnut_n_side,8th,112,filled,1900,1,1,1,0,0,0,51
+vol025_sheet102.jpg,8th_walnut_n_side,8th,114,filled,1900,1,7,7,0,0,0,51
+vol025_sheet102.jpg,8th_walnut_n_side,8th,114,filled,1920,1,4,4,0,0,1,108
+vol025_sheet102.jpg,8th_walnut_n_side,8th,116,anchor,1900,2,7,7,0,0,1,51
+vol025_sheet102.jpg,8th_walnut_n_side,8th,116,anchor,1910,1,9,9,0,0,0,74
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,802,filled,1900,1,3,3,0,0,0,51
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,806,filled,1900,4,17,17,0,0,1,51
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,810,filled,1900,1,12,12,0,0,0,51
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,812,filled,1900,3,6,6,0,0,1,51
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,814,filled,1900,2,12,12,0,0,1,51
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,814,filled,1920,1,10,10,0,0,1,108
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,816,filled,1900,1,6,6,0,0,0,51
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,816,filled,1920,1,4,4,0,0,1,108
+vol025_sheet102.jpg,bowen_9th_n_side,9th,100,anchor,1900,7,29,29,0,0,1,72
+vol025_sheet102.jpg,bowen_9th_n_side,9th,104,filled,1920,1,4,4,0,0,1,103
+vol025_sheet102.jpg,bowen_9th_n_side,9th,106,filled,1900,1,2,2,0,0,0,72
+vol025_sheet102.jpg,bowen_9th_n_side,9th,106,filled,1920,2,6,6,0,0,1,108
+vol025_sheet102.jpg,bowen_9th_n_side,9th,108,filled,1920,1,8,8,0,0,1,103
+vol025_sheet102.jpg,bowen_9th_n_side,9th,110,filled,1910,1,9,9,0,0,0,74
+vol025_sheet102.jpg,bowen_9th_n_side,9th,110,filled,1920,1,3,3,0,0,1,108
+vol025_sheet102.jpg,bowen_9th_n_side,9th,112,filled,1910,1,6,6,0,0,0,74
+vol025_sheet102.jpg,bowen_9th_n_side,9th,112,filled,1920,1,2,2,0,0,1,108
+vol025_sheet102.jpg,bowen_9th_n_side,9th,114,filled,1910,1,4,4,0,0,0,74
+vol025_sheet102.jpg,bowen_9th_n_side,9th,114,filled,1920,1,3,3,0,0,1,108
+vol025_sheet102.jpg,bowen_9th_n_side,9th,116,filled,1910,1,6,6,0,0,0,74
+vol025_sheet102.jpg,bowen_9th_n_side,9th,116,filled,1920,2,31,31,0,0,1,108
+vol025_sheet102.jpg,bowen_9th_n_side,9th,116,filled,1940,4,13,13,0,0,1,84
+vol025_sheet102.jpg,bowen_9th_s_side,9th,109,filled,1920,1,6,6,0,0,1,108
+vol025_sheet102.jpg,bowen_9th_s_side,9th,111,filled,1900,1,2,2,0,0,0,51
+vol025_sheet102.jpg,bowen_9th_s_side,9th,111,filled,1910,1,13,13,0,0,0,74
+vol025_sheet102.jpg,bowen_9th_s_side,9th,111,filled,1920,1,4,4,0,0,1,108
+vol025_sheet102.jpg,bowen_9th_s_side,9th,113,filled,1910,1,9,9,0,0,0,74
+vol025_sheet102.jpg,bowen_9th_s_side,9th,115,filled,1900,4,16,16,0,0,1,72
+vol025_sheet102.jpg,bowen_9th_s_side,9th,115,filled,1910,2,14,14,0,0,1,74
+vol025_sheet102.jpg,bowen_9th_s_side,9th,115,filled,1920,1,18,18,0,0,1,108
+vol025_sheet102.jpg,bowen_9th_s_side,9th,117,anchor,1900,3,10,10,0,0,1,72
+vol025_sheet102.jpg,bowen_9th_s_side,9th,117,anchor,1910,1,10,10,0,0,0,74
+vol025_sheet102.jpg,bowen_9th_s_side,9th,117,anchor,1920,1,8,8,0,0,1,108
+vol025_sheet102.jpg,central_main_w_side,Main,1009,filled,1900,3,9,9,0,0,1,51
+vol025_sheet102.jpg,central_main_w_side,Main,1009,filled,1910,1,4,4,0,0,1,74
+vol025_sheet102.jpg,central_main_w_side,Main,1011,filled,1900,2,6,6,0,0,1,51
+vol025_sheet102.jpg,central_main_w_side,Main,1011,filled,1920,1,2,2,0,0,1,108
+vol025_sheet102.jpg,central_main_w_side,Main,1013,filled,1900,1,5,5,0,0,0,51
+vol025_sheet102.jpg,central_main_w_side,Main,1015,filled,1900,3,9,9,0,0,1,51
+vol025_sheet102.jpg,central_main_w_side,Main,1015,filled,1910,1,2,2,0,0,1,74
+vol025_sheet102.jpg,central_main_w_side,Main,1015,filled,1920,1,4,4,0,0,1,108
+vol025_sheet102.jpg,central_main_w_side,Main,1017,filled,1900,3,14,14,0,0,1,51
+vol025_sheet102.jpg,central_main_w_side,Main,1017,filled,1920,1,4,4,0,0,1,108
+vol025_sheet102.jpg,central_main_w_side,Main,1019,filled,1900,1,6,5,1,0,0,51
+vol025_sheet102.jpg,central_main_w_side,Main,1019,filled,1920,1,3,3,0,0,1,108
+vol025_sheet102.jpg,central_main_w_side,Main,1023,filled,1900,17,39,39,0,0,1,51
+vol025_sheet102.jpg,central_main_w_side,Main,1023,filled,1910,1,17,17,0,0,0,74
+vol025_sheet102.jpg,central_main_w_side,Main,1023,filled,1920,1,4,0,4,0,1,108
+vol025_sheet102.jpg,central_main_w_side,Main,1023,filled,1930,9,45,45,0,0,1,65
+vol025_sheet102.jpg,central_main_w_side,Main,1023,filled,1940,19,44,44,0,0,1,84
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1010,filled,1940,2,5,5,0,0,1,84
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1012,filled,1910,1,2,0,2,0,0,74
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1012,filled,1930,7,15,15,0,0,1,65
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1014,filled,1910,1,1,0,1,0,1,74
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1016,filled,1900,1,2,2,0,0,0,51
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1020,filled,1910,1,1,1,0,0,1,74
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1020,filled,1920,2,5,5,0,0,1,108
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1020,filled,1930,7,16,16,0,0,1,65
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1020,filled,1940,4,11,11,0,0,1,84
+vol025_sheet102.jpg,coleman_9th_n_side,9th,120,anchor,1920,3,5,5,0,0,1,108
+vol025_sheet102.jpg,coleman_9th_n_side,9th,122,filled,1920,1,3,3,0,0,1,108
+vol025_sheet102.jpg,coleman_9th_n_side,9th,122,filled,1940,2,4,4,0,0,1,84
+vol025_sheet102.jpg,coleman_9th_n_side,9th,124,filled,1900,3,4,4,0,0,1,72
+vol025_sheet102.jpg,coleman_9th_n_side,9th,124,filled,1920,2,10,10,0,0,1,103
+vol025_sheet102.jpg,coleman_9th_n_side,9th,124,filled,1940,9,14,14,0,0,1,84
+vol025_sheet102.jpg,coleman_9th_n_side,9th,126,anchor,1900,2,6,6,0,0,0,72
+vol025_sheet102.jpg,coleman_9th_n_side,9th,126,anchor,1920,2,29,29,0,0,1,108
+vol025_sheet102.jpg,court_walnut_e_side,Walnut,916,filled,1900,1,3,3,0,0,0,51
+vol025_sheet102.jpg,court_walnut_e_side,Walnut,916,filled,1920,1,9,9,0,0,1,108
+vol025_sheet102.jpg,court_walnut_e_side,Walnut,918,anchor,1900,13,38,38,0,0,1,51
+vol025_sheet102.jpg,court_walnut_e_side,Walnut,918,anchor,1920,2,4,4,0,0,1,108
+vol025_sheet102.jpg,court_walnut_e_side,Walnut,918,anchor,1930,18,37,37,0,0,1,65
+vol025_sheet102.jpg,court_walnut_e_side,Walnut,918,anchor,1940,11,14,14,0,0,1,84
+vol025_sheet102.jpg,main_8th_w_side,Main,801,anchor,1910,1,1,1,0,0,1,74
+vol025_sheet102.jpg,main_8th_w_side,Main,801,anchor,1930,1,1,1,0,0,1,65
+vol025_sheet102.jpg,main_8th_w_side,Main,801,anchor,1940,1,2,2,0,0,0,84
+vol025_sheet102.jpg,main_8th_w_side,Main,803,filled,1900,2,7,7,0,0,1,51
+vol025_sheet102.jpg,main_8th_w_side,Main,805,filled,1900,1,4,4,0,0,0,51
+vol025_sheet102.jpg,main_8th_w_side,Main,805,filled,1910,1,7,7,0,0,0,74
+vol025_sheet102.jpg,main_8th_w_side,Main,805,filled,1920,1,2,2,0,0,1,108
+vol025_sheet102.jpg,main_8th_w_side,Main,805,filled,1930,2,2,2,0,0,1,65
+vol025_sheet102.jpg,main_8th_w_side,Main,807,filled,1900,2,7,7,0,0,1,51
+vol025_sheet102.jpg,main_8th_w_side,Main,807,filled,1910,2,10,4,6,0,1,74
+vol025_sheet102.jpg,main_8th_w_side,Main,811,filled,1920,1,1,1,0,0,1,108
+vol025_sheet102.jpg,main_8th_w_side,Main,811,filled,1930,2,6,6,0,0,1,65
+vol025_sheet102.jpg,main_8th_w_side,Main,813,filled,1910,1,1,1,0,0,0,74
+vol025_sheet102.jpg,main_8th_w_side,Main,817,filled,1900,1,4,4,0,0,0,51
+vol025_sheet102.jpg,main_8th_w_side,Main,819,filled,1900,2,3,3,0,0,0,51
+vol025_sheet102.jpg,main_8th_w_side,Main,819,filled,1910,1,2,2,0,0,1,74
+vol025_sheet102.jpg,main_8th_w_side,Main,819,filled,1920,2,4,4,0,0,1,108
+vol025_sheet102.jpg,main_8th_w_side,Main,819,filled,1930,6,13,13,0,0,1,65
+vol025_sheet102.jpg,main_8th_w_side,Main,819,filled,1940,12,23,23,0,0,1,84
+vol025_sheet102.jpg,main_8th_w_side,Main,821,filled,1900,2,2,2,0,0,0,51
+vol025_sheet102.jpg,main_8th_w_side,Main,823,filled,1900,1,3,3,0,0,0,51
+vol025_sheet102.jpg,main_8th_w_side,Main,823,filled,1930,4,9,9,0,0,1,65
+vol025_sheet102.jpg,main_8th_w_side,Main,829,filled,1900,1,5,5,0,0,0,51
+vol025_sheet102.jpg,main_8th_w_side,Main,829,filled,1910,1,6,6,0,0,0,74
+vol025_sheet102.jpg,main_8th_w_side,Main,829,filled,1920,1,4,4,0,0,1,108
+vol025_sheet102.jpg,main_8th_w_side,Main,829,filled,1930,1,1,1,0,0,0,65
+vol025_sheet102.jpg,main_8th_w_side,Main,831,filled,1900,2,2,2,0,0,0,51
+vol025_sheet102.jpg,main_8th_w_side,Main,831,filled,1910,1,1,1,0,0,1,74
+vol025_sheet102.jpg,main_8th_w_side,Main,831,filled,1920,1,2,2,0,0,1,108
+vol025_sheet102.jpg,main_8th_w_side,Main,831,filled,1940,2,4,4,0,0,1,84
+vol025_sheet102.jpg,main_8th_w_side,Main,833,filled,1900,2,5,5,0,0,1,51
+vol025_sheet102.jpg,main_8th_w_side,Main,833,filled,1910,1,6,6,0,0,0,74
+vol025_sheet102.jpg,main_8th_w_side,Main,833,filled,1940,2,4,4,0,0,1,84
+vol025_sheet102.jpg,main_9th_n_side,9th,128,anchor,1910,1,3,3,0,0,1,74
+vol025_sheet102.jpg,main_9th_n_side,9th,128,anchor,1920,1,22,22,0,0,1,108
+vol025_sheet102.jpg,main_9th_n_side,9th,130,filled,1900,1,17,17,0,0,0,72
+vol025_sheet102.jpg,main_9th_n_side,9th,130,filled,1920,1,12,12,0,0,1,103
+vol025_sheet102.jpg,main_9th_n_side,9th,132,filled,1900,1,7,7,0,0,0,72
+vol025_sheet102.jpg,main_9th_n_side,9th,132,filled,1920,1,11,11,0,0,1,103
+vol025_sheet102.jpg,main_9th_n_side,9th,134,anchor,1900,1,5,5,0,0,0,72
+vol025_sheet102.jpg,main_9th_n_side,9th,134,anchor,1910,1,2,2,0,0,0,74
+vol025_sheet102.jpg,main_9th_n_side,9th,134,anchor,1920,1,2,2,0,0,1,108
+vol025_sheet102.jpg,main_9th_s_side,9th,119,anchor,1900,3,6,6,0,0,1,72
+vol025_sheet102.jpg,main_9th_s_side,9th,121,filled,1900,2,12,12,0,0,0,72
+vol025_sheet102.jpg,main_9th_s_side,9th,123,filled,1900,8,24,24,0,0,1,72
+vol025_sheet102.jpg,main_9th_s_side,9th,125,filled,1900,3,18,18,0,0,1,72
+vol025_sheet102.jpg,main_9th_s_side,9th,127,filled,1900,1,6,6,0,0,0,72
+vol025_sheet102.jpg,main_9th_s_side,9th,129,filled,1910,1,2,2,0,0,1,74
+vol025_sheet102.jpg,main_9th_s_side,9th,131,filled,1910,1,19,19,0,0,0,74
+vol025_sheet102.jpg,main_9th_s_side,9th,131,filled,1920,1,49,49,0,0,1,108
+vol025_sheet102.jpg,main_9th_s_side,9th,133,filled,1900,1,14,14,0,0,0,72
+vol025_sheet102.jpg,main_9th_s_side,9th,135,filled,1900,3,8,8,0,0,1,72
+vol025_sheet102.jpg,main_9th_s_side,9th,137,anchor,1900,1,6,6,0,0,0,72
+vol025_sheet102.jpg,main_9th_w_side,Main,903,filled,1900,1,6,6,0,0,0,51
+vol025_sheet102.jpg,main_9th_w_side,Main,905,filled,1900,1,2,2,0,0,0,51
+vol025_sheet102.jpg,main_9th_w_side,Main,905,filled,1910,1,2,2,0,0,1,74
+vol025_sheet102.jpg,main_9th_w_side,Main,905,filled,1920,1,4,4,0,0,1,108
+vol025_sheet102.jpg,main_9th_w_side,Main,915,filled,1900,3,9,9,0,0,1,51
+vol025_sheet102.jpg,main_9th_w_side,Main,927,filled,1900,6,15,15,0,0,1,51
+vol025_sheet102.jpg,main_9th_w_side,Main,927,filled,1910,1,2,2,0,0,1,74
+vol025_sheet102.jpg,main_9th_w_side,Main,927,filled,1920,1,1,1,0,0,1,108
+vol025_sheet102.jpg,main_9th_w_side,Main,927,filled,1930,13,26,26,0,0,1,65
+vol025_sheet102.jpg,main_central,E Central Pkwy,135,filled,1930,2,5,5,0,0,1,65
+vol025_sheet102.jpg,main_court_n_side,Court,132,filled,1900,4,11,11,0,0,1,69
+vol025_sheet102.jpg,main_court_n_side,Court,132,filled,1910,1,5,5,0,0,0,74
+vol025_sheet102.jpg,main_court_n_side,Court,132,filled,1920,1,4,4,0,0,1,103
+vol025_sheet102.jpg,main_court_n_side,Court,136,filled,1900,2,5,5,0,0,1,69
+vol025_sheet102.jpg,main_court_n_side,Court,136,filled,1920,1,5,5,0,0,1,103
+vol025_sheet102.jpg,main_court_s_side,Court,123,anchor,1900,1,2,2,0,0,0,69
+vol025_sheet102.jpg,main_court_s_side,Court,123,anchor,1910,1,4,4,0,0,1,74
+vol025_sheet102.jpg,main_court_s_side,Court,123,anchor,1920,1,7,7,0,0,1,108
+vol025_sheet102.jpg,main_court_s_side,Court,125,filled,1900,5,22,22,0,0,1,69
+vol025_sheet102.jpg,main_court_s_side,Court,125,filled,1940,24,47,47,0,0,1,84
+vol025_sheet102.jpg,main_court_s_side,Court,127,filled,1900,3,14,14,0,0,1,69
+vol025_sheet102.jpg,main_court_s_side,Court,127,filled,1920,1,6,6,0,0,1,108
+vol025_sheet102.jpg,main_court_s_side,Court,129,filled,1900,3,8,8,0,0,1,69
+vol025_sheet102.jpg,main_court_s_side,Court,135,filled,1910,1,8,8,0,0,0,74
+vol025_sheet102.jpg,main_court_s_side,Court,137,filled,1900,1,2,2,0,0,0,69
+vol025_sheet102.jpg,main_court_s_side,Court,137,filled,1910,2,7,7,0,0,1,74
+vol025_sheet102.jpg,main_court_s_side,Court,137,filled,1920,1,2,2,0,0,1,108
+vol025_sheet102.jpg,main_court_s_side,Court,139,filled,1900,1,3,3,0,0,0,69
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,119,anchor,1930,3,7,7,0,0,1,202
+vol025_sheet102.jpg,walnut_court_n_side,Court,102,filled,1920,1,5,5,0,0,1,108
+vol025_sheet102.jpg,walnut_court_n_side,Court,102,filled,1940,13,32,32,0,0,1,84
+vol025_sheet102.jpg,walnut_court_n_side,Court,106,filled,1910,1,3,0,3,0,1,74
+vol025_sheet102.jpg,walnut_court_n_side,Court,106,filled,1920,1,1,0,1,0,1,108
+vol025_sheet102.jpg,walnut_court_n_side,Court,110,filled,1900,8,41,41,0,0,1,69
+vol025_sheet102.jpg,walnut_court_n_side,Court,112,filled,1920,1,4,4,0,0,1,108
+vol025_sheet102.jpg,walnut_court_n_side,Court,114,filled,1910,1,6,6,0,0,1,74
+vol025_sheet102.jpg,walnut_court_n_side,Court,124,anchor,1910,1,3,3,0,0,0,74
+vol025_sheet102.jpg,walnut_court_s_side,Court,103,filled,1900,3,13,13,0,0,1,69
+vol025_sheet102.jpg,walnut_court_s_side,Court,103,filled,1920,1,10,10,0,0,1,103
+vol025_sheet102.jpg,walnut_court_s_side,Court,109,filled,1900,1,1,1,0,0,0,69
+vol025_sheet102.jpg,walnut_court_s_side,Court,109,filled,1920,2,9,9,0,0,1,103
+vol025_sheet102.jpg,walnut_court_s_side,Court,109,filled,1940,4,6,6,0,0,1,84
+vol025_sheet102.jpg,walnut_court_s_side,Court,111,filled,1900,3,13,13,0,0,1,69
+vol025_sheet102.jpg,walnut_court_s_side,Court,111,filled,1920,1,4,4,0,0,1,103
+vol025_sheet102.jpg,walnut_court_s_side,Court,111,filled,1940,1,2,2,0,0,0,84
+vol025_sheet102.jpg,walnut_court_s_side,Court,113,filled,1910,1,5,5,0,0,1,74
+vol025_sheet102.jpg,walnut_court_s_side,Court,115,filled,1900,1,7,7,0,0,0,51
+vol025_sheet102.jpg,walnut_court_s_side,Court,119,filled,1910,3,10,10,0,0,1,74
+vol025_sheet102.jpg,walnut_court_s_side,Court,119,filled,1920,2,12,12,0,0,1,108
+vol025_sheet102.jpg,walnut_court_s_side,Court,119,filled,1940,8,16,16,0,0,1,84
+vol025_sheet102.jpg,walnut_court_s_side,Court,121,anchor,1900,4,13,13,0,0,1,69
+vol025_sheet102.jpg,walnut_court_s_side,Court,121,anchor,1910,2,6,5,1,0,1,74
+vol025_sheet102.jpg,walnut_court_s_side,Court,121,anchor,1920,2,2,2,0,0,1,108
+vol025_sheet102.jpg,walnut_court_s_side,Court,121,anchor,1940,4,6,6,0,0,1,84
+vol025_sheet103.jpg,8th_crow_n,E 8th,212,anchor,1900,1,5,5,0,0,0,74
+vol025_sheet103.jpg,8th_crow_n,E 8th,214,filled,1900,3,10,10,0,0,1,171
+vol025_sheet103.jpg,8th_pancoast_n,E 8th,210,anchor,1900,1,14,14,0,0,0,52
+vol025_sheet103.jpg,8th_pancoast_n,E 8th,210,anchor,1920,1,10,10,0,0,1,110
+vol025_sheet103.jpg,8th_sycamore_n,E 8th,236,filled,1910,1,11,11,0,0,0,75
+vol025_sheet103.jpg,9th_crow_n,E 9th,210,anchor,1920,1,2,2,0,0,1,102
+vol025_sheet103.jpg,9th_crow_n,E 9th,212,filled,1900,1,3,3,0,0,0,73
+vol025_sheet103.jpg,9th_crow_n,E 9th,212,filled,1920,1,26,26,0,0,1,102
+vol025_sheet103.jpg,9th_crow_n,E 9th,214,filled,1900,5,12,12,0,0,1,73
+vol025_sheet103.jpg,9th_crow_n,E 9th,214,filled,1940,1,2,0,2,0,1,86
+vol025_sheet103.jpg,9th_crow_n,E 9th,216,filled,1900,1,16,16,0,0,0,73
+vol025_sheet103.jpg,9th_crow_n,E 9th,216,filled,1940,1,15,15,0,0,1,86
+vol025_sheet103.jpg,9th_crow_n,E 9th,218,filled,1900,4,20,20,0,0,1,72
+vol025_sheet103.jpg,9th_crow_n,E 9th,218,filled,1920,1,8,8,0,0,1,102
+vol025_sheet103.jpg,9th_crow_n,E 9th,220,anchor,1900,4,14,14,0,0,1,73
+vol025_sheet103.jpg,9th_crow_s,9th,215,anchor,1900,1,6,6,0,0,0,73
+vol025_sheet103.jpg,9th_crow_s,9th,217,filled,1900,2,12,12,0,0,1,73
+vol025_sheet103.jpg,9th_crow_s,9th,221,filled,1900,1,3,3,0,0,0,73
+vol025_sheet103.jpg,9th_crow_s,9th,223,filled,1900,1,2,2,0,0,0,73
+vol025_sheet103.jpg,9th_crow_s,9th,225,anchor,1900,1,3,3,0,0,0,73
+vol025_sheet103.jpg,9th_crow_s,9th,225,anchor,1920,1,4,4,0,0,1,102
+vol025_sheet103.jpg,9th_crow_s,9th,227,filled,1920,1,2,2,0,0,1,102
+vol025_sheet103.jpg,9th_crow_s,9th,229,anchor,1900,3,9,9,0,0,1,73
+vol025_sheet103.jpg,9th_crow_s,9th,229,anchor,1920,1,5,5,0,0,1,102
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,222,anchor,1900,4,11,11,0,0,1,73
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,222,anchor,1920,1,11,11,0,0,1,102
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,224,filled,1940,1,3,0,3,0,0,325
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,228,filled,1920,1,1,1,0,0,1,102
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,232,filled,1910,1,2,2,0,0,1,192
+vol025_sheet103.jpg,court_crow_s,E Court,217,anchor,1900,4,12,12,0,0,1,69
+vol025_sheet103.jpg,court_crow_s,E Court,217,anchor,1910,1,4,4,0,0,1,67
+vol025_sheet103.jpg,court_crow_s,E Court,219,filled,1900,3,6,6,0,0,1,69
+vol025_sheet103.jpg,court_crow_s,E Court,223,filled,1900,1,1,1,0,0,0,69
+vol025_sheet103.jpg,court_crow_s,E Court,225,filled,1900,5,19,19,0,0,1,69
+vol025_sheet103.jpg,court_crow_s,E Court,225,filled,1930,8,16,16,0,0,1,65
+vol025_sheet103.jpg,court_crow_s,E Court,225,filled,1940,6,10,10,0,0,1,84
+vol025_sheet103.jpg,court_crow_s,E Court,227,filled,1900,2,13,13,0,0,1,69
+vol025_sheet103.jpg,court_main_n,E Court,200,anchor,1900,1,5,5,0,0,0,69
+vol025_sheet103.jpg,court_pancoast_s,E Court,211,filled,1900,3,15,15,0,0,1,69
+vol025_sheet103.jpg,main_8th_e,Main,802,filled,1920,1,1,1,0,0,1,110
+vol025_sheet103.jpg,main_8th_e,Main,802,filled,1930,1,5,5,0,0,0,65
+vol025_sheet103.jpg,main_8th_e,Main,802,filled,1940,1,6,6,0,0,0,84
+vol025_sheet103.jpg,main_8th_e,Main,804,filled,1900,1,8,8,0,0,0,52
+vol025_sheet103.jpg,main_8th_e,Main,806,filled,1920,1,1,1,0,0,1,110
+vol025_sheet103.jpg,main_8th_e,Main,806,filled,1930,1,3,3,0,0,0,65
+vol025_sheet103.jpg,main_8th_e,Main,806,filled,1940,1,1,1,0,0,0,84
+vol025_sheet103.jpg,main_8th_e,Main,808,filled,1900,2,6,6,0,0,1,52
+vol025_sheet103.jpg,main_8th_e,Main,808,filled,1910,1,3,3,0,0,1,75
+vol025_sheet103.jpg,main_8th_e,Main,808,filled,1920,1,2,2,0,0,1,110
+vol025_sheet103.jpg,main_8th_e,Main,814,filled,1900,4,10,10,0,0,1,52
+vol025_sheet103.jpg,main_8th_e,Main,814,filled,1910,1,4,4,0,0,1,75
+vol025_sheet103.jpg,main_8th_e,Main,814,filled,1920,1,6,6,0,0,1,110
+vol025_sheet103.jpg,main_8th_e,Main,814,filled,1930,8,19,19,0,0,1,65
+vol025_sheet103.jpg,main_8th_e,Main,814,filled,1940,9,18,18,0,0,1,84
+vol025_sheet103.jpg,main_8th_e,Main,816,anchor,1910,1,9,9,0,0,0,74
+vol025_sheet103.jpg,main_9th_e,Main,818,anchor,1900,1,18,18,0,0,0,52
+vol025_sheet103.jpg,main_9th_e,Main,818,anchor,1910,1,20,20,0,0,0,75
+vol025_sheet103.jpg,main_9th_e,Main,818,anchor,1920,1,26,26,0,0,1,110
+vol025_sheet103.jpg,main_9th_e,Main,818,anchor,1930,6,31,31,0,0,1,65
+vol025_sheet103.jpg,main_9th_e,Main,820,filled,1900,5,19,11,8,0,1,52
+vol025_sheet103.jpg,main_9th_e,Main,820,filled,1910,1,2,2,0,0,1,75
+vol025_sheet103.jpg,main_9th_e,Main,820,filled,1930,6,17,13,4,0,1,65
+vol025_sheet103.jpg,main_9th_e,Main,822,filled,1900,1,2,2,0,0,0,52
+vol025_sheet103.jpg,main_9th_e,Main,822,filled,1910,1,12,12,0,0,0,75
+vol025_sheet103.jpg,main_9th_e,Main,822,filled,1920,1,1,1,0,0,1,110
+vol025_sheet103.jpg,main_9th_e,Main,822,filled,1930,1,5,5,0,0,0,65
+vol025_sheet103.jpg,main_9th_e,Main,822,filled,1940,12,17,17,0,0,1,84
+vol025_sheet103.jpg,main_9th_e,Main,824,filled,1900,1,6,6,0,0,0,52
+vol025_sheet103.jpg,main_9th_e,Main,824,filled,1910,1,6,6,0,0,0,75
+vol025_sheet103.jpg,main_9th_e,Main,824,filled,1920,1,3,3,0,0,1,110
+vol025_sheet103.jpg,main_9th_e,Main,826,filled,1900,1,5,5,0,0,0,52
+vol025_sheet103.jpg,main_9th_e,Main,826,filled,1910,1,5,5,0,0,0,75
+vol025_sheet103.jpg,main_9th_e,Main,826,filled,1920,1,3,3,0,0,1,110
+vol025_sheet103.jpg,main_9th_e,Main,826,filled,1930,1,7,7,0,0,0,65
+vol025_sheet103.jpg,main_court_e,Main,900,anchor,1900,2,8,8,0,0,1,51
+vol025_sheet103.jpg,main_court_e,Main,900,anchor,1910,2,11,11,0,0,1,75
+vol025_sheet103.jpg,main_court_e,Main,904,filled,1920,1,1,1,0,0,1,110
+vol025_sheet103.jpg,main_court_e,Main,914,filled,1910,1,2,2,0,0,0,75
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,813,anchor,1900,1,7,7,0,0,0,52
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,813,anchor,1920,1,8,8,0,0,1,110
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,815,anchor,1900,6,26,26,0,0,1,52
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,815,anchor,1930,1,3,3,0,0,0,65
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,903,anchor,1920,1,10,1,9,0,1,137
+vol025_sheet103.jpg,sycamore_swift_w,Sycamore,913,anchor,1900,5,13,13,0,0,1,51
+vol025_sheet103.jpg,sycamore_swift_w,Sycamore,913,anchor,1920,1,1,1,0,0,1,110

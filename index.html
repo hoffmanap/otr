@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Lodging Ledger</title>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --panel: #ffffff;
+    --ink: #221e1a;
+    --ink-soft: #5c564d;
+    --border: #ddd6c8;
+    --accent: #8a3b2b;
+    --accent-soft: #c77a52;
+    --black-share: #3b5a7a;
+    --white-share: #c9bfa8;
+    --other-share: #8a7a9a;
+    --rent-share: #b3452c;
+    --own-share: #6b8a6b;
+    --lodger: #c99a2e;
+    --nomatch: #b9b0a0;
+    --select: #2255dd;
+    --radius: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1b1915;
+      --panel: #262320;
+      --ink: #efe9df;
+      --ink-soft: #b3aa9a;
+      --border: #3c362e;
+      --accent: #e08a63;
+      --accent-soft: #c77a52;
+      --black-share: #6f9bc9;
+      --white-share: #d8cdb0;
+      --other-share: #b09cc9;
+      --rent-share: #e3714c;
+      --own-share: #8fb98f;
+      --lodger: #e0b94f;
+      --nomatch: #5c5648;
+      --select: #6f9bea;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1915; --panel: #262320; --ink: #efe9df; --ink-soft: #b3aa9a; --border: #3c362e;
+    --accent: #e08a63; --accent-soft: #c77a52; --black-share: #6f9bc9; --white-share: #d8cdb0;
+    --other-share: #b09cc9; --rent-share: #e3714c; --own-share: #8fb98f; --lodger: #e0b94f;
+    --nomatch: #5c5648; --select: #6f9bea;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: ui-serif, Georgia, "Times New Roman", serif;
+    padding: 16px; padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  h1 { font-size: 1.4rem; margin: 0 0 2px; }
+  .subtitle { color: var(--ink-soft); font-size: 0.85rem; margin: 0 0 14px; max-width: 72ch; line-height: 1.5; }
+  .layout {
+    display: grid; grid-template-columns: minmax(0,1fr); gap: 14px;
+    max-width: 1340px; margin: 0 auto;
+  }
+  @media (min-width: 900px) { .layout { grid-template-columns: minmax(0, 1.7fr) minmax(300px, 1fr); } }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .controls .grp { display: flex; align-items: center; gap: 6px; }
+  label.lbl { font-size: 0.78rem; color: var(--ink-soft); }
+  button, select {
+    font-family: inherit; font-size: 0.82rem; background: var(--bg); color: var(--ink);
+    border: 1px solid var(--border); border-radius: 6px; padding: 6px 9px; cursor: pointer;
+  }
+  button:hover { border-color: var(--accent-soft); }
+  button.active { background: var(--accent-soft); color: #1b1512; border-color: var(--accent-soft); }
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.73rem; color: var(--ink-soft); margin-bottom: 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 4px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .gradient-swatch { width: 60px; height: 9px; border-radius: 4px; display: inline-block; }
+  .viewer-wrap {
+    position: relative; overflow: hidden; border: 1px solid var(--border); border-radius: 8px;
+    background: #111; touch-action: none; height: min(68vh, 620px);
+  }
+  .viewer-wrap canvas { position: absolute; top: 0; left: 0; cursor: crosshair; }
+  .zoom-hint {
+    position: absolute; bottom: 8px; right: 10px; font-size: 0.68rem; color: #ddd;
+    background: rgba(0,0,0,0.45); padding: 3px 7px; border-radius: 5px; pointer-events: none;
+  }
+  .detail h2 { font-size: 1.05rem; margin: 0 0 2px; }
+  .detail h3 { font-size: 0.92rem; margin: 14px 0 6px; color: var(--ink); }
+  .detail .addr-sub { color: var(--ink-soft); font-size: 0.78rem; margin-bottom: 8px; }
+  .empty-note { color: var(--ink-soft); font-size: 0.83rem; font-style: italic; }
+  .sel-box {
+    border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-bottom: 4px;
+    background: var(--bg);
+  }
+  .year-block { padding: 7px 0; border-bottom: 1px dashed var(--border); }
+  .year-block:last-child { border-bottom: none; }
+  .year-head { font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .year-head .n { color: var(--ink-soft); font-weight: 400; font-size: 0.72rem; }
+  .metric-row { display: grid; grid-template-columns: 58px 1fr auto; align-items: center; gap: 6px; font-size: 0.74rem; margin-bottom: 3px; }
+  .metric-row.nodata { color: var(--ink-soft); opacity: 0.55; }
+  .stack-track { display: flex; height: 10px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); background: var(--bg); }
+  .stack-seg { height: 100%; }
+  .metric-val { white-space: nowrap; color: var(--ink-soft); min-width: 70px; text-align: right; }
+  .resident-list { margin: 8px 0 0; font-size: 0.78rem; padding-left: 18px; }
+  .resident-list li { margin-bottom: 3px; }
+  .caveat {
+    font-size: 0.73rem; color: var(--ink-soft); background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 10px; margin-top: 12px; line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <h1>The Lodging Ledger — Over-the-Rhine</h1>
+  <p class="subtitle">
+    How Over-the-Rhine's population changed, 1900–1940: race, tenure (own/rent), and household density, building by building —
+    from 1950 Sanborn fire-insurance sheets linked to census households (Brown University GRF + IPUMS full-count data).
+    Group living (lodgers/boarders) is tracked as a secondary signal. First version — 3 of 55 OTR sheets, pixel-positioned
+    on the sheet image (not yet geo-referenced to real coordinates).
+  </p>
+
+  <div class="layout">
+    <div class="panel">
+      <div class="controls">
+        <div class="grp"><label class="lbl">Sheet</label><select id="sheetSelect"></select></div>
+        <div class="grp"><label class="lbl">Year</label><select id="yearSelect"></select></div>
+        <div class="grp"><label class="lbl">Color by</label>
+          <select id="colorBySelect">
+            <option value="black_pct">% Black</option>
+            <option value="rented_pct">% Rented</option>
+            <option value="density">Persons/household</option>
+            <option value="lodger">Has lodger/boarder</option>
+          </select>
+        </div>
+        <div class="grp"><label class="lbl">Select by</label>
+          <select id="modeSelect">
+            <option value="building">Individual building</option>
+            <option value="street">Street segment</option>
+            <option value="block">Block face</option>
+            <option value="freeform">Freeform (drag box)</option>
+          </select>
+        </div>
+        <button id="resetView">Reset view</button>
+        <button id="clearSelection">Clear selection</button>
+      </div>
+      <div class="legend" id="legendBox"></div>
+      <div class="viewer-wrap" id="viewerWrap">
+        <canvas id="canvas"></canvas>
+        <div class="zoom-hint" id="zoomHint">scroll/pinch to zoom · drag to pan · click a dot</div>
+      </div>
+    </div>
+
+    <div class="panel detail" id="detailPanel">
+      <h2>Your selection</h2>
+      <p class="empty-note" id="selEmpty">Nothing selected yet. Pick a "select by" granularity above, then click a dot
+        (or drag a box, in freeform mode) to see composition over time for that building, street, block face, or
+        custom area.</p>
+      <div id="selectionBlock"></div>
+      <h2 style="margin-top:16px;">Neighborhood overview</h2>
+      <div class="addr-sub">All 574 mapped addresses across these 3 sheets</div>
+      <div id="neighborhoodBlock"></div>
+      <div class="caveat" id="caveatBox"></div>
+    </div>
+  </div>
+
+<script>
+const DATA_URL = "otr_data.json";
+let DATA = null;
+let img = new Image();
+let currentSheetKey = null;
+let currentYear = null;
+let colorBy = 'black_pct';
+let mode = 'building';
+let scale = 1, offX = 0, offY = 0;
+let dragging = false, lastX = 0, lastY = 0, dragStartScreen = null, didDrag = false;
+let selectedIds = new Set(); // set of address unique ids currently selected
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const wrap = document.getElementById('viewerWrap');
+
+function uid(a) { return a.sheet + '|' + a.block_id + '|' + a.address; }
+
+function fitView() {
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  canvas.width = w; canvas.height = h;
+  const sheet = DATA.sheets[currentSheetKey];
+  const s = Math.min(w / sheet.w, h / sheet.h) * 0.98;
+  scale = s;
+  offX = (w - sheet.w * s) / 2;
+  offY = (h - sheet.h * s) / 2;
+  draw();
+}
+
+function censusFor(addr, year) {
+  return addr.census_by_year ? addr.census_by_year[year] : null;
+}
+
+function getCssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+function hexToRgb(hex) {
+  hex = hex.trim();
+  const m = hex.match(/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+  if (!m) return [128,128,128];
+  return [parseInt(m[1],16), parseInt(m[2],16), parseInt(m[3],16)];
+}
+function lerpColor(c1, c2, t) {
+  const r1 = hexToRgb(c1), r2 = hexToRgb(c2);
+  const r = Math.round(r1[0] + (r2[0]-r1[0])*t);
+  const g = Math.round(r1[1] + (r2[1]-r1[1])*t);
+  const b = Math.round(r1[2] + (r2[2]-r1[2])*t);
+  return `rgb(${r},${g},${b})`;
+}
+
+function colorFor(addr) {
+  const c = censusFor(addr, currentYear);
+  if (!c) return getCssVar('--nomatch');
+  if (colorBy === 'lodger') {
+    if (c.n_lodger > 0) return getCssVar('--lodger');
+    return getCssVar('--own-share');
+  }
+  if (colorBy === 'black_pct') {
+    return lerpColor(getCssVar('--white-share'), getCssVar('--black-share'), c.pct_black / 100);
+  }
+  if (colorBy === 'rented_pct') {
+    if (c.pct_rented === null) return getCssVar('--nomatch');
+    return lerpColor(getCssVar('--own-share'), getCssVar('--rent-share'), c.pct_rented / 100);
+  }
+  if (colorBy === 'density') {
+    const t = Math.min(1, Math.max(0, (c.persons_per_household - 1) / 5)); // 1..6+ persons/hh
+    return lerpColor(getCssVar('--own-share'), getCssVar('--rent-share'), t);
+  }
+  return getCssVar('--nomatch');
+}
+
+function renderLegend() {
+  const el = document.getElementById('legendBox');
+  if (colorBy === 'lodger') {
+    el.innerHTML = `<span><span class="dot" style="background:var(--lodger)"></span> Has lodger/boarder</span>
+      <span><span class="dot" style="background:var(--own-share)"></span> Matched, no lodger</span>
+      <span><span class="dot" style="background:var(--nomatch)"></span> No match this year</span>`;
+  } else if (colorBy === 'black_pct') {
+    el.innerHTML = `<span>% Black: <span class="gradient-swatch" style="background:linear-gradient(90deg, var(--white-share), var(--black-share))"></span></span>
+      <span><span class="dot" style="background:var(--nomatch)"></span> No match this year</span>`;
+  } else if (colorBy === 'rented_pct') {
+    el.innerHTML = `<span>% Rented: <span class="gradient-swatch" style="background:linear-gradient(90deg, var(--own-share), var(--rent-share))"></span></span>
+      <span><span class="dot" style="background:var(--nomatch)"></span> No match / tenure unknown</span>`;
+  } else if (colorBy === 'density') {
+    el.innerHTML = `<span>Persons/household (1→6+): <span class="gradient-swatch" style="background:linear-gradient(90deg, var(--own-share), var(--rent-share))"></span></span>
+      <span><span class="dot" style="background:var(--nomatch)"></span> No match this year</span>`;
+  }
+}
+
+function groupKeyFor(a) {
+  if (mode === 'street') return a.sheet + '|' + a.street;
+  if (mode === 'block') return a.sheet + '|' + a.block_id;
+  return uid(a); // building
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(offX, offY);
+  ctx.scale(scale, scale);
+  if (img.complete && img.naturalWidth) ctx.drawImage(img, 0, 0);
+  const addrs = DATA.addresses.filter(a => a.sheet === currentSheetKey);
+  for (const a of addrs) {
+    ctx.beginPath();
+    const r = Math.max(4, 6 / scale);
+    ctx.arc(a.x, a.y, r, 0, Math.PI * 2);
+    ctx.fillStyle = colorFor(a);
+    ctx.globalAlpha = 0.92;
+    ctx.fill();
+    if (selectedIds.has(uid(a))) {
+      ctx.lineWidth = Math.max(1.5, 2.5 / scale);
+      ctx.strokeStyle = getCssVar('--select');
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+
+  if (mode === 'freeform' && dragging && dragStartScreen) {
+    const rect = canvas.getBoundingClientRect();
+    ctx.save();
+    ctx.strokeStyle = getCssVar('--select');
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5,4]);
+    ctx.strokeRect(dragStartScreen.x, dragStartScreen.y, dragCurScreen.x - dragStartScreen.x, dragCurScreen.y - dragStartScreen.y);
+    ctx.restore();
+  }
+}
+
+function screenToImg(sx, sy) { return { x: (sx - offX) / scale, y: (sy - offY) / scale }; }
+
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const before = screenToImg(mx, my);
+  const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
+  scale = Math.min(Math.max(scale * factor, 0.1), 8);
+  offX = mx - before.x * scale;
+  offY = my - before.y * scale;
+  draw();
+}, { passive: false });
+
+let dragCurScreen = null;
+canvas.addEventListener('pointerdown', (e) => {
+  dragging = true; didDrag = false;
+  const rect = canvas.getBoundingClientRect();
+  lastX = e.clientX; lastY = e.clientY;
+  dragStartScreen = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  dragCurScreen = { ...dragStartScreen };
+  canvas.setPointerCapture(e.pointerId);
+});
+canvas.addEventListener('pointermove', (e) => {
+  if (!dragging) return;
+  const dx = e.clientX - lastX, dy = e.clientY - lastY;
+  if (Math.abs(dx) + Math.abs(dy) > 2) didDrag = true;
+  const rect = canvas.getBoundingClientRect();
+  dragCurScreen = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  if (mode === 'freeform') {
+    draw();
+  } else {
+    offX += dx; offY += dy;
+    draw();
+  }
+  lastX = e.clientX; lastY = e.clientY;
+});
+canvas.addEventListener('pointerup', (e) => {
+  dragging = false;
+  if (mode === 'freeform' && didDrag) {
+    selectInRect(dragStartScreen, dragCurScreen);
+  } else if (!didDrag) {
+    handleClick(e);
+  }
+  dragStartScreen = null;
+  draw();
+});
+
+function selectInRect(p1screen, p2screen) {
+  const p1 = screenToImg(p1screen.x, p1screen.y);
+  const p2 = screenToImg(p2screen.x, p2screen.y);
+  const minX = Math.min(p1.x, p2.x), maxX = Math.max(p1.x, p2.x);
+  const minY = Math.min(p1.y, p2.y), maxY = Math.max(p1.y, p2.y);
+  const addrs = DATA.addresses.filter(a => a.sheet === currentSheetKey);
+  const found = addrs.filter(a => a.x >= minX && a.x <= maxX && a.y >= minY && a.y <= maxY);
+  selectedIds = new Set(found.map(uid));
+  renderSelection(found, 'Custom area (' + found.length + ' addresses)');
+}
+
+function handleClick(e) {
+  const rect = canvas.getBoundingClientRect();
+  const p = screenToImg(e.clientX - rect.left, e.clientY - rect.top);
+  const addrs = DATA.addresses.filter(a => a.sheet === currentSheetKey);
+  let best = null, bestD = 1e9;
+  for (const a of addrs) {
+    const d = Math.hypot(a.x - p.x, a.y - p.y);
+    if (d < bestD) { bestD = d; best = a; }
+  }
+  const threshold = Math.max(10, 14 / scale);
+  if (!best || bestD > threshold) return;
+
+  if (mode === 'building') {
+    selectedIds = new Set([uid(best)]);
+    renderSelection([best], `${best.address} ${best.street}`);
+  } else {
+    const key = groupKeyFor(best);
+    const group = addrs.filter(a => groupKeyFor(a) === key);
+    selectedIds = new Set(group.map(uid));
+    const label = mode === 'street' ? `${best.street} (street segment, ${group.length} addresses)`
+                                     : `Block face "${best.block_id}" (${group.length} addresses)`;
+    renderSelection(group, label);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function stackBar(segs) {
+  // segs: [{w, color}]
+  let html = '<div class="stack-track">';
+  for (const s of segs) {
+    if (s.w <= 0) continue;
+    html += `<div class="stack-seg" style="width:${s.w}%; background:${s.color}"></div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderCompositionBlock(addrs) {
+  let html = '';
+  for (const year of DATA.years) {
+    const yearCensuses = addrs.map(a => censusFor(a, year)).filter(Boolean);
+    if (!yearCensuses.length) {
+      html += `<div class="year-block"><div class="year-head">${year} <span class="n">no match</span></div></div>`;
+      continue;
+    }
+    const totalResidents = yearCensuses.reduce((s,c) => s + c.n_residents, 0);
+    const totalBlack = yearCensuses.reduce((s,c) => s + c.n_black, 0);
+    const totalWhite = yearCensuses.reduce((s,c) => s + c.n_white, 0);
+    const totalOther = yearCensuses.reduce((s,c) => s + c.n_other_race, 0);
+    const totalHH = yearCensuses.reduce((s,c) => s + c.n_households, 0);
+    const totalOwned = yearCensuses.reduce((s,c) => s + c.n_owned, 0);
+    const totalRented = yearCensuses.reduce((s,c) => s + c.n_rented, 0);
+    const totalLodger = yearCensuses.reduce((s,c) => s + c.n_lodger, 0);
+    const pctBlack = totalResidents ? Math.round(100*totalBlack/totalResidents) : 0;
+    const pctWhite = totalResidents ? Math.round(100*totalWhite/totalResidents) : 0;
+    const pctOther = Math.max(0, 100 - pctBlack - pctWhite);
+    const tenureKnown = totalOwned + totalRented;
+    const pctRented = tenureKnown ? Math.round(100*totalRented/tenureKnown) : null;
+    const pph = totalHH ? (totalResidents/totalHH).toFixed(2) : '—';
+    const pctLodger = totalResidents ? Math.round(100*totalLodger/totalResidents) : 0;
+    const buildingsMatched = yearCensuses.length;
+
+    html += `<div class="year-block">
+      <div class="year-head">${year} <span class="n">${buildingsMatched} of ${addrs.length} addresses · ${totalResidents} residents</span></div>
+      <div class="metric-row"><span>Race</span>${stackBar([
+        {w: pctBlack, color: getCssVar('--black-share')},
+        {w: pctWhite, color: getCssVar('--white-share')},
+        {w: pctOther, color: getCssVar('--other-share')},
+      ])}<span class="metric-val">${pctBlack}% Black</span></div>
+      <div class="metric-row"><span>Tenure</span>${pctRented===null ? '<div class="stack-track"></div>' : stackBar([
+        {w: pctRented, color: getCssVar('--rent-share')},
+        {w: 100-pctRented, color: getCssVar('--own-share')},
+      ])}<span class="metric-val">${pctRented===null ? 'unknown' : pctRented+'% rented'}</span></div>
+      <div class="metric-row"><span>Density</span><div class="stack-track"></div><span class="metric-val">${pph} ppl/hh</span></div>
+      <div class="metric-row" style="opacity:0.8"><span>Lodgers</span><div class="stack-track">${stackBar([{w:pctLodger, color:getCssVar('--lodger')}])}</div><span class="metric-val">${pctLodger}%</span></div>
+    </div>`;
+  }
+  return html;
+}
+
+function renderSelection(addrs, label) {
+  document.getElementById('selEmpty').style.display = 'none';
+  const el = document.getElementById('selectionBlock');
+  let html = `<div class="sel-box"><div class="addr-sub" style="font-size:0.85rem; color:var(--ink); font-weight:600;">${escapeHtml(label)}</div>`;
+  if (addrs.length === 1) {
+    const a = addrs[0];
+    html += `<div class="addr-sub">Sheet ${a.sheet.replace('vol025_sheet','').replace('.jpg','')} · block ${escapeHtml(a.block_id)} · point: ${escapeHtml(a.point_source||'interpolated')}</div>`;
+  }
+  html += renderCompositionBlock(addrs);
+  if (addrs.length === 1 && censusFor(addrs[0], currentYear)) {
+    const c = censusFor(addrs[0], currentYear);
+    html += `<div style="margin-top:8px;"><strong style="font-size:0.78rem;">${currentYear} residents</strong><ul class="resident-list">`;
+    for (const r of c.residents) {
+      const tag = r.is_lodger ? ' — lodger/boarder' : (r.is_employee ? ' — live-in employee' : '');
+      html += `<li>${escapeHtml(r.relate)}${tag} (${escapeHtml(r.race)}, ${escapeHtml(r.ownership)})</li>`;
+    }
+    html += `</ul></div>`;
+  }
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function clearSelection() {
+  selectedIds = new Set();
+  document.getElementById('selectionBlock').innerHTML = '';
+  document.getElementById('selEmpty').style.display = '';
+  draw();
+}
+
+function renderNeighborhood() {
+  const el = document.getElementById('neighborhoodBlock');
+  el.innerHTML = renderCompositionBlock(DATA.addresses);
+}
+
+function renderCaveat() {
+  document.getElementById('caveatBox').innerHTML = `<strong>About this data.</strong> Covers only 3 of 55 OTR sheets, census years 1900–1940 (GRF's own coverage ends at 1940). Dots are sheet-image pixel coordinates, hand-anchored and interpolated along block faces — not yet true geographic coordinates. "Block face" means one side of one street between anchors, not a full four-sided city block; draw a freeform box to approximate a real block or any other custom area. Matching is by street name + house number within each year independently, so a missing match in one year doesn't necessarily mean the building changed — it can mean a data gap, a renumbering, or non-residential use that year.`;
+}
+
+function loadSheet(key) {
+  currentSheetKey = key;
+  clearSelection();
+  const sheet = DATA.sheets[key];
+  img = new Image();
+  img.onload = fitView;
+  img.src = sheet.img;
+}
+
+async function init() {
+  const resp = await fetch(DATA_URL);
+  DATA = await resp.json();
+  currentYear = DATA.years[DATA.years.length - 1]; // default to latest year (1940)
+
+  const sheetSel = document.getElementById('sheetSelect');
+  for (const key of Object.keys(DATA.sheets)) {
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = 'Sheet ' + key.replace('vol025_sheet','').replace('.jpg','');
+    sheetSel.appendChild(opt);
+  }
+  sheetSel.addEventListener('change', () => loadSheet(sheetSel.value));
+
+  const yearSel = document.getElementById('yearSelect');
+  for (const year of DATA.years) {
+    const opt = document.createElement('option');
+    opt.value = year; opt.textContent = year;
+    if (year === currentYear) opt.selected = true;
+    yearSel.appendChild(opt);
+  }
+  yearSel.addEventListener('change', () => { currentYear = yearSel.value; draw(); });
+
+  const colorSel = document.getElementById('colorBySelect');
+  colorSel.value = colorBy;
+  colorSel.addEventListener('change', () => { colorBy = colorSel.value; renderLegend(); draw(); });
+
+  const modeSel = document.getElementById('modeSelect');
+  modeSel.value = mode;
+  modeSel.addEventListener('change', () => {
+    mode = modeSel.value;
+    clearSelection();
+    document.getElementById('zoomHint').textContent = mode === 'freeform'
+      ? 'scroll/pinch to zoom · drag a box to select'
+      : 'scroll/pinch to zoom · drag to pan · click a dot';
+  });
+
+  document.getElementById('resetView').addEventListener('click', fitView);
+  document.getElementById('clearSelection').addEventListener('click', clearSelection);
+  window.addEventListener('resize', fitView);
+
+  renderLegend();
+  renderNeighborhood();
+  renderCaveat();
+  loadSheet(Object.keys(DATA.sheets)[0]);
+}
+init();
+</script>
+</body>
+</html>

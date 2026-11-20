@@ -1,0 +1,575 @@
+sheet,block_id,street,address,x,y,source
+vol025_sheet101.jpg,central_pkwy,E Central Pkwy,19,820.6,291.5,anchor
+vol025_sheet101.jpg,central_pkwy,E Central Pkwy,21,856.2,296.6,anchor
+vol025_sheet101.jpg,central_pkwy,E Central Pkwy,23,904.5,295.4,filled
+vol025_sheet101.jpg,central_pkwy,E Central Pkwy,25,952.8,294.1,filled
+vol025_sheet101.jpg,central_pkwy,E Central Pkwy,27,1001.0,292.9,filled
+vol025_sheet101.jpg,central_pkwy,E Central Pkwy,29,1049.3,291.6,anchor
+vol025_sheet101.jpg,central_pkwy,E Central Pkwy,31,1071.1,292.0,filled
+vol025_sheet101.jpg,central_pkwy,E Central Pkwy,33,1092.9,292.3,anchor
+vol025_sheet101.jpg,court_odd,E. Court,1,514.7,781.5,anchor
+vol025_sheet101.jpg,court_odd,E. Court,3,542.5,781.4,filled
+vol025_sheet101.jpg,court_odd,E. Court,5,570.3,781.2,filled
+vol025_sheet101.jpg,court_odd,E. Court,7,598.1,781.1,filled
+vol025_sheet101.jpg,court_odd,E. Court,9,625.9,780.9,filled
+vol025_sheet101.jpg,court_odd,E. Court,11,653.7,780.8,filled
+vol025_sheet101.jpg,court_odd,E. Court,13,681.5,780.6,filled
+vol025_sheet101.jpg,court_odd,E. Court,15,709.3,780.5,filled
+vol025_sheet101.jpg,court_odd,E. Court,17,737.1,780.3,filled
+vol025_sheet101.jpg,court_odd,E. Court,19,764.9,780.2,filled
+vol025_sheet101.jpg,court_odd,E. Court,21,792.7,780.0,filled
+vol025_sheet101.jpg,court_odd,E. Court,23,820.5,779.9,filled
+vol025_sheet101.jpg,court_odd,E. Court,25,848.3,779.7,filled
+vol025_sheet101.jpg,court_odd,E. Court,27,876.1,779.6,filled
+vol025_sheet101.jpg,court_odd,E. Court,29,903.9,779.4,filled
+vol025_sheet101.jpg,court_odd,E. Court,31,931.7,779.3,filled
+vol025_sheet101.jpg,court_odd,E. Court,33,959.5,779.1,filled
+vol025_sheet101.jpg,court_odd,E. Court,35,987.3,779.0,filled
+vol025_sheet101.jpg,court_odd,E. Court,37,1015.1,778.8,filled
+vol025_sheet101.jpg,court_odd,E. Court,39,1042.9,778.7,filled
+vol025_sheet101.jpg,court_odd,E. Court,41,1070.7,778.5,filled
+vol025_sheet101.jpg,court_odd,E. Court,43,1098.5,778.4,anchor
+vol025_sheet101.jpg,court_vine_9th,E Court,2,520.5,602.1,anchor
+vol025_sheet101.jpg,court_vine_9th,E Court,4,541.9,601.7,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,6,563.3,601.4,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,8,584.7,601.0,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,10,606.1,600.6,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,12,627.5,600.2,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,14,648.9,599.9,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,16,670.3,599.5,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,18,691.8,599.1,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,20,713.2,598.7,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,22,734.6,598.4,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,24,756.0,598.0,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,26,777.4,597.6,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,28,798.8,597.2,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,30,820.2,596.9,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,32,841.6,596.5,anchor
+vol025_sheet101.jpg,court_vine_9th,E Court,34,860.2,596.7,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,36,878.8,596.9,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,38,897.4,597.0,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,40,916.0,597.2,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,42,934.5,597.4,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,44,953.1,597.6,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,46,971.7,597.7,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,48,990.3,597.9,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,50,1008.9,598.1,anchor
+vol025_sheet101.jpg,court_vine_9th,E Court,52,1036.2,597.1,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,54,1063.6,596.2,filled
+vol025_sheet101.jpg,court_vine_9th,E Court,56,1090.9,595.2,anchor
+vol025_sheet101.jpg,e8th,E 8th,2,510.4,1665.5,anchor
+vol025_sheet101.jpg,e8th,E 8th,4,548.5,1665.3,filled
+vol025_sheet101.jpg,e8th,E 8th,6,586.6,1665.2,filled
+vol025_sheet101.jpg,e8th,E 8th,8,624.7,1665.0,anchor
+vol025_sheet101.jpg,e8th,E 8th,10,660.8,1665.4,filled
+vol025_sheet101.jpg,e8th,E 8th,12,696.9,1665.7,filled
+vol025_sheet101.jpg,e8th,E 8th,14,733.0,1666.1,filled
+vol025_sheet101.jpg,e8th,E 8th,16,769.0,1666.5,filled
+vol025_sheet101.jpg,e8th,E 8th,18,805.1,1666.8,filled
+vol025_sheet101.jpg,e8th,E 8th,20,841.2,1667.2,filled
+vol025_sheet101.jpg,e8th,E 8th,22,877.3,1667.5,filled
+vol025_sheet101.jpg,e8th,E 8th,24,913.4,1667.9,anchor
+vol025_sheet101.jpg,e8th,E 8th,26,950.5,1681.0,anchor
+vol025_sheet101.jpg,e8th,E 8th,28,963.5,1675.1,filled
+vol025_sheet101.jpg,e8th,E 8th,30,976.6,1669.2,anchor
+vol025_sheet101.jpg,e8th,E 8th,32,1012.6,1670.7,filled
+vol025_sheet101.jpg,e8th,E 8th,34,1048.5,1672.3,filled
+vol025_sheet101.jpg,e8th,E 8th,36,1084.5,1673.8,anchor
+vol025_sheet101.jpg,ninth_even,E 9th,2,506.5,1141.6,anchor
+vol025_sheet101.jpg,ninth_even,E 9th,4,602.2,1138.9,anchor
+vol025_sheet101.jpg,ninth_even,E 9th,6,638.3,1139.2,filled
+vol025_sheet101.jpg,ninth_even,E 9th,8,674.3,1139.5,filled
+vol025_sheet101.jpg,ninth_even,E 9th,10,710.4,1139.9,filled
+vol025_sheet101.jpg,ninth_even,E 9th,12,746.4,1140.2,filled
+vol025_sheet101.jpg,ninth_even,E 9th,14,782.5,1140.5,anchor
+vol025_sheet101.jpg,ninth_even,E 9th,16,812.6,1140.8,filled
+vol025_sheet101.jpg,ninth_even,E 9th,18,842.7,1141.2,filled
+vol025_sheet101.jpg,ninth_even,E 9th,20,872.8,1141.5,filled
+vol025_sheet101.jpg,ninth_even,E 9th,22,902.9,1141.8,anchor
+vol025_sheet101.jpg,ninth_even,E 9th,24,934.2,1141.6,filled
+vol025_sheet101.jpg,ninth_even,E 9th,26,965.5,1141.3,filled
+vol025_sheet101.jpg,ninth_even,E 9th,28,996.9,1141.1,filled
+vol025_sheet101.jpg,ninth_even,E 9th,30,1028.2,1140.9,anchor
+vol025_sheet101.jpg,ninth_odd,E 9th,1,509.9,1227.3,anchor
+vol025_sheet101.jpg,ninth_odd,E 9th,3,541.4,1227.5,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,5,572.8,1227.7,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,7,604.3,1227.9,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,9,635.8,1228.2,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,11,667.3,1228.4,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,13,698.7,1228.6,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,15,730.2,1228.8,anchor
+vol025_sheet101.jpg,ninth_odd,E 9th,17,761.5,1228.7,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,19,792.7,1228.6,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,21,824.0,1228.4,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,23,855.2,1228.3,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,25,886.5,1228.2,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,27,917.7,1228.1,anchor
+vol025_sheet101.jpg,ninth_odd,E 9th,29,939.2,1227.9,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,31,960.8,1227.7,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,33,982.3,1227.4,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,35,1003.8,1227.2,anchor
+vol025_sheet101.jpg,ninth_odd,E 9th,37,1034.1,1228.5,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,39,1064.3,1229.9,filled
+vol025_sheet101.jpg,ninth_odd,E 9th,41,1094.6,1231.2,anchor
+vol025_sheet101.jpg,vine,Vine,800,497.9,1643.5,anchor
+vol025_sheet101.jpg,vine,Vine,802,497.8,1614.1,filled
+vol025_sheet101.jpg,vine,Vine,804,497.7,1584.7,filled
+vol025_sheet101.jpg,vine,Vine,806,497.5,1555.3,filled
+vol025_sheet101.jpg,vine,Vine,808,497.4,1526.0,filled
+vol025_sheet101.jpg,vine,Vine,810,497.3,1496.6,filled
+vol025_sheet101.jpg,vine,Vine,812,497.2,1467.2,anchor
+vol025_sheet101.jpg,vine,Vine,814,497.4,1394.0,anchor
+vol025_sheet101.jpg,vine,Vine,816,497.4,1363.9,filled
+vol025_sheet101.jpg,vine,Vine,818,497.4,1333.8,filled
+vol025_sheet101.jpg,vine,Vine,820,497.4,1303.8,filled
+vol025_sheet101.jpg,vine,Vine,822,497.4,1273.7,filled
+vol025_sheet101.jpg,vine,Vine,824,497.4,1243.6,anchor
+vol025_sheet101.jpg,vine,Vine,826,497.4,1240.3,filled
+vol025_sheet101.jpg,vine,Vine,828,497.3,1237.0,filled
+vol025_sheet101.jpg,vine,Vine,830,497.3,1233.6,filled
+vol025_sheet101.jpg,vine,Vine,832,497.2,1230.3,filled
+vol025_sheet101.jpg,vine,Vine,834,497.2,1227.0,filled
+vol025_sheet101.jpg,vine,Vine,836,497.2,1223.7,filled
+vol025_sheet101.jpg,vine,Vine,838,497.1,1220.3,filled
+vol025_sheet101.jpg,vine,Vine,840,497.1,1217.0,filled
+vol025_sheet101.jpg,vine,Vine,842,497.0,1213.7,filled
+vol025_sheet101.jpg,vine,Vine,844,497.0,1210.4,filled
+vol025_sheet101.jpg,vine,Vine,846,497.0,1207.0,filled
+vol025_sheet101.jpg,vine,Vine,848,496.9,1203.7,filled
+vol025_sheet101.jpg,vine,Vine,850,496.9,1200.4,filled
+vol025_sheet101.jpg,vine,Vine,852,496.8,1197.1,filled
+vol025_sheet101.jpg,vine,Vine,854,496.8,1193.7,filled
+vol025_sheet101.jpg,vine,Vine,856,496.8,1190.4,filled
+vol025_sheet101.jpg,vine,Vine,858,496.7,1187.1,filled
+vol025_sheet101.jpg,vine,Vine,860,496.7,1183.8,filled
+vol025_sheet101.jpg,vine,Vine,862,496.6,1180.4,filled
+vol025_sheet101.jpg,vine,Vine,864,496.6,1177.1,filled
+vol025_sheet101.jpg,vine,Vine,866,496.6,1173.8,filled
+vol025_sheet101.jpg,vine,Vine,868,496.5,1170.5,filled
+vol025_sheet101.jpg,vine,Vine,870,496.5,1167.2,filled
+vol025_sheet101.jpg,vine,Vine,872,496.5,1163.8,filled
+vol025_sheet101.jpg,vine,Vine,874,496.4,1160.5,filled
+vol025_sheet101.jpg,vine,Vine,876,496.4,1157.2,filled
+vol025_sheet101.jpg,vine,Vine,878,496.3,1153.9,filled
+vol025_sheet101.jpg,vine,Vine,880,496.3,1150.5,filled
+vol025_sheet101.jpg,vine,Vine,882,496.3,1147.2,filled
+vol025_sheet101.jpg,vine,Vine,884,496.2,1143.9,filled
+vol025_sheet101.jpg,vine,Vine,886,496.2,1140.6,filled
+vol025_sheet101.jpg,vine,Vine,888,496.1,1137.2,filled
+vol025_sheet101.jpg,vine,Vine,890,496.1,1133.9,filled
+vol025_sheet101.jpg,vine,Vine,892,496.1,1130.6,filled
+vol025_sheet101.jpg,vine,Vine,894,496.0,1127.3,filled
+vol025_sheet101.jpg,vine,Vine,896,496.0,1123.9,filled
+vol025_sheet101.jpg,vine,Vine,898,495.9,1120.6,filled
+vol025_sheet101.jpg,vine,Vine,900,495.9,1117.3,anchor
+vol025_sheet101.jpg,vine,Vine,902,495.8,1087.3,filled
+vol025_sheet101.jpg,vine,Vine,904,495.8,1057.3,filled
+vol025_sheet101.jpg,vine,Vine,906,495.7,1027.2,filled
+vol025_sheet101.jpg,vine,Vine,908,495.6,997.2,filled
+vol025_sheet101.jpg,vine,Vine,910,495.6,967.2,filled
+vol025_sheet101.jpg,vine,Vine,912,495.5,937.2,anchor
+vol025_sheet101.jpg,walnut_north,Walnut,1005,1115.8,509.9,anchor
+vol025_sheet101.jpg,walnut_north,Walnut,1007,1115.5,469.6,anchor
+vol025_sheet101.jpg,walnut_north,Walnut,1009,1114.7,447.4,filled
+vol025_sheet101.jpg,walnut_north,Walnut,1011,1113.9,425.2,filled
+vol025_sheet101.jpg,walnut_north,Walnut,1013,1113.1,403.0,filled
+vol025_sheet101.jpg,walnut_north,Walnut,1015,1112.4,380.7,filled
+vol025_sheet101.jpg,walnut_north,Walnut,1017,1111.6,358.5,filled
+vol025_sheet101.jpg,walnut_north,Walnut,1019,1110.8,336.3,filled
+vol025_sheet101.jpg,walnut_north,Walnut,1021,1110.0,314.1,anchor
+vol025_sheet101.jpg,walnut_south,Walnut,801,1106.7,1652.7,anchor
+vol025_sheet101.jpg,walnut_south,Walnut,803,1107.4,1627.1,filled
+vol025_sheet101.jpg,walnut_south,Walnut,805,1108.2,1601.5,filled
+vol025_sheet101.jpg,walnut_south,Walnut,807,1108.9,1575.9,filled
+vol025_sheet101.jpg,walnut_south,Walnut,809,1109.6,1550.4,filled
+vol025_sheet101.jpg,walnut_south,Walnut,811,1110.3,1524.8,filled
+vol025_sheet101.jpg,walnut_south,Walnut,813,1111.1,1499.2,filled
+vol025_sheet101.jpg,walnut_south,Walnut,815,1111.8,1473.6,anchor
+vol025_sheet101.jpg,walnut_south,Walnut,817,1111.8,1458.0,filled
+vol025_sheet101.jpg,walnut_south,Walnut,819,1111.8,1442.5,filled
+vol025_sheet101.jpg,walnut_south,Walnut,821,1111.8,1426.9,filled
+vol025_sheet101.jpg,walnut_south,Walnut,823,1111.8,1411.4,filled
+vol025_sheet101.jpg,walnut_south,Walnut,825,1111.8,1395.8,anchor
+vol025_sheet101.jpg,walnut_south,Walnut,827,1112.1,1366.1,filled
+vol025_sheet101.jpg,walnut_south,Walnut,829,1112.3,1336.4,filled
+vol025_sheet101.jpg,walnut_south,Walnut,831,1112.6,1306.7,filled
+vol025_sheet101.jpg,walnut_south,Walnut,833,1112.8,1277.0,filled
+vol025_sheet101.jpg,walnut_south,Walnut,835,1113.1,1247.3,anchor
+vol025_sheet101.jpg,walnut_south,Walnut,837,1113.1,1243.6,filled
+vol025_sheet101.jpg,walnut_south,Walnut,839,1113.2,1239.9,filled
+vol025_sheet101.jpg,walnut_south,Walnut,841,1113.2,1236.2,filled
+vol025_sheet101.jpg,walnut_south,Walnut,843,1113.3,1232.5,filled
+vol025_sheet101.jpg,walnut_south,Walnut,845,1113.3,1228.8,filled
+vol025_sheet101.jpg,walnut_south,Walnut,847,1113.4,1225.1,filled
+vol025_sheet101.jpg,walnut_south,Walnut,849,1113.4,1221.4,filled
+vol025_sheet101.jpg,walnut_south,Walnut,851,1113.5,1217.7,filled
+vol025_sheet101.jpg,walnut_south,Walnut,853,1113.5,1214.0,filled
+vol025_sheet101.jpg,walnut_south,Walnut,855,1113.6,1210.3,filled
+vol025_sheet101.jpg,walnut_south,Walnut,857,1113.6,1206.6,filled
+vol025_sheet101.jpg,walnut_south,Walnut,859,1113.6,1202.9,filled
+vol025_sheet101.jpg,walnut_south,Walnut,861,1113.7,1199.2,filled
+vol025_sheet101.jpg,walnut_south,Walnut,863,1113.7,1195.5,filled
+vol025_sheet101.jpg,walnut_south,Walnut,865,1113.8,1191.8,filled
+vol025_sheet101.jpg,walnut_south,Walnut,867,1113.8,1188.1,filled
+vol025_sheet101.jpg,walnut_south,Walnut,869,1113.9,1184.5,filled
+vol025_sheet101.jpg,walnut_south,Walnut,871,1113.9,1180.8,filled
+vol025_sheet101.jpg,walnut_south,Walnut,873,1114.0,1177.1,filled
+vol025_sheet101.jpg,walnut_south,Walnut,875,1114.0,1173.4,filled
+vol025_sheet101.jpg,walnut_south,Walnut,877,1114.1,1169.7,filled
+vol025_sheet101.jpg,walnut_south,Walnut,879,1114.1,1166.0,filled
+vol025_sheet101.jpg,walnut_south,Walnut,881,1114.1,1162.3,filled
+vol025_sheet101.jpg,walnut_south,Walnut,883,1114.2,1158.6,filled
+vol025_sheet101.jpg,walnut_south,Walnut,885,1114.2,1154.9,filled
+vol025_sheet101.jpg,walnut_south,Walnut,887,1114.3,1151.2,filled
+vol025_sheet101.jpg,walnut_south,Walnut,889,1114.3,1147.5,filled
+vol025_sheet101.jpg,walnut_south,Walnut,891,1114.4,1143.8,filled
+vol025_sheet101.jpg,walnut_south,Walnut,893,1114.4,1140.1,filled
+vol025_sheet101.jpg,walnut_south,Walnut,895,1114.5,1136.4,filled
+vol025_sheet101.jpg,walnut_south,Walnut,897,1114.5,1132.7,filled
+vol025_sheet101.jpg,walnut_south,Walnut,899,1114.6,1129.0,filled
+vol025_sheet101.jpg,walnut_south,Walnut,901,1114.6,1125.3,anchor
+vol025_sheet101.jpg,walnut_south,Walnut,903,1115.0,1105.1,filled
+vol025_sheet101.jpg,walnut_south,Walnut,905,1115.5,1084.9,filled
+vol025_sheet101.jpg,walnut_south,Walnut,907,1115.9,1064.7,filled
+vol025_sheet101.jpg,walnut_south,Walnut,909,1116.3,1044.5,filled
+vol025_sheet101.jpg,walnut_south,Walnut,911,1116.8,1024.3,filled
+vol025_sheet101.jpg,walnut_south,Walnut,913,1117.2,1004.1,filled
+vol025_sheet101.jpg,walnut_south,Walnut,915,1117.6,983.9,filled
+vol025_sheet101.jpg,walnut_south,Walnut,917,1118.1,963.7,filled
+vol025_sheet101.jpg,walnut_south,Walnut,919,1118.5,943.5,anchor
+vol025_sheet101.jpg,walnut_south,Walnut,921,1117.6,885.6,anchor
+vol025_sheet101.jpg,walnut_south,Walnut,923,1114.7,854.3,anchor
+vol025_sheet102.jpg,8th_main_n_side,8th,118,874.2,1663.8,anchor
+vol025_sheet102.jpg,8th_main_n_side,8th,120,900.3,1663.1,filled
+vol025_sheet102.jpg,8th_main_n_side,8th,122,926.4,1662.4,filled
+vol025_sheet102.jpg,8th_main_n_side,8th,124,952.5,1661.8,filled
+vol025_sheet102.jpg,8th_main_n_side,8th,126,978.6,1661.1,filled
+vol025_sheet102.jpg,8th_main_n_side,8th,128,1004.8,1660.4,filled
+vol025_sheet102.jpg,8th_main_n_side,8th,130,1030.9,1659.7,filled
+vol025_sheet102.jpg,8th_main_n_side,8th,132,1057.0,1659.0,filled
+vol025_sheet102.jpg,8th_main_n_side,8th,134,1083.1,1658.4,filled
+vol025_sheet102.jpg,8th_main_n_side,8th,136,1109.2,1657.7,filled
+vol025_sheet102.jpg,8th_main_n_side,8th,138,1135.3,1657.0,anchor
+vol025_sheet102.jpg,8th_walnut_n_side,8th,100,560.3,1663.4,anchor
+vol025_sheet102.jpg,8th_walnut_n_side,8th,102,593.3,1663.7,filled
+vol025_sheet102.jpg,8th_walnut_n_side,8th,104,626.3,1663.9,filled
+vol025_sheet102.jpg,8th_walnut_n_side,8th,106,659.3,1664.2,filled
+vol025_sheet102.jpg,8th_walnut_n_side,8th,108,692.2,1664.5,filled
+vol025_sheet102.jpg,8th_walnut_n_side,8th,110,725.2,1664.7,filled
+vol025_sheet102.jpg,8th_walnut_n_side,8th,112,758.2,1665.0,filled
+vol025_sheet102.jpg,8th_walnut_n_side,8th,114,791.2,1665.2,filled
+vol025_sheet102.jpg,8th_walnut_n_side,8th,116,824.2,1665.5,anchor
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,800,544.0,1647.1,anchor
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,802,543.8,1624.8,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,804,543.6,1602.5,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,806,543.4,1580.1,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,808,543.1,1557.8,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,810,542.9,1535.5,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,812,542.7,1513.2,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,814,542.5,1490.8,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,816,542.3,1468.5,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,818,542.0,1446.2,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,820,541.8,1423.9,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,822,541.6,1401.6,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,824,541.4,1379.2,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,826,541.2,1356.9,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,828,541.0,1334.6,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,830,540.8,1312.3,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,832,540.5,1289.9,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,834,540.3,1267.6,filled
+vol025_sheet102.jpg,9th_walnut_e_side,Walnut,836,540.1,1245.3,anchor
+vol025_sheet102.jpg,bowen_9th_n_side,9th,100,557.7,1139.3,anchor
+vol025_sheet102.jpg,bowen_9th_n_side,9th,102,586.5,1139.0,filled
+vol025_sheet102.jpg,bowen_9th_n_side,9th,104,615.4,1138.7,filled
+vol025_sheet102.jpg,bowen_9th_n_side,9th,106,644.2,1138.4,filled
+vol025_sheet102.jpg,bowen_9th_n_side,9th,108,673.1,1138.1,filled
+vol025_sheet102.jpg,bowen_9th_n_side,9th,110,701.9,1137.9,filled
+vol025_sheet102.jpg,bowen_9th_n_side,9th,112,730.8,1137.6,filled
+vol025_sheet102.jpg,bowen_9th_n_side,9th,114,759.6,1137.3,filled
+vol025_sheet102.jpg,bowen_9th_n_side,9th,116,788.5,1137.0,filled
+vol025_sheet102.jpg,bowen_9th_n_side,9th,118,817.3,1136.7,anchor
+vol025_sheet102.jpg,bowen_9th_s_side,9th,101,558.0,1226.4,anchor
+vol025_sheet102.jpg,bowen_9th_s_side,9th,103,591.6,1226.4,filled
+vol025_sheet102.jpg,bowen_9th_s_side,9th,105,625.2,1226.3,filled
+vol025_sheet102.jpg,bowen_9th_s_side,9th,107,658.9,1226.2,filled
+vol025_sheet102.jpg,bowen_9th_s_side,9th,109,692.5,1226.2,filled
+vol025_sheet102.jpg,bowen_9th_s_side,9th,111,726.1,1226.2,filled
+vol025_sheet102.jpg,bowen_9th_s_side,9th,113,759.8,1226.1,filled
+vol025_sheet102.jpg,bowen_9th_s_side,9th,115,793.4,1226.0,filled
+vol025_sheet102.jpg,bowen_9th_s_side,9th,117,827.0,1226.0,anchor
+vol025_sheet102.jpg,central_main_w_side,Main,1001,1161.6,576.8,anchor
+vol025_sheet102.jpg,central_main_w_side,Main,1003,1161.5,557.3,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1005,1161.4,537.9,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1007,1161.3,518.4,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1009,1161.2,498.9,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1011,1161.1,479.5,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1013,1161.0,460.0,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1015,1160.8,440.5,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1017,1160.7,421.1,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1019,1160.6,401.6,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1021,1160.5,382.2,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1023,1160.4,362.7,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1025,1160.3,343.2,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1027,1160.2,323.8,filled
+vol025_sheet102.jpg,central_main_w_side,Main,1029,1160.1,304.3,anchor
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1004,541.0,515.2,anchor
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1006,541.2,492.4,filled
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1008,541.4,469.6,filled
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1010,541.5,446.8,filled
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1012,541.7,424.0,filled
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1014,541.9,401.1,filled
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1016,542.1,378.3,filled
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1018,542.2,355.5,filled
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1020,542.4,332.7,filled
+vol025_sheet102.jpg,central_walnut_e_side,Walnut,1022,542.6,309.9,anchor
+vol025_sheet102.jpg,coleman_9th_n_side,9th,120,871.9,1133.3,anchor
+vol025_sheet102.jpg,coleman_9th_n_side,9th,122,901.9,1134.1,filled
+vol025_sheet102.jpg,coleman_9th_n_side,9th,124,931.8,1135.0,filled
+vol025_sheet102.jpg,coleman_9th_n_side,9th,126,961.8,1135.8,anchor
+vol025_sheet102.jpg,court_walnut_e_side,Walnut,914,541.5,902.3,anchor
+vol025_sheet102.jpg,court_walnut_e_side,Walnut,916,542.1,876.6,filled
+vol025_sheet102.jpg,court_walnut_e_side,Walnut,918,542.7,851.0,anchor
+vol025_sheet102.jpg,main_8th_w_side,Main,801,1155.7,1636.1,anchor
+vol025_sheet102.jpg,main_8th_w_side,Main,803,1156.0,1613.0,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,805,1156.3,1589.8,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,807,1156.6,1566.7,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,809,1156.9,1543.6,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,811,1157.2,1520.5,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,813,1157.5,1497.3,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,815,1157.8,1474.2,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,817,1158.1,1451.1,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,819,1158.4,1427.9,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,821,1158.7,1404.8,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,823,1159.0,1381.7,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,825,1159.3,1358.5,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,827,1159.6,1335.4,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,829,1159.9,1312.3,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,831,1160.2,1289.2,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,833,1160.5,1266.0,filled
+vol025_sheet102.jpg,main_8th_w_side,Main,835,1160.8,1242.9,anchor
+vol025_sheet102.jpg,main_9th_n_side,9th,128,1010.4,1131.1,anchor
+vol025_sheet102.jpg,main_9th_n_side,9th,130,1034.6,1130.7,filled
+vol025_sheet102.jpg,main_9th_n_side,9th,132,1058.7,1130.3,filled
+vol025_sheet102.jpg,main_9th_n_side,9th,134,1082.9,1129.9,anchor
+vol025_sheet102.jpg,main_9th_s_side,9th,119,889.5,1221.7,anchor
+vol025_sheet102.jpg,main_9th_s_side,9th,121,917.8,1221.7,filled
+vol025_sheet102.jpg,main_9th_s_side,9th,123,946.1,1221.8,filled
+vol025_sheet102.jpg,main_9th_s_side,9th,125,974.5,1221.8,filled
+vol025_sheet102.jpg,main_9th_s_side,9th,127,1002.8,1221.8,filled
+vol025_sheet102.jpg,main_9th_s_side,9th,129,1031.1,1221.9,filled
+vol025_sheet102.jpg,main_9th_s_side,9th,131,1059.4,1221.9,filled
+vol025_sheet102.jpg,main_9th_s_side,9th,133,1087.8,1221.9,filled
+vol025_sheet102.jpg,main_9th_s_side,9th,135,1116.1,1222.0,filled
+vol025_sheet102.jpg,main_9th_s_side,9th,137,1144.4,1222.0,anchor
+vol025_sheet102.jpg,main_9th_w_side,Main,901,1160.6,1119.9,anchor
+vol025_sheet102.jpg,main_9th_w_side,Main,903,1160.6,1098.2,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,905,1160.5,1076.6,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,907,1160.5,1054.9,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,909,1160.4,1033.3,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,911,1160.4,1011.6,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,913,1160.3,989.9,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,915,1160.3,968.3,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,917,1160.2,946.6,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,919,1160.2,925.0,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,921,1160.1,903.3,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,923,1160.1,881.6,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,925,1160.0,860.0,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,927,1160.0,838.3,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,929,1159.9,816.7,filled
+vol025_sheet102.jpg,main_9th_w_side,Main,931,1159.9,795.0,anchor
+vol025_sheet102.jpg,main_central,E Central Pkwy,121,873.6,287.2,anchor
+vol025_sheet102.jpg,main_central,E Central Pkwy,123,918.5,287.9,filled
+vol025_sheet102.jpg,main_central,E Central Pkwy,125,963.4,288.6,anchor
+vol025_sheet102.jpg,main_central,E Central Pkwy,127,985.1,288.9,filled
+vol025_sheet102.jpg,main_central,E Central Pkwy,129,1006.8,289.2,filled
+vol025_sheet102.jpg,main_central,E Central Pkwy,131,1028.4,289.5,filled
+vol025_sheet102.jpg,main_central,E Central Pkwy,133,1050.1,289.8,filled
+vol025_sheet102.jpg,main_central,E Central Pkwy,135,1071.8,290.1,filled
+vol025_sheet102.jpg,main_central,E Central Pkwy,137,1093.5,290.4,filled
+vol025_sheet102.jpg,main_central,E Central Pkwy,139,1115.1,290.7,filled
+vol025_sheet102.jpg,main_central,E Central Pkwy,141,1136.8,291.0,anchor
+vol025_sheet102.jpg,main_court_n_side,Court,130,878.9,591.4,anchor
+vol025_sheet102.jpg,main_court_n_side,Court,132,912.4,594.2,filled
+vol025_sheet102.jpg,main_court_n_side,Court,134,945.8,597.1,filled
+vol025_sheet102.jpg,main_court_n_side,Court,136,979.2,599.9,filled
+vol025_sheet102.jpg,main_court_n_side,Court,138,1012.7,602.8,anchor
+vol025_sheet102.jpg,main_court_s_side,Court,123,882.8,771.1,anchor
+vol025_sheet102.jpg,main_court_s_side,Court,125,908.7,771.2,filled
+vol025_sheet102.jpg,main_court_s_side,Court,127,934.6,771.4,filled
+vol025_sheet102.jpg,main_court_s_side,Court,129,960.4,771.5,filled
+vol025_sheet102.jpg,main_court_s_side,Court,131,986.3,771.6,filled
+vol025_sheet102.jpg,main_court_s_side,Court,133,1012.2,771.8,filled
+vol025_sheet102.jpg,main_court_s_side,Court,135,1038.1,771.9,filled
+vol025_sheet102.jpg,main_court_s_side,Court,137,1064.0,772.0,filled
+vol025_sheet102.jpg,main_court_s_side,Court,139,1089.8,772.1,filled
+vol025_sheet102.jpg,main_court_s_side,Court,141,1115.7,772.3,filled
+vol025_sheet102.jpg,main_court_s_side,Court,143,1141.6,772.4,anchor
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,101,562.1,288.2,anchor
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,103,589.9,287.9,filled
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,105,617.6,287.7,filled
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,107,645.4,287.4,filled
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,109,673.1,287.2,filled
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,111,700.9,286.9,anchor
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,113,726.1,287.0,filled
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,115,751.2,287.2,filled
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,117,776.4,287.3,anchor
+vol025_sheet102.jpg,walnut_central,E Central Pkwy,119,823.1,288.2,anchor
+vol025_sheet102.jpg,walnut_court_n_side,Court,100,565.9,591.0,anchor
+vol025_sheet102.jpg,walnut_court_n_side,Court,102,586.5,590.8,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,104,607.1,590.6,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,106,627.6,590.5,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,108,648.2,590.3,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,110,668.8,590.1,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,112,689.4,590.0,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,114,710.0,589.8,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,116,730.6,589.6,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,118,751.1,589.4,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,120,771.7,589.2,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,122,792.3,589.1,filled
+vol025_sheet102.jpg,walnut_court_n_side,Court,124,812.9,588.9,anchor
+vol025_sheet102.jpg,walnut_court_s_side,Court,101,558.1,770.0,anchor
+vol025_sheet102.jpg,walnut_court_s_side,Court,103,583.7,770.2,filled
+vol025_sheet102.jpg,walnut_court_s_side,Court,105,609.3,770.4,filled
+vol025_sheet102.jpg,walnut_court_s_side,Court,107,634.9,770.5,filled
+vol025_sheet102.jpg,walnut_court_s_side,Court,109,660.5,770.7,filled
+vol025_sheet102.jpg,walnut_court_s_side,Court,111,686.2,770.9,filled
+vol025_sheet102.jpg,walnut_court_s_side,Court,113,711.8,771.1,filled
+vol025_sheet102.jpg,walnut_court_s_side,Court,115,737.4,771.3,filled
+vol025_sheet102.jpg,walnut_court_s_side,Court,117,763.0,771.4,filled
+vol025_sheet102.jpg,walnut_court_s_side,Court,119,788.6,771.6,filled
+vol025_sheet102.jpg,walnut_court_s_side,Court,121,814.2,771.8,anchor
+vol025_sheet103.jpg,8th_crow_n,E 8th,212,716.4,1746.5,anchor
+vol025_sheet103.jpg,8th_crow_n,E 8th,214,736.4,1745.5,filled
+vol025_sheet103.jpg,8th_crow_n,E 8th,216,756.4,1744.6,anchor
+vol025_sheet103.jpg,8th_pancoast_n,E 8th,208,656.9,1745.0,anchor
+vol025_sheet103.jpg,8th_pancoast_n,E 8th,210,677.9,1745.0,anchor
+vol025_sheet103.jpg,8th_sycamore_n,E 8th,224,878.2,1744.6,anchor
+vol025_sheet103.jpg,8th_sycamore_n,E 8th,226,907.3,1745.3,filled
+vol025_sheet103.jpg,8th_sycamore_n,E 8th,228,936.3,1745.9,filled
+vol025_sheet103.jpg,8th_sycamore_n,E 8th,230,965.4,1746.6,filled
+vol025_sheet103.jpg,8th_sycamore_n,E 8th,232,994.4,1747.3,filled
+vol025_sheet103.jpg,8th_sycamore_n,E 8th,234,1023.5,1748.0,filled
+vol025_sheet103.jpg,8th_sycamore_n,E 8th,236,1052.5,1748.6,filled
+vol025_sheet103.jpg,8th_sycamore_n,E 8th,238,1081.6,1749.3,anchor
+vol025_sheet103.jpg,9th_crow_n,E 9th,210,674.2,1220.3,anchor
+vol025_sheet103.jpg,9th_crow_n,E 9th,212,699.9,1220.1,filled
+vol025_sheet103.jpg,9th_crow_n,E 9th,214,725.7,1220.0,filled
+vol025_sheet103.jpg,9th_crow_n,E 9th,216,751.4,1219.8,filled
+vol025_sheet103.jpg,9th_crow_n,E 9th,218,777.2,1219.7,filled
+vol025_sheet103.jpg,9th_crow_n,E 9th,220,802.9,1219.5,anchor
+vol025_sheet103.jpg,9th_crow_s,9th,215,716.4,1308.8,anchor
+vol025_sheet103.jpg,9th_crow_s,9th,217,748.2,1307.8,filled
+vol025_sheet103.jpg,9th_crow_s,9th,219,780.0,1306.8,anchor
+vol025_sheet103.jpg,9th_crow_s,9th,221,823.7,1307.1,filled
+vol025_sheet103.jpg,9th_crow_s,9th,223,867.3,1307.5,filled
+vol025_sheet103.jpg,9th_crow_s,9th,225,911.0,1307.8,anchor
+vol025_sheet103.jpg,9th_crow_s,9th,227,941.5,1307.5,filled
+vol025_sheet103.jpg,9th_crow_s,9th,229,972.0,1307.3,anchor
+vol025_sheet103.jpg,9th_crow_s,9th,231,1000.2,1307.0,filled
+vol025_sheet103.jpg,9th_crow_s,9th,233,1028.5,1306.6,filled
+vol025_sheet103.jpg,9th_crow_s,9th,235,1056.8,1306.2,filled
+vol025_sheet103.jpg,9th_crow_s,9th,237,1085.0,1305.9,anchor
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,222,849.3,1220.3,anchor
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,224,877.4,1220.1,filled
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,226,905.6,1220.0,filled
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,228,933.8,1219.8,filled
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,230,961.9,1219.7,filled
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,232,990.0,1219.5,filled
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,234,1018.2,1219.3,filled
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,236,1046.3,1219.2,filled
+vol025_sheet103.jpg,9th_sycamore_n,E 9th,238,1074.5,1219.0,anchor
+vol025_sheet103.jpg,court_crow_s,E Court,217,857.7,952.3,anchor
+vol025_sheet103.jpg,court_crow_s,E Court,219,895.1,951.5,filled
+vol025_sheet103.jpg,court_crow_s,E Court,221,932.4,950.7,filled
+vol025_sheet103.jpg,court_crow_s,E Court,223,969.8,949.8,filled
+vol025_sheet103.jpg,court_crow_s,E Court,225,1007.2,949.0,filled
+vol025_sheet103.jpg,court_crow_s,E Court,227,1044.5,948.2,filled
+vol025_sheet103.jpg,court_crow_s,E Court,229,1081.9,947.4,anchor
+vol025_sheet103.jpg,court_main_n,E Court,200,491.8,875.4,anchor
+vol025_sheet103.jpg,court_pancoast_s,E Court,209,668.8,950.6,anchor
+vol025_sheet103.jpg,court_pancoast_s,E Court,211,709.8,950.2,filled
+vol025_sheet103.jpg,court_pancoast_s,E Court,213,750.9,949.8,filled
+vol025_sheet103.jpg,court_pancoast_s,E Court,215,791.9,949.4,anchor
+vol025_sheet103.jpg,main_8th_e,Main,800,487.7,1723.2,anchor
+vol025_sheet103.jpg,main_8th_e,Main,802,487.5,1702.2,filled
+vol025_sheet103.jpg,main_8th_e,Main,804,487.4,1681.3,filled
+vol025_sheet103.jpg,main_8th_e,Main,806,487.2,1660.3,filled
+vol025_sheet103.jpg,main_8th_e,Main,808,487.0,1639.3,filled
+vol025_sheet103.jpg,main_8th_e,Main,810,486.8,1618.4,filled
+vol025_sheet103.jpg,main_8th_e,Main,812,486.6,1597.4,filled
+vol025_sheet103.jpg,main_8th_e,Main,814,486.5,1576.5,filled
+vol025_sheet103.jpg,main_8th_e,Main,816,486.3,1555.5,anchor
+vol025_sheet103.jpg,main_9th_e,Main,818,484.8,1506.7,anchor
+vol025_sheet103.jpg,main_9th_e,Main,820,484.7,1481.7,filled
+vol025_sheet103.jpg,main_9th_e,Main,822,484.7,1456.7,filled
+vol025_sheet103.jpg,main_9th_e,Main,824,484.6,1431.7,filled
+vol025_sheet103.jpg,main_9th_e,Main,826,484.5,1406.7,filled
+vol025_sheet103.jpg,main_9th_e,Main,828,484.4,1381.7,filled
+vol025_sheet103.jpg,main_9th_e,Main,830,484.4,1356.7,filled
+vol025_sheet103.jpg,main_9th_e,Main,832,484.3,1331.7,anchor
+vol025_sheet103.jpg,main_court_e,Main,900,482.6,1201.4,anchor
+vol025_sheet103.jpg,main_court_e,Main,902,482.0,1174.5,filled
+vol025_sheet103.jpg,main_court_e,Main,904,481.5,1147.6,filled
+vol025_sheet103.jpg,main_court_e,Main,906,480.9,1120.7,filled
+vol025_sheet103.jpg,main_court_e,Main,908,480.3,1093.8,filled
+vol025_sheet103.jpg,main_court_e,Main,910,479.7,1066.9,filled
+vol025_sheet103.jpg,main_court_e,Main,912,479.1,1040.0,filled
+vol025_sheet103.jpg,main_court_e,Main,914,478.6,1013.1,filled
+vol025_sheet103.jpg,main_court_e,Main,916,478.0,986.2,anchor
+vol025_sheet103.jpg,sycamore_8th_w,Sycamore,801,1098.5,1731.9,anchor
+vol025_sheet103.jpg,sycamore_8th_w,Sycamore,803,1098.5,1696.7,filled
+vol025_sheet103.jpg,sycamore_8th_w,Sycamore,805,1098.6,1661.5,filled
+vol025_sheet103.jpg,sycamore_8th_w,Sycamore,807,1098.6,1626.2,filled
+vol025_sheet103.jpg,sycamore_8th_w,Sycamore,809,1098.7,1591.0,filled
+vol025_sheet103.jpg,sycamore_8th_w,Sycamore,811,1098.7,1555.8,anchor
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,813,1104.4,1506.1,anchor
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,815,1097.8,1500.8,anchor
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,817,1098.1,1466.7,anchor
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,819,1102.5,1398.7,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,821,1106.9,1330.6,anchor
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,823,1098.2,1323.1,anchor
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,825,1098.2,1318.7,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,827,1098.2,1314.3,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,829,1098.3,1310.0,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,831,1098.3,1305.6,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,833,1098.3,1301.2,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,835,1098.3,1296.8,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,837,1098.4,1292.4,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,839,1098.4,1288.0,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,841,1098.4,1283.7,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,843,1098.4,1279.3,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,845,1098.4,1274.9,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,847,1098.5,1270.5,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,849,1098.5,1266.1,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,851,1098.5,1261.7,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,853,1098.5,1257.4,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,855,1098.6,1253.0,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,857,1098.6,1248.6,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,859,1098.6,1244.2,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,861,1098.6,1239.8,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,863,1098.7,1235.4,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,865,1098.7,1231.1,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,867,1098.7,1226.7,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,869,1098.7,1222.3,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,871,1098.7,1217.9,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,873,1098.8,1213.5,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,875,1098.8,1209.2,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,877,1098.8,1204.8,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,879,1098.8,1200.4,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,881,1098.9,1196.0,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,883,1098.9,1191.6,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,885,1098.9,1187.2,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,887,1098.9,1182.9,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,889,1098.9,1178.5,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,891,1099.0,1174.1,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,893,1099.0,1169.7,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,895,1099.0,1165.3,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,897,1099.0,1160.9,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,899,1099.1,1156.6,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,901,1099.1,1152.2,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,903,1099.1,1147.8,anchor
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,905,1098.5,1119.4,filled
+vol025_sheet103.jpg,sycamore_9th_w,Sycamore,907,1098.0,1091.0,anchor
+vol025_sheet103.jpg,sycamore_swift_w,Sycamore,909,1098.0,1042.4,anchor
+vol025_sheet103.jpg,sycamore_swift_w,Sycamore,911,1098.3,1004.2,filled
+vol025_sheet103.jpg,sycamore_swift_w,Sycamore,913,1098.6,966.0,anchor
