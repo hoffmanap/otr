@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="leaflet.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-imageoverlay-rotated@0.2.1/Leaflet.ImageOverlay.Rotated.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
   :root{ --bg:#faf7f2; --panel:#fff; --ink:#2a241c; --muted:#8a7f6e; --line:#e4ddce; --accent:#8c3b2e; }
   @media (prefers-color-scheme: dark){
@@ -37,6 +38,7 @@
   .caveat{font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:10px;padding-top:8px;line-height:1.5;}
   .pill{display:inline-block;font-size:10px;background:var(--line);border-radius:10px;padding:1px 7px;margin-left:5px;}
   a.lnk{color:var(--accent);}
+  .chartwrap{height:150px;margin-bottom:6px;}
 </style>
 </head>
 <body>
@@ -54,7 +56,9 @@
     </div>
 
     <div id="selectionBlock"></div>
+    <div id="selectionTrendBlock"></div>
     <div id="neighborhoodBlock"></div>
+    <div id="neighborhoodTrendBlock"></div>
 
     <div class="caveat" id="caveat"></div>
   </div>
@@ -154,16 +158,94 @@ function renderCompositionBlock(addrs, title){
   return html;
 }
 
+function yearSeries(addrs){
+  // returns {years:[...], pctBlack:[], pctRented:[], ppl:[], lodgerPct:[], income:[]}
+  const out = {years:[], pctBlack:[], pctRented:[], ppl:[], lodgerPct:[], income:[]};
+  YEARS.forEach(yr=>{
+    let ntot=0,nb=0,nown=0,nr=0,npp=0,hh=0,nlodge=0; const incomes=[];
+    let any=false;
+    addrs.forEach(a=>{
+      const d = a.census_by_year && a.census_by_year[yr];
+      if(!d) return;
+      any=true;
+      ntot+=d.n_residents; nb+=d.n_black;
+      if(d.n_owned!=null) nown+=d.n_owned; if(d.n_rented!=null) nr+=d.n_rented;
+      npp+=d.n_residents; hh+=d.n_households; nlodge+=d.n_lodger;
+      if(d.median_income!=null) incomes.push(d.median_income);
+    });
+    if(!any) return;
+    out.years.push(yr);
+    out.pctBlack.push(ntot?Math.round(100*nb/ntot):0);
+    const tk = nown+nr;
+    out.pctRented.push(tk?Math.round(100*nr/tk):null);
+    out.ppl.push(hh?+(npp/hh).toFixed(2):null);
+    out.lodgerPct.push(ntot?Math.round(100*nlodge/ntot):0);
+    out.income.push(incomes.length?Math.round(incomes.reduce((s,v)=>s+v,0)/incomes.length):null);
+  });
+  return out;
+}
+
+const chartRegistry = {};
+function destroyChart(id){ if(chartRegistry[id]){ chartRegistry[id].destroy(); delete chartRegistry[id]; } }
+function makeLineChart(canvasId, labels, datasets){
+  destroyChart(canvasId);
+  const ctx = document.getElementById(canvasId);
+  if(!ctx || typeof Chart === 'undefined') return;
+  chartRegistry[canvasId] = new Chart(ctx, {
+    type:'line',
+    data:{labels, datasets},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{labels:{boxWidth:10, font:{size:10}}}},
+      scales:{ x:{ticks:{font:{size:10}}}, y:{ticks:{font:{size:10}}} }
+    }
+  });
+}
+function renderTrends(addrs, prefix){
+  const s = yearSeries(addrs);
+  if(s.years.length < 2){
+    document.getElementById(prefix+'Block').innerHTML = '';
+    return;
+  }
+  document.getElementById(prefix+'Block').innerHTML = `
+    <div class="block"><h2>Change over time, ${s.years[0]}–${s.years[s.years.length-1]}</h2>
+      <div class="stat" style="margin-bottom:4px;">Race & tenure (%)</div>
+      <div class="chartwrap"><canvas id="${prefix}_rt"></canvas></div>
+      <div class="stat" style="margin-bottom:4px;">Persons per household</div>
+      <div class="chartwrap"><canvas id="${prefix}_ppl"></canvas></div>
+      <div class="stat" style="margin-bottom:4px;">Lodger/boarder share (%)</div>
+      <div class="chartwrap"><canvas id="${prefix}_lg"></canvas></div>
+      <div class="stat" style="margin-bottom:4px;">Avg wage income ($, where reported)</div>
+      <div class="chartwrap"><canvas id="${prefix}_inc"></canvas></div>
+    </div>`;
+  makeLineChart(prefix+'_rt', s.years, [
+    {label:'% Black', data:s.pctBlack, borderColor:'#8c3b2e', backgroundColor:'#8c3b2e', tension:0.2},
+    {label:'% Rented', data:s.pctRented, borderColor:'#6b7a8f', backgroundColor:'#6b7a8f', tension:0.2, spanGaps:true},
+  ]);
+  makeLineChart(prefix+'_ppl', s.years, [
+    {label:'Persons/hh', data:s.ppl, borderColor:'#b08968', backgroundColor:'#b08968', tension:0.2, spanGaps:true},
+  ]);
+  makeLineChart(prefix+'_lg', s.years, [
+    {label:'Lodger %', data:s.lodgerPct, borderColor:'#8c3b2e', backgroundColor:'#8c3b2e', tension:0.2},
+  ]);
+  makeLineChart(prefix+'_inc', s.years, [
+    {label:'Avg wage income', data:s.income, borderColor:'#4a6b4a', backgroundColor:'#4a6b4a', tension:0.2, spanGaps:true},
+  ]);
+}
+
 function renderSelection(){
   const el = document.getElementById('selectionBlock');
-  if(!selected.length){ el.innerHTML = ''; return; }
+  if(!selected.length){ el.innerHTML = ''; document.getElementById('selectionTrendBlock').innerHTML=''; return; }
   const label = mode==='building' && selected.length===1 ? `${selected[0].street} ${selected[0].address}` :
     mode==='block' ? `Block: ${selected[0].block_id}` : `Your selection (${selected.length})`;
   el.innerHTML = renderCompositionBlock(selected, `Your selection — ${label}`);
+  renderTrends(selected, 'selectionTrend');
 }
 function renderNeighborhood(){
+  const anchored = DATA.addresses.filter(a=>a.census_by_year);
   const el = document.getElementById('neighborhoodBlock');
-  el.innerHTML = renderCompositionBlock(DATA.addresses.filter(a=>a.census_by_year), 'Neighborhood overview (all anchored addresses)');
+  el.innerHTML = renderCompositionBlock(anchored, 'Neighborhood overview (all anchored addresses)');
+  renderTrends(anchored, 'neighborhoodTrend');
 }
 
 function groupKeyFor(a){ return mode==='block' ? (a.sheet+'|'+a.block_id) : null; }
