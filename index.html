@@ -6,7 +6,7 @@
 <title>The Lodging Ledger — OTR</title>
 <link rel="stylesheet" href="leaflet.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet-imageoverlay-rotated@0.2.2/Leaflet.ImageOverlay.Rotated.js"></script>
+<script src="https://unpkg.com/leaflet-imageoverlay-rotated@0.2.1/Leaflet.ImageOverlay.Rotated.js"></script>
 <style>
   :root{ --bg:#faf7f2; --panel:#fff; --ink:#2a241c; --muted:#8a7f6e; --line:#e4ddce; --accent:#8c3b2e; }
   @media (prefers-color-scheme: dark){
@@ -123,12 +123,16 @@ function renderCompositionBlock(addrs, title){
   let html = `<div class="block"><h2>${title}</h2><div class="stat">${addrs.length} addresses</div>`;
   YEARS.forEach(yr=>{
     let n=0,nb=0,nw=0,no=0,nr=0,nown=0,npp=0,hh=0,nlodge=0,ntot=0;
+    const occTotals = {}; let nOccKnown=0; const incomes=[];
     addrs.forEach(a=>{
       const d = a.census_by_year && a.census_by_year[yr];
       if(!d) return;
       n++; nb+=d.n_black; nw+=d.n_white; no+=d.n_other_race;
       if(d.n_owned!=null) nown+=d.n_owned; if(d.n_rented!=null) nr+=d.n_rented;
       npp += d.n_residents; hh += d.n_households; nlodge += d.n_lodger; ntot += d.n_residents;
+      (d.top_occupations||[]).forEach(([label,count])=>{ occTotals[label]=(occTotals[label]||0)+count; });
+      nOccKnown += d.n_occ_known||0;
+      if(d.median_income!=null) incomes.push(d.median_income);
     });
     if(n===0) return;
     const pb = ntot?Math.round(100*nb/ntot):0, pw=ntot?Math.round(100*nw/ntot):0, po=100-pb-pw;
@@ -136,9 +140,15 @@ function renderCompositionBlock(addrs, title){
     const pr = tenureKnown?Math.round(100*nr/tenureKnown):null;
     const ppl = hh? (npp/hh).toFixed(2) : '—';
     const lp = ntot?Math.round(100*nlodge/ntot):0;
+    const topOcc = Object.entries(occTotals).sort((a,b)=>b[1]-a[1]).slice(0,3)
+      .map(([label,count])=>`${label} ${nOccKnown?Math.round(100*count/nOccKnown):0}%`).join(', ');
+    const medInc = incomes.length ? Math.round(incomes.reduce((s,v)=>s+v,0)/incomes.length) : null;
     html += `<div class="yr"><div class="label">${yr} — ${n} addr matched, ${ntot} residents, ${ppl} persons/hh, lodgers ${lp}%</div>
       <div class="bar"><span style="width:${pw}%;background:#d8c9a3" title="White ${pw}%"></span><span style="width:${pb}%;background:#8c3b2e" title="Black ${pb}%"></span><span style="width:${po}%;background:#6b7a8f" title="Other ${po}%"></span></div>
-      <div class="legend"><span><i style="background:#d8c9a3"></i>White</span><span><i style="background:#8c3b2e"></i>Black</span><span><i style="background:#6b7a8f"></i>Other</span>${pr!=null?`<span>Rented: ${pr}%</span>`:''}</div></div>`;
+      <div class="legend"><span><i style="background:#d8c9a3"></i>White</span><span><i style="background:#8c3b2e"></i>Black</span><span><i style="background:#6b7a8f"></i>Other</span>${pr!=null?`<span>Rented: ${pr}%</span>`:''}</div>
+      ${topOcc?`<div class="stat" style="margin-top:4px;">Top occupations: ${topOcc}</div>`:''}
+      ${medInc!=null?`<div class="stat">Avg wage income (where reported): $${medInc.toLocaleString()}</div>`:''}
+      </div>`;
   });
   html += `</div>`;
   return html;
@@ -174,15 +184,36 @@ function redrawMarkers(){
 
 function initMap(){
   const map = L.map('map', {zoomSnap:0.25}).setView([39.1095, -84.5125], 15);
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
+  const grayBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Esri, HERE, Garmin', maxZoom: 19
   }).addTo(map);
+  const grayLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19, pane: 'shadowPane'
+  }).addTo(map);
+  const aerialBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Esri, Maxar, Earthstar Geographics', maxZoom: 19
+  });
+  const aerialLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19, pane: 'shadowPane'
+  });
+  const grayscaleGroup = L.layerGroup([grayBase, grayLabels]);
+  const aerialGroup = L.layerGroup([aerialBase, aerialLabels]);
+  grayscaleGroup.addTo(map);
+  L.control.layers({'Grayscale + streets': grayscaleGroup, 'Aerial + streets': aerialGroup}, {}, {position:'topright'}).addTo(map);
 
   const overlayLayer = L.layerGroup().addTo(map);
+  let overlayCount = 0, overlayErrors = 0;
   Object.entries(DATA.sheets).forEach(([code, s])=>{
-    const ov = L.imageOverlay.rotated(s.img, s.topleft, s.topright, s.bottomleft, {opacity:0.85, interactive:false});
-    ov.addTo(overlayLayer);
+    try {
+      const ov = L.imageOverlay.rotated(s.img, L.latLng(s.topleft), L.latLng(s.topright), L.latLng(s.bottomleft), {opacity:0.85, interactive:false});
+      ov.addTo(overlayLayer);
+      ov.on('load', ()=>{ overlayCount++; });
+      ov.on('error', (e)=>{ overlayErrors++; console.error('sheet image failed to load', code, s.img, e); });
+    } catch(err){ console.error('overlay failed', code, err); }
   });
+  if (typeof L.imageOverlay.rotated !== 'function') {
+    console.error('Leaflet.ImageOverlay.Rotated plugin did not load — sheets will not render.');
+  }
 
   const markerLayer = L.layerGroup().addTo(map);
   DATA.addresses.forEach(a=>{
