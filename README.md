@@ -21,10 +21,22 @@ group living across historic Sanborn maps. This repo is self-contained for OTR.
 
 ## Status
 
-**First version — proof of concept, 3 of 55 OTR sheets.** Covers Sanborn volume
-025, sheets 101–103 only. The full OTR sheet list (55 sheets across volumes 025
-and 026) is in [`data/otr_sheet_list.txt`](data/otr_sheet_list.txt) — use it as a
-checklist when georeferencing/anchoring the remaining sheets.
+**Map now uses real geographic coordinates.** 65 sheet pieces (and counting) have
+been hand-georeferenced (lat/lon corners, from `data/cincinnati_1950_manifest.json`)
+and are placed on a real map with `index.html` using the
+[Leaflet.ImageOverlay.Rotated](https://github.com/IvanSanchez/Leaflet.ImageOverlay.Rotated)
+plugin. Note sheet 111 does not yet appear among the georeferenced sheets — assumed
+to simply not be georeferenced yet, not that it's outside the OTR boundary.
+
+Address anchoring + census matching (the dots, and the composition panels) still
+only covers Sanborn sheets 101–103 (574 addresses, pixel-anchored). For 102 and 103,
+addresses are plotted using the "102a"/"103a" split-piece georeference as an
+approximation, since only that split piece has been georeferenced so far — a small
+offset is possible until the full sheet is georeferenced. The other 62+ sheets are
+visible on the map but have no address points yet; more sheets and anchor data are
+expected incrementally. The full OTR sheet list (55+ sheets across volumes 025 and
+026) is in [`data/otr_sheet_list.txt`](data/otr_sheet_list.txt) — it is known to be
+missing sheets 104-120 (confirmed by georeferencing already done) and needs a fix.
 
 Of the 574 addresses anchored on these 3 sheets, 200 matched to a census household
 in at least one of the five census years (1900, 1910, 1920, 1930, 1940), and 131
