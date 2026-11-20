@@ -174,8 +174,8 @@ function redrawMarkers(){
 
 function initMap(){
   const map = L.map('map', {zoomSnap:0.25}).setView([39.1095, -84.5125], 15);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OpenStreetMap, &copy; CARTO', maxZoom: 20
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
   }).addTo(map);
 
   const overlayLayer = L.layerGroup().addTo(map);
