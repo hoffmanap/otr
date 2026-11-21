@@ -144,7 +144,7 @@ function yearAggregates(addrs){
   const out = {};
   YEARS.forEach(yr=>{
     let n=0,nb=0,nw=0,no=0,nr=0,nown=0,npp=0,hh=0,nlodge=0,ntot=0;
-    const occTotals = {}; let nOccKnown=0; const incomes=[];
+    const occTotals = {}; let nOccKnown=0; const incomes=[]; const occscores=[];
     addrs.forEach(a=>{
       const d = a.census_by_year && a.census_by_year[yr];
       if(!d) return;
@@ -154,6 +154,7 @@ function yearAggregates(addrs){
       (d.top_occupations||[]).forEach(([label,count])=>{ occTotals[label]=(occTotals[label]||0)+count; });
       nOccKnown += d.n_occ_known||0;
       if(d.median_income!=null) incomes.push(d.median_income);
+      if(d.avg_occscore!=null) occscores.push(d.avg_occscore);
     });
     if(n===0){ out[yr]=null; return; }
     const pb = ntot?Math.round(100*nb/ntot):0, pw=ntot?Math.round(100*nw/ntot):0, po=Math.max(0,100-pb-pw);
@@ -164,7 +165,8 @@ function yearAggregates(addrs){
     const topOccSorted = Object.entries(occTotals).sort((a,b)=>b[1]-a[1]).slice(0,3)
       .map(([label,count])=>[label, nOccKnown?Math.round(100*count/nOccKnown):0]);
     const avgInc = incomes.length ? Math.round(incomes.reduce((s,v)=>s+v,0)/incomes.length) : null;
-    out[yr] = {n, ntot, pb, pw, po, pr, ppl, lp, topOcc: topOccSorted, avgInc};
+    const avgScore = occscores.length ? +(occscores.reduce((s,v)=>s+v,0)/occscores.length).toFixed(1) : null;
+    out[yr] = {n, ntot, pb, pw, po, pr, ppl, lp, topOcc: topOccSorted, avgInc, avgScore};
   });
   return out;
 }
@@ -217,9 +219,17 @@ function renderYearGrid(addrs, title){
     return `<td><span class="cellnum">$${d.avgInc.toLocaleString()}</span></td>`;
   }).join('')}</tr>`;
 
+  const maxScore = Math.max(1, ...yrsWithData.map(y=>agg[y].avgScore||0));
+  const rowScore = `<tr><td class="rowlabel">Occupational income score<div class="cellsub" style="font-weight:400;">(proxy, 0-80)</div></td>${YEARS.map(y=>{
+    const d=agg[y]; if(!d||d.avgScore==null) return '<td><span class="cellsub">—</span></td>';
+    const w = Math.round(100*d.avgScore/maxScore);
+    return `<td><div class="minibar"><span style="width:${w}%;background:#b08968"></span></div><div class="cellsub">${d.avgScore}</div></td>`;
+  }).join('')}</tr>`;
+
   return `<div class="block"><h2>${title}</h2><div class="stat" style="margin-bottom:6px;">${addrs.length} addresses in selection</div>
-    <div class="gridwrap"><table class="ygrid">${head}${rowAddr}${rowRace}${rowTenure}${rowDensity}${rowLodger}${rowOcc}${rowInc}</table></div>
+    <div class="gridwrap"><table class="ygrid">${head}${rowAddr}${rowRace}${rowTenure}${rowDensity}${rowLodger}${rowOcc}${rowInc}${rowScore}</table></div>
     <div class="legend" style="margin-top:6px;"><span><i style="background:#d8c9a3"></i>White/Owned</span><span><i style="background:#8c3b2e"></i>Black/Lodger</span><span><i style="background:#6b7a8f"></i>Other/Rented</span></div>
+    <div class="caveat" style="margin-top:4px;">Occupational income score is a proxy (median 1950 income by occupation type) used because the census did not collect wage/income data before 1940 — it tracks occupational standing, not actual earnings.</div>
     </div>`;
 }
 

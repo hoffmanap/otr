@@ -189,17 +189,22 @@ data/
   otr_addresses_3sheets.csv      interpolated full address list, sheets 101-103
   otr_census_merged.csv          building-level GRF rollup, sheets 101-103
   otr_ipums_all_years.csv        person-level GRF+IPUMS join, 1900-1940, sheets 101-103
+                                  (includes OCC1950/IND1950/OCCSCORE, harmonized
+                                  occupation fields that cover all five years)
 ```
 
 ## Known limitations
 
-- **Occupation and income only exist for 1940.** The IPUMS extract used here
-  doesn't carry `occ`/`incwage` for 1900-1930 (0 of several thousand person
-  records in those years have a value), so the dashboard's "Top occupation"
-  and "Avg wage income" rows will correctly show "—" for every year except
-  1940, and can still show "—" at 1940 for a small selection (e.g. a single
-  building) if none of its 1940 residents happened to have a classifiable
-  occupation or reported wage. This is a data-availability gap, not a bug.
+- **Wage income (`incwage`) only exists for 1940.** The census didn't collect
+  income before 1940, so "Avg wage income" correctly shows "—" for 1900-1930 —
+  a real historical limitation, not a bug. Occupation, however, now covers all
+  five years: the dashboard uses IPUMS's harmonized `OCC1950` classification
+  (consistent across census years) instead of the year-specific `occ` field,
+  which is blank pre-1940 in this extract. As a pre-1940 income proxy, the
+  dashboard also shows "Occupational income score" (`OCCSCORE`, 0-80) — the
+  median 1950 income associated with each person's occupation type. It tracks
+  occupational standing, not actual earnings, and is labeled as a proxy in
+  the dashboard itself.
 - **Pixel coordinates, not geo-coordinates (pre-georeferencing version only).**
   The current map uses real lat/long corners from
   `data/cincinnati_1950_manifest.json`; this note is kept for the handful of
