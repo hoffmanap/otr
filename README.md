@@ -1,4 +1,4 @@
-# The Lodging Ledger — Over-the-Rhine
+# Neighborhood Composition Atlas — Over-the-Rhine
 
 A building-level history of population change in Cincinnati's Over-the-Rhine (OTR)
 neighborhood, 1900–1940. It links 1950 Sanborn fire-insurance map addresses to

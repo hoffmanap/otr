@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Lodging Ledger — OTR</title>
+<title>Neighborhood Composition Atlas — OTR</title>
 <link rel="stylesheet" href="leaflet.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-imageoverlay-rotated@0.2.1/Leaflet.ImageOverlay.Rotated.js"></script>
@@ -26,6 +26,13 @@
   }
   .opacityCtrl{position:absolute;left:10px;bottom:10px;z-index:1000;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:11px;display:flex;align-items:center;gap:6px;box-shadow:0 1px 4px rgba(0,0,0,.2);}
   .opacityCtrl input{width:110px;}
+  .mapLegend{position:absolute;right:10px;bottom:10px;z-index:1000;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:11px;box-shadow:0 1px 4px rgba(0,0,0,.2);max-width:190px;}
+  .mapLegend .lgTitle{font-weight:600;margin-bottom:5px;font-size:11px;}
+  .mapLegend .lgGrad{height:10px;border-radius:3px;margin-bottom:3px;}
+  .mapLegend .lgEnds{display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted);}
+  .mapLegend .lgSwatchRow{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:10.5px;}
+  .mapLegend .lgSwatch{width:11px;height:11px;border-radius:50%;flex:0 0 auto;display:inline-block;}
+  .mapLegend .lgNote{font-size:9.5px;color:var(--muted);margin-top:4px;}
   h1{font-size:17px;margin:0 0 2px;}
   .sub{font-size:12px;color:var(--muted);margin-bottom:10px;}
   .ctrl-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
@@ -62,9 +69,10 @@
     <div class="opacityCtrl">Sanborn opacity
       <input type="range" id="opacitySlider" min="0" max="100" value="85">
     </div>
+    <div class="mapLegend" id="mapLegend"></div>
   </div>
   <div id="side">
-    <h1>The Lodging Ledger <span class="pill">OTR</span></h1>
+    <h1>Neighborhood Composition Atlas <span class="pill">OTR</span></h1>
     <div class="sub">Neighborhood composition change, 1900–1940. Real-georeferenced Sanborn sheets, Cincinnati Over-the-Rhine.</div>
 
     <div class="ctrl-row" id="colorByRow"></div>
@@ -118,6 +126,27 @@ function colorFor(a){
 
 function uid(a){ return a.sheet+'|'+a.block_id+'|'+a.address; }
 
+function renderLegend(){
+  const el = document.getElementById('mapLegend');
+  if(!el) return;
+  const m = COLOR_MODES.find(c=>c.k===colorBy);
+  if(colorBy==='lodger_pct'){
+    el.innerHTML = `<div class="lgTitle">${m.label}</div>
+      <div class="lgSwatchRow"><span class="lgSwatch" style="background:#8c3b2e"></span>Has a lodger/boarder</div>
+      <div class="lgSwatchRow"><span class="lgSwatch" style="background:#bcae8f"></span>No lodger/boarder</div>
+      <div class="lgSwatchRow"><span class="lgSwatch" style="background:#999"></span>No census match</div>`;
+    return;
+  }
+  let lo=0, hi=100, loLabel='0%', hiLabel='100%';
+  if(colorBy==='persons_per_household'){ lo=1; hi=6; loLabel='1'; hiLabel='6+'; }
+  else if(colorBy==='pct_rented'){ loLabel='0% (owned)'; hiLabel='100% (rented)'; }
+  el.innerHTML = `<div class="lgTitle">${m.label}</div>
+    <div class="lgGrad" style="background:linear-gradient(to right, #f2e9d8, #8c3b2e);"></div>
+    <div class="lgEnds"><span>${loLabel}</span><span>${hiLabel}</span></div>
+    <div class="lgSwatchRow"><span class="lgSwatch" style="background:#999"></span>No census match</div>
+    <div class="lgNote">Shaded by each address's most recent census year on record.</div>`;
+}
+
 function renderControls(){
   const cRow = document.getElementById('colorByRow');
   cRow.innerHTML = '<span class="stat" style="align-self:center;">Color by:</span>';
@@ -125,7 +154,7 @@ function renderControls(){
     const b = document.createElement('button');
     b.textContent = m.label;
     b.className = (colorBy===m.k) ? 'active' : '';
-    b.onclick = ()=>{ colorBy = m.k; renderControls(); redrawMarkers(); };
+    b.onclick = ()=>{ colorBy = m.k; renderControls(); redrawMarkers(); renderLegend(); };
     cRow.appendChild(b);
   });
   const mRow = document.getElementById('modeRow');
@@ -266,20 +295,19 @@ function initMap(){
   const map = L.map('map', {zoomSnap:0.25}).setView([39.1095, -84.5125], 15);
   const grayBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Esri, HERE, Garmin', maxZoom: 19
-  }).addTo(map);
+  });
   const grayLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19, pane: 'shadowPane'
-  }).addTo(map);
+  });
   const aerialBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Esri, Maxar, Earthstar Geographics', maxZoom: 19
-  });
+  }).addTo(map);
   const aerialLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19, pane: 'shadowPane'
-  });
+  }).addTo(map);
   const grayscaleGroup = L.layerGroup([grayBase, grayLabels]);
   const aerialGroup = L.layerGroup([aerialBase, aerialLabels]);
-  grayscaleGroup.addTo(map);
-  L.control.layers({'Grayscale + streets': grayscaleGroup, 'Aerial + streets': aerialGroup}, {}, {position:'topright'}).addTo(map);
+  L.control.layers({'Aerial + streets': aerialGroup, 'Grayscale + streets': grayscaleGroup}, {}, {position:'topright'}).addTo(map);
 
   const overlayLayer = L.layerGroup().addTo(map);
   let overlayCount = 0, overlayErrors = 0;
@@ -345,6 +373,7 @@ fetch('otr_geo_data.json').then(r=>r.json()).then(d=>{
   renderControls();
   renderNeighborhood();
   initMap();
+  renderLegend();
   document.getElementById('clearBtn').onclick = ()=>{ selected=[]; renderSelection(); };
   document.getElementById('caveat').innerHTML =
     `<b>Status:</b> ${Object.keys(DATA.sheets).length} Sanborn sheet pieces now placed on real geographic coordinates ` +
