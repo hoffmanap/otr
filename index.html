@@ -173,7 +173,8 @@ function yearAggregates(addrs){
   const out = {};
   YEARS.forEach(yr=>{
     let n=0,nb=0,nw=0,no=0,nr=0,nown=0,npp=0,hh=0,nlodge=0,ntot=0;
-    const occTotals = {}; let nOccKnown=0; const incomes=[]; const occscores=[];
+    const occTotals = {}; let nOccKnown=0; const incomes=[]; const occscores=[]; const rents=[];
+    const originTotals = {}; let nBplKnown=0; let nForeign=0;
     addrs.forEach(a=>{
       const d = a.census_by_year && a.census_by_year[yr];
       if(!d) return;
@@ -184,6 +185,14 @@ function yearAggregates(addrs){
       nOccKnown += d.n_occ_known||0;
       if(d.median_income!=null) incomes.push(d.median_income);
       if(d.avg_occscore!=null) occscores.push(d.avg_occscore);
+      if(d.avg_rent!=null) rents.push(d.avg_rent);
+      if(d.n_bpl_known){
+        nBplKnown += d.n_bpl_known;
+        if(d.pct_foreign_born!=null) nForeign += Math.round(d.pct_foreign_born/100*d.n_bpl_known);
+        (d.top_origins||[]).forEach(([label,pct])=>{
+          originTotals[label] = (originTotals[label]||0) + Math.round(pct/100*d.n_bpl_known);
+        });
+      }
     });
     if(n===0){ out[yr]=null; return; }
     const pb = ntot?Math.round(100*nb/ntot):0, pw=ntot?Math.round(100*nw/ntot):0, po=Math.max(0,100-pb-pw);
@@ -191,11 +200,16 @@ function yearAggregates(addrs){
     const pr = tenureKnown?Math.round(100*nr/tenureKnown):null;
     const ppl = hh? +(npp/hh).toFixed(2) : null;
     const lp = ntot?Math.round(100*nlodge/ntot):0;
-    const topOccSorted = Object.entries(occTotals).sort((a,b)=>b[1]-a[1]).slice(0,3)
+    const occDist = Object.entries(occTotals).sort((a,b)=>b[1]-a[1])
       .map(([label,count])=>[label, nOccKnown?Math.round(100*count/nOccKnown):0]);
+    const topOccSorted = occDist.slice(0,3);
     const avgInc = incomes.length ? Math.round(incomes.reduce((s,v)=>s+v,0)/incomes.length) : null;
     const avgScore = occscores.length ? +(occscores.reduce((s,v)=>s+v,0)/occscores.length).toFixed(1) : null;
-    out[yr] = {n, ntot, pb, pw, po, pr, ppl, lp, topOcc: topOccSorted, avgInc, avgScore};
+    const avgRent = rents.length ? Math.round(rents.reduce((s,v)=>s+v,0)/rents.length) : null;
+    const pctForeign = nBplKnown ? Math.round(100*nForeign/nBplKnown) : null;
+    const topOrigins = Object.entries(originTotals).sort((a,b)=>b[1]-a[1]).slice(0,4)
+      .map(([label,count])=>[label, nBplKnown?Math.round(100*count/nBplKnown):0]);
+    out[yr] = {n, ntot, pb, pw, po, pr, ppl, lp, topOcc: topOccSorted, occDist, avgInc, avgScore, avgRent, pctForeign, topOrigins};
   });
   return out;
 }
@@ -243,9 +257,24 @@ function renderYearGrid(addrs, title){
     return `<td><div class="cellnum" style="white-space:normal;max-width:90px;">${label}</div><div class="cellsub">${pct}% of workers</div></td>`;
   }).join('')}</tr>`;
 
+  const OCC_ORDER = ['Professional/technical','Managers/officials/proprietors','Clerical','Sales',
+    'Craftsmen/foremen','Operatives','Service workers','Laborers (non-farm)','Farmers/farm laborers','Other/unclassified'];
+  const OCC_COLORS = ['#4a7c6f','#6b8f71','#a8b86a','#d9b44a','#c97d3f','#b24d3f','#8c3b2e','#6b7a8f','#4a5a73','#9a9a9a'];
+  const occColor = label => OCC_COLORS[OCC_ORDER.indexOf(label)] ?? '#999';
+  const rowOccDist = `<tr><td class="rowlabel">Occupation mix<div class="cellsub" style="font-weight:400;">(share of workers)</div></td>${YEARS.map(y=>{
+    const d=agg[y]; if(!d||!d.occDist||!d.occDist.length) return '<td><span class="cellsub">—</span></td>';
+    const bars = d.occDist.map(([label,pct])=>`<span style="width:${pct}%;background:${occColor(label)}" title="${label}: ${pct}%"></span>`).join('');
+    return `<td><div class="minibar" style="width:90px;">${bars}</div></td>`;
+  }).join('')}</tr>`;
+
   const rowInc = `<tr><td class="rowlabel">Avg wage income</td>${YEARS.map(y=>{
     const d=agg[y]; if(!d||d.avgInc==null) return '<td><span class="cellsub">—</span></td>';
     return `<td><span class="cellnum">$${d.avgInc.toLocaleString()}</span></td>`;
+  }).join('')}</tr>`;
+
+  const rowRent = `<tr><td class="rowlabel">Avg monthly rent</td>${YEARS.map(y=>{
+    const d=agg[y]; if(!d||d.avgRent==null) return '<td><span class="cellsub">—</span></td>';
+    return `<td><span class="cellnum">$${d.avgRent}</span></td>`;
   }).join('')}</tr>`;
 
   const maxScore = Math.max(1, ...yrsWithData.map(y=>agg[y].avgScore||0));
@@ -255,9 +284,23 @@ function renderYearGrid(addrs, title){
     return `<td><div class="minibar"><span style="width:${w}%;background:#b08968"></span></div><div class="cellsub">${d.avgScore}</div></td>`;
   }).join('')}</tr>`;
 
+  const rowForeign = `<tr><td class="rowlabel">Foreign-born share</td>${YEARS.map(y=>{
+    const d=agg[y]; if(!d||d.pctForeign==null) return '<td><span class="cellsub">—</span></td>';
+    return `<td><div class="minibar"><span style="width:${d.pctForeign}%;background:#4a5a73"></span></div><div class="cellsub">${d.pctForeign}%</div></td>`;
+  }).join('')}</tr>`;
+
+  const rowOrigins = `<tr><td class="rowlabel">Top countries of origin<div class="cellsub" style="font-weight:400;">(foreign-born)</div></td>${YEARS.map(y=>{
+    const d=agg[y]; if(!d||!d.topOrigins||!d.topOrigins.length) return '<td><span class="cellsub">—</span></td>';
+    const lines = d.topOrigins.map(([label,pct])=>`${label} ${pct}%`).join('<br>');
+    return `<td><div class="cellsub" style="white-space:normal;max-width:100px;line-height:1.5;">${lines}</div></td>`;
+  }).join('')}</tr>`;
+
+  const occLegend = OCC_ORDER.map((label,i)=>`<span><i style="background:${OCC_COLORS[i]}"></i>${label}</span>`).join('');
+
   return `<div class="block"><h2>${title}</h2><div class="stat" style="margin-bottom:6px;">${addrs.length} addresses in selection</div>
-    <div class="gridwrap"><table class="ygrid">${head}${rowAddr}${rowRace}${rowTenure}${rowDensity}${rowLodger}${rowOcc}${rowInc}${rowScore}</table></div>
+    <div class="gridwrap"><table class="ygrid">${head}${rowAddr}${rowRace}${rowTenure}${rowDensity}${rowLodger}${rowOcc}${rowOccDist}${rowInc}${rowRent}${rowScore}${rowForeign}${rowOrigins}</table></div>
     <div class="legend" style="margin-top:6px;"><span><i style="background:#d8c9a3"></i>White/Owned</span><span><i style="background:#8c3b2e"></i>Black/Lodger</span><span><i style="background:#6b7a8f"></i>Other/Rented</span></div>
+    <div class="legend" style="margin-top:3px;">${occLegend}</div>
     <div class="caveat" style="margin-top:4px;">Occupational income score is a proxy (median 1950 income by occupation type) used because the census did not collect wage/income data before 1940 — it tracks occupational standing, not actual earnings.</div>
     </div>`;
 }
@@ -380,8 +423,11 @@ fetch('otr_geo_data.json').then(r=>r.json()).then(d=>{
     `(from hand-placed georeferencing, not pixel positions). Address anchoring + census matching (the dots, and the ` +
     `composition panels) still only covers sheets 101–103 (574 addresses); the rest of the sheets are visible on the map ` +
     `but have no address points yet — this is expected as georeferencing/anchoring continues sheet by sheet. ` +
-    `Sheets 102 and 103's addresses are plotted using the "a" split-piece georeference as an approximation; a small ` +
-    `offset is possible until the full sheet is georeferenced.`;
+    `Sheets 102 and 103's addresses are precisely remapped from the full sheet's pixel space into the "a" split piece's ` +
+    `own georeference (recovered via feature matching between the full sheet and the piece image). ` +
+    `<b>Not yet in this extract:</b> educational attainment (never pulled — would need a further IPUMS extract with EDUC) ` +
+    `and home value (reported by too few owners in this renter-heavy neighborhood to be meaningful — well under 1% of ` +
+    `records across all years). Monthly rent is shown where the 1940 sample reports it.`;
 });
 </script>
 </body>

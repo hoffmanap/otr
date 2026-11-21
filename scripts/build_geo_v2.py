@@ -24,6 +24,62 @@ GQ = {'3':'Group quarters--Institution','4':'Other group quarters'}
 OWNERSHP = {'1':'Owned','2':'Rented'}
 YEARS = ['1900', '1910', '1920', '1930', '1940']
 
+# BPL (birthplace) general codes. 001-056 follow STATEFIP numbering (confirmed
+# against this data: 039/021/018 - Ohio/Kentucky/Indiana - are by far the most
+# common, exactly as expected for Cincinnati). 099 = US, state not specified.
+# 100+ are IPUMS's general (3-digit) foreign-country codes, cross-checked
+# against IPUMS's published detailed (5-digit) BPL code list, where e.g.
+# 45300 = Germany, 41400 = Ireland, 46500 = "Other USSR/Russia" (sources:
+# usa.ipums.org/usa-action/variables/BPL and usa.ipums.org/usa/volii/00birthplace.shtml).
+BPL_US_STATES = {
+    '001':'Alabama','002':'Alaska','004':'Arizona','005':'Arkansas','006':'California',
+    '008':'Colorado','009':'Connecticut','010':'Delaware','011':'DC','012':'Florida',
+    '013':'Georgia','015':'Hawaii','016':'Idaho','017':'Illinois','018':'Indiana',
+    '019':'Iowa','020':'Kansas','021':'Kentucky','022':'Louisiana','023':'Maine',
+    '024':'Maryland','025':'Massachusetts','026':'Michigan','027':'Minnesota',
+    '028':'Mississippi','029':'Missouri','030':'Montana','031':'Nebraska','032':'Nevada',
+    '033':'New Hampshire','034':'New Jersey','035':'New Mexico','036':'New York',
+    '037':'North Carolina','038':'North Dakota','039':'Ohio','040':'Oklahoma',
+    '041':'Oregon','042':'Pennsylvania','044':'Rhode Island','045':'South Carolina',
+    '046':'South Dakota','047':'Tennessee','048':'Texas','049':'Utah','050':'Vermont',
+    '051':'Virginia','053':'Washington','054':'West Virginia','055':'Wisconsin','056':'Wyoming',
+    '099':'United States (state n.s.)',
+}
+BPL_FOREIGN = {
+    '150':'Canada','160':'Atlantic Islands','199':'North America, n.s.',
+    '200':'Mexico','210':'Central America','250':'Cuba','260':'West Indies',
+    '300':'South America',
+    '410':'England','411':'Scotland','412':'Wales','413':'United Kingdom, n.s.',
+    '414':'Ireland','420':'Netherlands','421':'France','422':'Belgium','423':'Luxembourg',
+    '425':'Switzerland','426':'Switzerland','430':'Germany','433':'Greece','434':'Italy',
+    '435':'Portugal','436':'Spain','440':'Poland','450':'Austria','451':'Hungary',
+    '452':'Czechoslovakia','453':'Germany','460':'Yugoslavia','461':'Romania',
+    '462':'Bulgaria','465':'Russia/USSR','499':'Europe, n.s.',
+    '500':'China','501':'Japan','502':'Philippines','520':'Other Asia',
+    '600':'Africa','700':'Australia/New Zealand/Pacific','900':'Abroad (American parents)',
+}
+def bpl_label(code):
+    if not code: return None
+    code = code.strip()
+    if code in ('', '000', '997', '998', '999'): return None
+    if code in BPL_US_STATES: return BPL_US_STATES[code]
+    if code in BPL_FOREIGN: return BPL_FOREIGN[code]
+    try:
+        v = int(code)
+    except ValueError:
+        return None
+    if v <= 56: return 'Other US state'
+    return 'Other foreign country'
+def is_foreign_bpl(code):
+    if not code: return False
+    code = code.strip()
+    if code in BPL_US_STATES: return False
+    try:
+        v = int(code)
+    except ValueError:
+        return False
+    return v >= 100 and code != '099'
+
 # OCC1950-style broad buckets by leading code range
 def occ_bucket(occ):
     try:
@@ -78,6 +134,11 @@ def summarize(recs):
             occ_counts[b] += 1
             n_occ_known += 1
     top_occs = sorted(occ_counts.items(), key=lambda kv: -kv[1])[:3]
+    # full occupation distribution (all buckets with >0, for a share-of-workers chart)
+    occ_distribution = sorted(
+        [[label, round(100*count/n_occ_known, 1)] for label, count in occ_counts.items()],
+        key=lambda kv: -kv[1]
+    ) if n_occ_known else []
 
     # income (only meaningfully present 1940+; IPUMS uses 9999999/999999 etc for N/A)
     incomes = []
@@ -93,6 +154,38 @@ def summarize(recs):
         s = sorted(incomes)
         mid = len(s) // 2
         median_income = s[mid] if len(s) % 2 else (s[mid-1] + s[mid]) // 2
+
+    # monthly rent (IPUMS RENT - only meaningfully reported in the 1940 sample;
+    # 0/9998/9999 are N/A-type codes)
+    rents = []
+    for r in recs:
+        try:
+            v = int(r.get('rent') or 0)
+        except ValueError:
+            v = 0
+        if 0 < v < 9998:
+            rents.append(v)
+    avg_rent = round(sum(rents)/len(rents), 0) if rents else None
+
+    # birthplace / country of origin (household heads + all residents; BPL covers
+    # all 5 census years in this extract). "n_foreign" = share born outside the US.
+    bpl_counts = defaultdict(int)
+    n_bpl_known = 0
+    n_foreign = 0
+    for r in recs:
+        lbl = bpl_label(r.get('bpl'))
+        if lbl:
+            bpl_counts[lbl] += 1
+            n_bpl_known += 1
+            if is_foreign_bpl(r.get('bpl')):
+                n_foreign += 1
+    # collapse native-state detail into one "Native-born (US)" bucket for the
+    # top-origins list, so the list highlights immigrant origin countries
+    native_n = sum(c for lbl,c in bpl_counts.items() if lbl in BPL_US_STATES.values() or lbl=='Other US state')
+    foreign_counts = {lbl:c for lbl,c in bpl_counts.items() if lbl not in BPL_US_STATES.values() and lbl!='Other US state'}
+    top_origins = sorted(foreign_counts.items(), key=lambda kv: -kv[1])[:5]
+    top_origins = [[lbl, round(100*c/n_bpl_known,1)] for lbl,c in top_origins] if n_bpl_known else []
+    pct_foreign_born = round(100*n_foreign/n_bpl_known, 1) if n_bpl_known else None
 
     # occscore: occupational income score (median 1950 income by occ1950 bucket) -
     # available 1900-1940, used as an income *proxy* where incwage isn't (pre-1940)
@@ -129,9 +222,14 @@ def summarize(recs):
         'lodger_pct': round(100 * n_lodger / n, 1) if n else 0,
         'group_quarters': gqs,
         'top_occupations': top_occs,
+        'occ_distribution': occ_distribution,
         'n_occ_known': n_occ_known,
         'median_income': median_income,
+        'avg_rent': avg_rent,
         'avg_occscore': avg_occscore,
+        'pct_foreign_born': pct_foreign_born,
+        'top_origins': top_origins,
+        'n_bpl_known': n_bpl_known,
         'residents': residents,
     }
 
@@ -159,13 +257,59 @@ def affine_latlon(u, v, corners):
     lon = tl[1] + u*(tr[1]-tl[1]) + v*(bl[1]-tl[1])
     return [lat, lon]
 
+# Sheets 102/103 only have a georeference for the "a" split-piece image (a
+# crop of the original full sheet used for the transparency fix), not the
+# full sheet. Addresses were anchored in the FULL sheet's pixel space, so
+# they must first be remapped into the piece's own local pixel space before
+# applying the piece's corners. These affine matrices (full-sheet px -> piece
+# px) were recovered via ORB feature matching between the full sheet and the
+# piece image (60/60 RANSAC inliers, near-pure uniform scale, no rotation) -
+# see /tmp/.../scratchpad/geo_ledger notes. Addresses whose remapped pixel
+# falls outside the piece's own image bounds aren't covered by this crop and
+# are dropped rather than placed with a guess.
+FULL_TO_PIECE_PX = {
+    "vol025_sheet102.jpg": [[1.4356275680693806, 9.232909612842442e-05, 491.0218592636508],
+                            [-9.232909612842442e-05, 1.4356275680693806, 155.83920075592837]],
+    "vol025_sheet103.jpg": [[1.4279275104029436, -0.00018404918506584545, 433.2172451178396],
+                             [0.00018404918506584545, 1.4279275104029436, 245.13729780896122]],
+}
+def invert_affine(M):
+    a,b,tx = M[0]; c,d,ty = M[1]
+    det = a*d - b*c
+    ai, bi, ci, di = d/det, -b/det, -c/det, a/det
+    txi = -(ai*tx + bi*ty)
+    tyi = -(ci*tx + di*ty)
+    return [[ai,bi,txi],[ci,di,tyi]]
+FULL_TO_PIECE_PX_INV = {k: invert_affine(v) for k,v in FULL_TO_PIECE_PX.items()}
+
+from PIL import Image as _PILImage
+_piece_px_dims = {}  # code -> (w, h), lazily loaded
+def piece_dims(code, img_rel_path):
+    if code not in _piece_px_dims:
+        with _PILImage.open(f"{GEO_DIR}/publish/{img_rel_path}") as im:
+            _piece_px_dims[code] = im.size
+    return _piece_px_dims[code]
+
 out_addresses = []
+n_dropped_uncovered = 0
 for a in addr_rows:
     sheet_info = old_sheets[a['sheet']]
     code = sheet_info['code']
     corners = manifest[code]
-    u = float(a['x']) / sheet_info['w']
-    v = float(a['y']) / sheet_info['h']
+    x, y = float(a['x']), float(a['y'])
+    if a['sheet'] in FULL_TO_PIECE_PX_INV:
+        # remap full-sheet pixel -> this split piece's own local pixel space
+        Mi = FULL_TO_PIECE_PX_INV[a['sheet']]
+        px = Mi[0][0]*x + Mi[0][1]*y + Mi[0][2]
+        py = Mi[1][0]*x + Mi[1][1]*y + Mi[1][2]
+        pw, ph = piece_dims(code, f"geo/vol_{code}.png")
+        if not (0 <= px <= pw and 0 <= py <= ph):
+            n_dropped_uncovered += 1
+            continue  # this address falls outside the georeferenced split piece
+        u, v = px / pw, py / ph
+    else:
+        u = x / sheet_info['w']
+        v = y / sheet_info['h']
     entry = {
         'sheet': a['sheet'], 'block_id': a['block_id'], 'street': a['street'],
         'address': a['address'], 'latlon': affine_latlon(u, v, corners),
@@ -179,6 +323,8 @@ for a in addr_rows:
     if census_by_year:
         entry['census_by_year'] = census_by_year
     out_addresses.append(entry)
+if n_dropped_uncovered:
+    print(f"dropped {n_dropped_uncovered} addresses outside the georeferenced split-piece crop")
 
 geo_sheets = json.load(open(f"{GEO_DIR}/geo_sheets.json"))
 sheets_out = {}
