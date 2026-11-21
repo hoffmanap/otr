@@ -5,7 +5,7 @@ neighborhood, 1900–1940. It links 1950 Sanborn fire-insurance map addresses to
 historical census households, then tracks race, tenure (own/rent), household
 density, and group living (lodgers/boarders) at that address over five decades.
 
-**[Open the interactive map →](./index.html)**
+**[Open the interactive map →](https://hoffmanap.github.io/otr/)**
 
 This is the Cincinnati/OTR chapter of a larger multi-city project
 ([hoffmanap/SRO](https://github.com/hoffmanap/SRO)) mapping lodging houses and
@@ -193,8 +193,17 @@ data/
 
 ## Known limitations
 
-- **Pixel coordinates, not geo-coordinates.** Map positions are placed on the
-  sheet image itself; a real lat/long georeference is planned but not yet done.
+- **Occupation and income only exist for 1940.** The IPUMS extract used here
+  doesn't carry `occ`/`incwage` for 1900-1930 (0 of several thousand person
+  records in those years have a value), so the dashboard's "Top occupation"
+  and "Avg wage income" rows will correctly show "—" for every year except
+  1940, and can still show "—" at 1940 for a small selection (e.g. a single
+  building) if none of its 1940 residents happened to have a classifiable
+  occupation or reported wage. This is a data-availability gap, not a bug.
+- **Pixel coordinates, not geo-coordinates (pre-georeferencing version only).**
+  The current map uses real lat/long corners from
+  `data/cincinnati_1950_manifest.json`; this note is kept for the handful of
+  sheets not yet georeferenced.
 - **"Block face" ≠ city block.** A block_id is one straight side of one street
   between anchors, not a full four-sided block. The page's freeform
   drag-to-select tool is the current workaround for analyzing a real block or
