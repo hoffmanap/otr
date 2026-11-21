@@ -199,6 +199,27 @@ def summarize(recs):
             occscores.append(v)
     avg_occscore = round(sum(occscores) / len(occscores), 1) if occscores else None
 
+    def _rec_occscore(r):
+        try:
+            v = int(r.get('occscore') or -1)
+        except ValueError:
+            v = -1
+        return v if v >= 0 else None
+
+    def _rec_incwage(r):
+        try:
+            v = int(r.get('incwage') or 0)
+        except ValueError:
+            v = 0
+        return v if 0 < v < 999998 else None
+
+    def _rec_rent(r):
+        try:
+            v = int(r.get('rent') or 0)
+        except ValueError:
+            v = 0
+        return v if 0 < v < 9998 else None
+
     residents = []
     for r in recs:
         residents.append({
@@ -209,6 +230,12 @@ def summarize(recs):
             'is_employee': r['related'] in EMPLOYEE_CODES,
             'occ_bucket': occ_bucket(r.get('occ1950') or r.get('occ')),
             'origin': bpl_label(r.get('bpl')),
+            # per-resident economic figures, so any cross-filter (e.g. "Ohio-born"
+            # residents' average occupational score) can be computed client-side
+            # from the same records instead of only at the whole-selection level
+            'occscore': _rec_occscore(r),
+            'incwage': _rec_incwage(r),
+            'rent': _rec_rent(r),
         })
 
     return {

@@ -372,6 +372,21 @@ function selectVariableValue(vKey, val){
   onVariableChanged();
 }
 function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+
+function residentsForYear(addrs, yr){
+  let residents = [];
+  addrs.forEach(a=>{ const d = a.census_by_year && a.census_by_year[yr]; if(d && d.residents) residents = residents.concat(d.residents); });
+  return residents;
+}
+// Narrow a resident list down to only those matching the globally-active
+// variable+value — this is what makes every other chart "co-dependent" on
+// the current selection: pick Origin=Ohio, and this is what every other
+// chart's numbers get computed from, not the whole unfiltered selection.
+function filterByActive(residents){
+  if(!variable || !value) return residents;
+  const v = VARIABLES.find(x=>x.k===variable);
+  return residents.filter(r=> residentValue(r, v)===value);
+}
 // Delegated listener (attached once) instead of inline onclick — survives
 // every re-render of either panel and needs no attribute-escaping gymnastics
 // for origin/occupation values that might contain quotes or ampersands.
@@ -385,11 +400,11 @@ document.addEventListener('click', (e)=>{
 // gets its own segment (only the longest-tail values beyond the palette
 // collapse into a non-clickable "Other"), and every segment/legend entry is
 // clickable: click it, and the map + every chart recolor by that exact value.
-function categoryBreakdown(addrs, v){
+function categoryBreakdown(addrs, v, filtered){
   const topVals = (VALUE_OPTIONS[v.k] || []).slice(0, PALETTE.length).map(([val])=>val);
   const bars = YEARS.map(yr=>{
-    let residents = [];
-    addrs.forEach(a=>{ const d = a.census_by_year && a.census_by_year[yr]; if(d && d.residents) residents = residents.concat(d.residents); });
+    let residents = residentsForYear(addrs, yr);
+    if(filtered) residents = filterByActive(residents);
     const counts = {};
     residents.forEach(r=>{ const val = residentValue(r, v); if(val!=null) counts[val] = (counts[val]||0)+1; });
     const known = Object.values(counts).reduce((s,c)=>s+c,0);
@@ -416,8 +431,9 @@ function categoryBreakdown(addrs, v){
     const isSel = (variable===v.k && val===value);
     return `<span style="cursor:pointer;${isSel?'font-weight:700;color:var(--ink);':''}" data-var="${v.k}" data-val="${escapeAttr(val)}"><i style="background:${valueColor(v.k,val)}"></i>${val}</span>`;
   }).join('');
+  const sub = filtered ? `(click to map it — shown among <b>${value}</b> only)` : `(click a segment or a legend entry to map it)`;
   return `<div style="margin-bottom:14px;">
-    <div style="font-size:11.5px;color:var(--ink);font-weight:600;">${v.label} <span style="font-weight:400;color:var(--muted);">(click a segment or a legend entry to map it)</span></div>
+    <div style="font-size:11.5px;color:var(--ink);font-weight:600;">${v.label} <span style="font-weight:400;color:var(--muted);">${sub}</span></div>
     <div style="display:flex;gap:4px;margin-top:4px;">${bars}</div>
     <div class="legend" style="margin-top:5px;">${legend}</div>
   </div>`;
@@ -451,21 +467,34 @@ function renderYearGrid(addrs, title){
   const densityChart = trendChart([{values: YEARS.map(y=>agg[y]?.ppl ?? null), color:'#b08968'}],
     {yMin:pplMin, yMax:pplMax, fmt:v=>v.toFixed(1)});
 
-  // Every categorical variable gets its own clickable breakdown chart —
-  // nothing is excluded or left as plain text.
-  const breakdowns = VARIABLES.map(v=>categoryBreakdown(addrs, v)).join('');
+  // Every OTHER categorical variable gets its own clickable breakdown chart,
+  // computed only among residents matching the active variable/value — so
+  // picking Origin=Ohio actually conditions race, tenure, lodger status and
+  // occupation on "Ohio-born residents", not the whole unfiltered selection.
+  // (The active variable's own distribution is what the trend chart above
+  // already shows over time, so it isn't repeated here as a no-op 100% bar.)
+  const breakdowns = VARIABLES.filter(v=>v.k!==variable).map(v=>categoryBreakdown(addrs, v, !!value)).join('');
 
-  // Occupational income score (proxy)
-  const scoreVals = yrsWithData.map(y=>agg[y].avgScore).filter(v=>v!=null);
-  const scoreChart = scoreVals.length ? trendChart([{values: YEARS.map(y=>agg[y]?.avgScore ?? null), color:'#b08968'}],
+  // Occupational income score + real wage/rent, likewise computed only among
+  // residents matching the active variable/value in each year.
+  const scoreSeries = YEARS.map(yr=>{
+    const residents = filterByActive(residentsForYear(addrs, yr));
+    const scores = residents.map(r=>r.occscore).filter(v=>v!=null);
+    return scores.length ? Math.round(10*scores.reduce((s,v)=>s+v,0)/scores.length)/10 : null;
+  });
+  const scoreVals = scoreSeries.filter(v=>v!=null);
+  const scoreChart = scoreVals.length ? trendChart([{values: scoreSeries, color:'#b08968'}],
     {yMin:0, yMax:Math.max(80, ...scoreVals)+5, fmt:v=>Math.round(v)}) : null;
-  const realEcon = YEARS.map(y=>{
-    const d = agg[y]; if(!d) return null;
+  const realEcon = YEARS.map(yr=>{
+    const residents = filterByActive(residentsForYear(addrs, yr));
+    const incs = residents.map(r=>r.incwage).filter(v=>v!=null);
+    const rents = residents.map(r=>r.rent).filter(v=>v!=null);
     const parts = [];
-    if(d.avgInc!=null) parts.push(`avg wage $${d.avgInc.toLocaleString()}/yr`);
-    if(d.avgRent!=null) parts.push(`avg rent $${d.avgRent}/mo`);
-    return parts.length ? `${y}: ${parts.join(', ')}` : null;
+    if(incs.length) parts.push(`avg wage $${Math.round(incs.reduce((s,v)=>s+v,0)/incs.length).toLocaleString()}/yr`);
+    if(rents.length) parts.push(`avg rent $${Math.round(rents.reduce((s,v)=>s+v,0)/rents.length)}/mo`);
+    return parts.length ? `${yr}: ${parts.join(', ')}` : null;
   }).filter(Boolean).join(' · ');
+  const econSub = value ? `(proxy, 0–80 — among ${value} only)` : '(proxy, 0–80)';
 
   return `<div class="block"><h2>${title}</h2>
     <div class="stat" style="margin-bottom:10px;">${addrs.length} addresses in selection — matched by year: ${matchCounts}</div>
@@ -475,10 +504,10 @@ function renderYearGrid(addrs, title){
 
     ${breakdowns}
 
-    ${scoreChart ? chartCard('Occupational income score', '(proxy, 0–80)', scoreChart) : ''}
-    ${realEcon ? `<div class="stat" style="margin-bottom:10px;">Actual reported figures — ${realEcon}</div>` : ''}
+    ${scoreChart ? chartCard('Occupational income score', econSub, scoreChart) : `<div class="stat" style="margin-bottom:10px;">No occupational income score data for ${value||'this selection'}.</div>`}
+    ${realEcon ? `<div class="stat" style="margin-bottom:10px;">Actual reported figures${value?` (among ${value} only)`:''} — ${realEcon}</div>` : ''}
 
-    <div class="caveat" style="margin-top:2px;padding-top:0;border-top:none;">Occupational income score is a proxy (median 1950 income by occupation type), used because the census did not collect wage/income data before 1940 — it tracks occupational standing, not actual earnings. Avg wage income and rent above are the real reported figures, available for 1940 only. Pick any variable and value above (including a specific occupation field or a specific country/state of origin) — the map and this chart recompute from the same underlying per-resident records, so they always agree.</div>
+    <div class="caveat" style="margin-top:2px;padding-top:0;border-top:none;">Occupational income score is a proxy (median 1950 income by occupation type), used because the census did not collect wage/income data before 1940 — it tracks occupational standing, not actual earnings. Avg wage income and rent above are the real reported figures, available for 1940 only. Educational attainment is <b>not in this dataset</b> — the IPUMS extracts pulled for this project (usa_00008/00009/00011) were never built with the EDUC variable, so there is no attainment field anywhere in these records to break out; adding it would require requesting and re-merging a new IPUMS extract, which needs a registered IPUMS account and isn't something I can do from inside this session. Pick any variable and value above (including a specific occupation field or a specific country/state of origin) — the map and every chart below recompute from that same filtered set of residents, so they always agree.</div>
     </div>`;
 }
 
