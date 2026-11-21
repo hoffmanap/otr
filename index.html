@@ -79,8 +79,10 @@
     <div class="ctrl-row" id="modeRow"></div>
     <div class="ctrl-row">
       <button id="clearBtn">Clear selection</button>
-      <label style="font-size:11px;color:var(--muted);align-self:center;">Freeform: hold Shift + drag on map</label>
+      <button id="finishShapeBtn" style="display:none;">Finish shape</button>
+      <button id="cancelShapeBtn" style="display:none;">Cancel</button>
     </div>
+    <div class="stat" id="modeHint" style="margin:-4px 0 8px;line-height:1.4;"></div>
 
     <div id="selectionBlock"></div>
     <div id="neighborhoodBlock"></div>
@@ -101,7 +103,8 @@ let colorBy = 'pct_black';
 let mode = 'building';
 let selected = [];  // array of address objects
 let addrMarkers = [];
-let shiftDrag = false, dragStart = null, dragRect = null;
+let drawingPoints = [];  // polygon freeform: lat/lng vertices clicked so far
+let drawLayer = null, drawMap = null;
 
 function hexToRgb(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
 function lerpColor(a,b,t){const ca=hexToRgb(a),cb=hexToRgb(b);const r=ca.map((c,i)=>Math.round(c+(cb[i]-c)*t));return `rgb(${r[0]},${r[1]},${r[2]})`;}
@@ -159,13 +162,30 @@ function renderControls(){
   });
   const mRow = document.getElementById('modeRow');
   mRow.innerHTML = '<span class="stat" style="align-self:center;">Select by:</span>';
-  [['building','Building'],['block','Block face'],['freeform','Freeform']].forEach(([k,label])=>{
+  [['building','Building'],['block','Block face'],['freeform','Draw an area']].forEach(([k,label])=>{
     const b = document.createElement('button');
     b.textContent = label;
     b.className = (mode===k) ? 'active' : '';
-    b.onclick = ()=>{ mode = k; renderControls(); };
+    b.onclick = ()=>{ mode = k; cancelDrawing(); renderControls(); renderHint(); };
     mRow.appendChild(b);
   });
+  renderHint();
+}
+
+function renderHint(){
+  const el = document.getElementById('modeHint');
+  if(!el) return;
+  if(mode==='freeform'){
+    el.style.display = '';
+    el.innerHTML = drawingPoints.length < 3
+      ? `Click the map to place corners of any shape (e.g. a full city block) — straight or rotated. ${drawingPoints.length} point(s) so far.`
+      : `${drawingPoints.length} points — click <b>Finish shape</b> to select everything inside, or keep clicking to add more corners.`;
+  } else if(mode==='block'){
+    el.style.display = '';
+    el.innerHTML = `Click any address to select every address anchored along that same street frontage (one side of one street — not a full four-sided block).`;
+  } else {
+    el.style.display = 'none';
+  }
 }
 
 // Aggregate every tracked category, for every census year, for a set of addresses.
@@ -214,94 +234,143 @@ function yearAggregates(addrs){
   return out;
 }
 
-// One table: rows = category, columns = census years, cells = mini stacked-bar + numbers.
+const OCC_ORDER = ['Professional/technical','Managers/officials/proprietors','Clerical','Sales',
+  'Craftsmen/foremen','Operatives','Service workers','Laborers (non-farm)','Farmers/farm laborers','Other/unclassified'];
+const OCC_COLORS = ['#4a7c6f','#6b8f71','#a8b86a','#d9b44a','#c97d3f','#b24d3f','#8c3b2e','#6b7a8f','#4a5a73','#9a9a9a'];
+const occColor = label => OCC_COLORS[OCC_ORDER.indexOf(label)] ?? '#999';
+
+// A small multi-series line chart across the 5 census years. Gaps (years with
+// no data) simply break the line rather than interpolating through them.
+function trendChart(seriesDefs, opts={}){
+  const {yMin=0, yMax=100, height=108, fmt=(v)=>Math.round(v)} = opts;
+  const W=296, H=height, padL=26, padR=8, padT=10, padB=16;
+  const plotW=W-padL-padR, plotH=H-padT-padB;
+  const n = YEARS.length;
+  const xFor = i => padL + (plotW*i/(n-1));
+  const yFor = v => padT + plotH - ((v-yMin)/(yMax-yMin||1))*plotH;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px;display:block;" preserveAspectRatio="xMidYMid meet">`;
+  [yMin, (yMin+yMax)/2, yMax].forEach(gv=>{
+    const gy = yFor(gv);
+    svg += `<line x1="${padL}" y1="${gy.toFixed(1)}" x2="${W-padR}" y2="${gy.toFixed(1)}" stroke="var(--line)" stroke-width="1"/>`;
+    svg += `<text x="${padL-4}" y="${(gy+2.6).toFixed(1)}" font-size="7.5" text-anchor="end" fill="var(--muted)">${fmt(gv)}</text>`;
+  });
+  YEARS.forEach((yr,i)=>{
+    svg += `<text x="${xFor(i).toFixed(1)}" y="${H-4}" font-size="7.5" text-anchor="middle" fill="var(--muted)">${yr}</text>`;
+  });
+  seriesDefs.forEach(s=>{
+    let path = ''; let open = false;
+    const pts = [];
+    YEARS.forEach((yr,i)=>{
+      const v = s.values[i];
+      if(v==null){ open=false; return; }
+      const x=xFor(i), y=yFor(v);
+      path += (open?'L':'M')+x.toFixed(1)+','+y.toFixed(1)+' ';
+      open = true;
+      pts.push([x,y,v,yr]);
+    });
+    if(path) svg += `<path d="${path}" fill="none" stroke="${s.color}" stroke-width="2" ${s.dash?`stroke-dasharray="${s.dash}"`:''}/>`;
+    pts.forEach(([x,y,v,yr])=>{
+      svg += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="${s.color}"><title>${yr}: ${fmt(v)}</title></circle>`;
+    });
+    if(pts.length){
+      const [lx,ly,lv] = pts[pts.length-1];
+      const anchor = lx > W-44 ? 'end' : 'start';
+      const tx = anchor==='end' ? lx-4 : lx+4;
+      svg += `<text x="${tx.toFixed(1)}" y="${(ly-5).toFixed(1)}" font-size="8.5" fill="${s.color}" font-weight="600" text-anchor="${anchor}">${fmt(lv)}</text>`;
+    }
+  });
+  svg += '</svg>';
+  return svg;
+}
+
+function chartCard(label, sub, chartHtml, legendHtml){
+  return `<div style="margin-bottom:14px;">
+    <div style="font-size:11.5px;color:var(--ink);font-weight:600;">${label}${sub?`<span style="font-weight:400;color:var(--muted);"> ${sub}</span>`:''}</div>
+    ${chartHtml}
+    ${legendHtml||''}
+  </div>`;
+}
+
 function renderYearGrid(addrs, title){
   if(!addrs.length) return `<div class="block"><h2>${title}</h2><div class="stat">No matched census data.</div></div>`;
   const agg = yearAggregates(addrs);
   const yrsWithData = YEARS.filter(y=>agg[y]);
   if(!yrsWithData.length) return `<div class="block"><h2>${title}</h2><div class="stat">No matched census data.</div></div>`;
 
-  const head = `<tr><th></th>${YEARS.map(y=>`<th>${y}</th>`).join('')}</tr>`;
+  const matchCounts = YEARS.map(y=> agg[y] ? `${y}: ${agg[y].n}` : `${y}: —`).join(' · ');
 
-  const rowAddr = `<tr><td class="rowlabel">Addresses matched</td>${YEARS.map(y=>{
-    const d=agg[y]; return `<td>${d?`<span class="cellnum">${d.n}</span>`:'<span class="cellsub">—</span>'}</td>`;
-  }).join('')}</tr>`;
+  // Race & tenure (two lines, 0-100%)
+  const raceTenureChart = trendChart([
+    {values: YEARS.map(y=>agg[y]?.pb ?? null), color:'#8c3b2e'},
+    {values: YEARS.map(y=>agg[y]?.pr ?? null), color:'#6b7a8f', dash:'4,3'},
+  ], {yMin:0, yMax:100, fmt:v=>Math.round(v)+'%'});
+  const raceTenureLegend = `<div class="legend" style="margin-top:2px;"><span><i style="background:#8c3b2e"></i>% Black</span><span><i style="background:#6b7a8f"></i>% Rented</span></div>`;
 
-  const rowRace = `<tr><td class="rowlabel">Race (White/Black/Other)</td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d) return '<td><span class="cellsub">—</span></td>';
-    return `<td><div class="minibar" title="White ${d.pw}%, Black ${d.pb}%, Other ${d.po}%">
-      <span style="width:${d.pw}%;background:#d8c9a3"></span><span style="width:${d.pb}%;background:#8c3b2e"></span><span style="width:${d.po}%;background:#6b7a8f"></span>
-      </div><div class="cellsub">${d.pb}% Black</div></td>`;
-  }).join('')}</tr>`;
+  // Household density
+  const pplVals = yrsWithData.map(y=>agg[y].ppl).filter(v=>v!=null);
+  const pplMin = Math.max(0, Math.floor(Math.min(...pplVals,1))-0.5);
+  const pplMax = Math.ceil(Math.max(...pplVals,1))+0.5;
+  const densityChart = trendChart([{values: YEARS.map(y=>agg[y]?.ppl ?? null), color:'#b08968'}],
+    {yMin:pplMin, yMax:pplMax, fmt:v=>v.toFixed(1)});
 
-  const rowTenure = `<tr><td class="rowlabel">% Rented</td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d||d.pr==null) return '<td><span class="cellsub">—</span></td>';
-    return `<td><div class="minibar"><span style="width:${d.pr}%;background:#6b7a8f"></span><span style="width:${100-d.pr}%;background:#d8c9a3"></span></div><div class="cellsub">${d.pr}%</div></td>`;
-  }).join('')}</tr>`;
+  // Lodger/boarder share
+  const lodgerChart = trendChart([{values: YEARS.map(y=>agg[y]?.lp ?? null), color:'#8c3b2e'}],
+    {yMin:0, yMax:100, fmt:v=>Math.round(v)+'%'});
 
-  const maxPpl = Math.max(1, ...yrsWithData.map(y=>agg[y].ppl||0));
-  const rowDensity = `<tr><td class="rowlabel">Persons/household</td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d||d.ppl==null) return '<td><span class="cellsub">—</span></td>';
-    const w = Math.round(100*d.ppl/maxPpl);
-    return `<td><div class="minibar"><span style="width:${w}%;background:#b08968"></span></div><div class="cellsub">${d.ppl}</div></td>`;
-  }).join('')}</tr>`;
+  // Foreign-born share
+  const foreignChart = trendChart([{values: YEARS.map(y=>agg[y]?.pctForeign ?? null), color:'#4a5a73'}],
+    {yMin:0, yMax:100, fmt:v=>Math.round(v)+'%'});
+  const originLines = YEARS.map(y=>{
+    const d = agg[y];
+    if(!d || !d.topOrigins || !d.topOrigins.length) return null;
+    return `<div style="margin-bottom:2px;"><b>${y}:</b> ${d.topOrigins.map(([l,p])=>`${l} ${p}%`).join(', ')}</div>`;
+  }).filter(Boolean).join('');
+  const originsHtml = originLines ? `<div class="cellsub" style="line-height:1.5;margin-top:4px;">${originLines}</div>`
+    : `<div class="cellsub" style="margin-top:4px;">No foreign-born residents matched in this selection.</div>`;
 
-  const rowLodger = `<tr><td class="rowlabel">Lodger/boarder share</td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d) return '<td><span class="cellsub">—</span></td>';
-    return `<td><div class="minibar"><span style="width:${d.lp}%;background:#8c3b2e"></span></div><div class="cellsub">${d.lp}%</div></td>`;
-  }).join('')}</tr>`;
+  // Occupational income score (proxy)
+  const scoreVals = yrsWithData.map(y=>agg[y].avgScore).filter(v=>v!=null);
+  const scoreChart = scoreVals.length ? trendChart([{values: YEARS.map(y=>agg[y]?.avgScore ?? null), color:'#b08968'}],
+    {yMin:0, yMax:Math.max(80, ...scoreVals)+5, fmt:v=>Math.round(v)}) : null;
+  const realEcon = YEARS.map(y=>{
+    const d = agg[y]; if(!d) return null;
+    const parts = [];
+    if(d.avgInc!=null) parts.push(`avg wage $${d.avgInc.toLocaleString()}/yr`);
+    if(d.avgRent!=null) parts.push(`avg rent $${d.avgRent}/mo`);
+    return parts.length ? `${y}: ${parts.join(', ')}` : null;
+  }).filter(Boolean).join(' · ');
 
-  const rowOcc = `<tr><td class="rowlabel">Top occupation</td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d||!d.topOcc.length) return '<td><span class="cellsub">—</span></td>';
-    const [label,pct] = d.topOcc[0];
-    return `<td><div class="cellnum" style="white-space:normal;max-width:90px;">${label}</div><div class="cellsub">${pct}% of workers</div></td>`;
-  }).join('')}</tr>`;
-
-  const OCC_ORDER = ['Professional/technical','Managers/officials/proprietors','Clerical','Sales',
-    'Craftsmen/foremen','Operatives','Service workers','Laborers (non-farm)','Farmers/farm laborers','Other/unclassified'];
-  const OCC_COLORS = ['#4a7c6f','#6b8f71','#a8b86a','#d9b44a','#c97d3f','#b24d3f','#8c3b2e','#6b7a8f','#4a5a73','#9a9a9a'];
-  const occColor = label => OCC_COLORS[OCC_ORDER.indexOf(label)] ?? '#999';
-  const rowOccDist = `<tr><td class="rowlabel">Occupation mix<div class="cellsub" style="font-weight:400;">(share of workers)</div></td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d||!d.occDist||!d.occDist.length) return '<td><span class="cellsub">—</span></td>';
+  // Occupation mix: one labeled stacked bar per year
+  const occBars = YEARS.map(y=>{
+    const d = agg[y];
+    if(!d || !d.occDist || !d.occDist.length) return `<div style="flex:1;min-width:48px;"><div class="cellsub" style="text-align:center;">${y}</div><div style="height:26px;border-radius:3px;background:var(--line);"></div></div>`;
     const bars = d.occDist.map(([label,pct])=>`<span style="width:${pct}%;background:${occColor(label)}" title="${label}: ${pct}%"></span>`).join('');
-    return `<td><div class="minibar" style="width:90px;">${bars}</div></td>`;
-  }).join('')}</tr>`;
-
-  const rowInc = `<tr><td class="rowlabel">Avg wage income</td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d||d.avgInc==null) return '<td><span class="cellsub">—</span></td>';
-    return `<td><span class="cellnum">$${d.avgInc.toLocaleString()}</span></td>`;
-  }).join('')}</tr>`;
-
-  const rowRent = `<tr><td class="rowlabel">Avg monthly rent</td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d||d.avgRent==null) return '<td><span class="cellsub">—</span></td>';
-    return `<td><span class="cellnum">$${d.avgRent}</span></td>`;
-  }).join('')}</tr>`;
-
-  const maxScore = Math.max(1, ...yrsWithData.map(y=>agg[y].avgScore||0));
-  const rowScore = `<tr><td class="rowlabel">Occupational income score<div class="cellsub" style="font-weight:400;">(proxy, 0-80)</div></td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d||d.avgScore==null) return '<td><span class="cellsub">—</span></td>';
-    const w = Math.round(100*d.avgScore/maxScore);
-    return `<td><div class="minibar"><span style="width:${w}%;background:#b08968"></span></div><div class="cellsub">${d.avgScore}</div></td>`;
-  }).join('')}</tr>`;
-
-  const rowForeign = `<tr><td class="rowlabel">Foreign-born share</td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d||d.pctForeign==null) return '<td><span class="cellsub">—</span></td>';
-    return `<td><div class="minibar"><span style="width:${d.pctForeign}%;background:#4a5a73"></span></div><div class="cellsub">${d.pctForeign}%</div></td>`;
-  }).join('')}</tr>`;
-
-  const rowOrigins = `<tr><td class="rowlabel">Top countries of origin<div class="cellsub" style="font-weight:400;">(foreign-born)</div></td>${YEARS.map(y=>{
-    const d=agg[y]; if(!d||!d.topOrigins||!d.topOrigins.length) return '<td><span class="cellsub">—</span></td>';
-    const lines = d.topOrigins.map(([label,pct])=>`${label} ${pct}%`).join('<br>');
-    return `<td><div class="cellsub" style="white-space:normal;max-width:100px;line-height:1.5;">${lines}</div></td>`;
-  }).join('')}</tr>`;
-
+    return `<div style="flex:1;min-width:48px;">
+      <div class="cellsub" style="text-align:center;">${y}</div>
+      <div class="minibar" style="width:100%;height:26px;">${bars}</div>
+      <div class="cellsub" style="text-align:center;white-space:normal;line-height:1.3;margin-top:2px;">${d.topOcc[0] ? d.topOcc[0][0] : ''}</div>
+    </div>`;
+  }).join('');
   const occLegend = OCC_ORDER.map((label,i)=>`<span><i style="background:${OCC_COLORS[i]}"></i>${label}</span>`).join('');
 
-  return `<div class="block"><h2>${title}</h2><div class="stat" style="margin-bottom:6px;">${addrs.length} addresses in selection</div>
-    <div class="gridwrap"><table class="ygrid">${head}${rowAddr}${rowRace}${rowTenure}${rowDensity}${rowLodger}${rowOcc}${rowOccDist}${rowInc}${rowRent}${rowScore}${rowForeign}${rowOrigins}</table></div>
-    <div class="legend" style="margin-top:6px;"><span><i style="background:#d8c9a3"></i>White/Owned</span><span><i style="background:#8c3b2e"></i>Black/Lodger</span><span><i style="background:#6b7a8f"></i>Other/Rented</span></div>
-    <div class="legend" style="margin-top:3px;">${occLegend}</div>
-    <div class="caveat" style="margin-top:4px;">Occupational income score is a proxy (median 1950 income by occupation type) used because the census did not collect wage/income data before 1940 — it tracks occupational standing, not actual earnings.</div>
+  return `<div class="block"><h2>${title}</h2>
+    <div class="stat" style="margin-bottom:10px;">${addrs.length} addresses in selection — matched by year: ${matchCounts}</div>
+
+    ${chartCard('Race & tenure', '(% Black, % Rented)', raceTenureChart, raceTenureLegend)}
+    ${chartCard('Persons per household', '', densityChart)}
+    ${chartCard('Lodger / boarder share', '(% of residents)', lodgerChart)}
+    ${chartCard('Foreign-born share', '(% of residents)', foreignChart, originsHtml)}
+
+    <div style="margin-bottom:6px;">
+      <div style="font-size:11.5px;color:var(--ink);font-weight:600;">Occupation mix <span style="font-weight:400;color:var(--muted);">(share of workers)</span></div>
+      <div style="display:flex;gap:4px;margin-top:4px;">${occBars}</div>
+      <div class="legend" style="margin-top:5px;">${occLegend}</div>
+    </div>
+
+    ${scoreChart ? chartCard('Occupational income score', '(proxy, 0–80)', scoreChart) : ''}
+    ${realEcon ? `<div class="stat" style="margin-bottom:10px;">Actual reported figures — ${realEcon}</div>` : ''}
+
+    <div class="caveat" style="margin-top:2px;padding-top:0;border-top:none;">Occupational income score is a proxy (median 1950 income by occupation type), used because the census did not collect wage/income data before 1940 — it tracks occupational standing, not actual earnings. Avg wage income and rent above are the real reported figures, available for 1940 only.</div>
     </div>`;
 }
 
@@ -390,25 +459,60 @@ function initMap(){
     addrMarkers.push(m);
   });
 
-  // freeform rectangle select: hold Shift and drag
-  map.on('mousedown', (e)=>{
-    if(!e.originalEvent.shiftKey) return;
-    shiftDrag = true; dragStart = e.latlng; map.dragging.disable();
-    dragRect = L.rectangle([dragStart, dragStart], {color:'#8c3b2e', weight:1, fillOpacity:0.08}).addTo(map);
+  // freeform polygon select: click to place corners (any shape, including a
+  // rotated or irregular full city block), click "Finish shape" to select.
+  drawMap = map;
+  drawLayer = L.layerGroup().addTo(map);
+  map.on('click', (e)=>{
+    if(mode!=='freeform') return;
+    drawingPoints.push(e.latlng);
+    redrawDrawing();
+    renderHint();
   });
-  map.on('mousemove', (e)=>{
-    if(!shiftDrag) return;
-    dragRect.setBounds(L.latLngBounds(dragStart, e.latlng));
+}
+
+function redrawDrawing(){
+  if(!drawLayer) return;
+  drawLayer.clearLayers();
+  drawingPoints.forEach(p=>{
+    L.circleMarker(p, {radius:5, weight:1, color:'#8c3b2e', fillColor:'#8c3b2e', fillOpacity:0.9}).addTo(drawLayer);
   });
-  map.on('mouseup', (e)=>{
-    if(!shiftDrag) return;
-    shiftDrag = false; map.dragging.enable();
-    const bounds = L.latLngBounds(dragStart, e.latlng);
-    mode = 'freeform'; renderControls();
-    selected = DATA.addresses.filter(a=> a.latlon && bounds.contains(a.latlon));
-    renderSelection();
-    map.removeLayer(dragRect); dragRect = null;
-  });
+  if(drawingPoints.length>=2){
+    L.polyline(drawingPoints, {color:'#8c3b2e', weight:2, dashArray:'4,4'}).addTo(drawLayer);
+  }
+  if(drawingPoints.length>=3){
+    L.polygon(drawingPoints, {color:'#8c3b2e', weight:2, fillOpacity:0.08}).addTo(drawLayer);
+  }
+  document.getElementById('finishShapeBtn').style.display = drawingPoints.length>=3 ? '' : 'none';
+  document.getElementById('cancelShapeBtn').style.display = drawingPoints.length>0 ? '' : 'none';
+}
+
+function cancelDrawing(){
+  drawingPoints = [];
+  if(drawLayer) drawLayer.clearLayers();
+  const fb=document.getElementById('finishShapeBtn'), cb=document.getElementById('cancelShapeBtn');
+  if(fb) fb.style.display='none'; if(cb) cb.style.display='none';
+}
+
+// standard ray-casting point-in-polygon test
+function pointInPolygon(pt, vs){
+  const x = pt.lat, y = pt.lng;
+  let inside = false;
+  for(let i=0, j=vs.length-1; i<vs.length; j=i++){
+    const xi = vs[i].lat, yi = vs[i].lng, xj = vs[j].lat, yj = vs[j].lng;
+    const intersect = ((yi>y)!==(yj>y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi);
+    if(intersect) inside = !inside;
+  }
+  return inside;
+}
+
+function finishShape(){
+  if(drawingPoints.length<3) return;
+  const poly = drawingPoints.slice();
+  selected = DATA.addresses.filter(a=> a.latlon && pointInPolygon(L.latLng(a.latlon), poly));
+  renderSelection();
+  cancelDrawing();
+  renderHint();
 }
 
 fetch('otr_geo_data.json').then(r=>r.json()).then(d=>{
@@ -417,7 +521,9 @@ fetch('otr_geo_data.json').then(r=>r.json()).then(d=>{
   renderNeighborhood();
   initMap();
   renderLegend();
-  document.getElementById('clearBtn').onclick = ()=>{ selected=[]; renderSelection(); };
+  document.getElementById('clearBtn').onclick = ()=>{ selected=[]; cancelDrawing(); renderSelection(); };
+  document.getElementById('finishShapeBtn').onclick = finishShape;
+  document.getElementById('cancelShapeBtn').onclick = ()=>{ cancelDrawing(); renderHint(); };
   document.getElementById('caveat').innerHTML =
     `<b>Status:</b> ${Object.keys(DATA.sheets).length} Sanborn sheet pieces now placed on real geographic coordinates ` +
     `(from hand-placed georeferencing, not pixel positions). Address anchoring + census matching (the dots, and the ` +

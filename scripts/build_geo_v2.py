@@ -249,6 +249,7 @@ old_sheets = {
     "vol025_sheet101.jpg": {"w":1637,"h":1949,"code":"101"},
     "vol025_sheet102.jpg": {"w":1634,"h":1949,"code":"102a"},
     "vol025_sheet103.jpg": {"w":1637,"h":1949,"code":"103a"},
+    "vol025_sheet135.jpg": {"w":1652,"h":1949,"code":"135a"},
 }
 
 def affine_latlon(u, v, corners):
@@ -272,6 +273,8 @@ FULL_TO_PIECE_PX = {
                             [-9.232909612842442e-05, 1.4356275680693806, 155.83920075592837]],
     "vol025_sheet103.jpg": [[1.4279275104029436, -0.00018404918506584545, 433.2172451178396],
                              [0.00018404918506584545, 1.4279275104029436, 245.13729780896122]],
+    "vol025_sheet135.jpg": [[1.2352470241611107, -0.00010939004087052401, 180.63988693987704],
+                             [0.00010939004087052401, 1.2352470241611107, 314.9480510686093]],
 }
 def invert_affine(M):
     a,b,tx = M[0]; c,d,ty = M[1]
@@ -337,7 +340,7 @@ for key, info in old_sheets.items():
     # the full sheet), so adding them here would stack an exact-duplicate image
     # on top of the real split-piece pieces and bury building detail. Only 101
     # has its own distinct georeference, so only it gets a "full_" entry.
-    if info['code'] in ('102a', '103a'):
+    if info['code'] in ('102a', '103a', '135a'):
         continue
     corners = manifest[info['code']]
     img_name = {"vol025_sheet101.jpg":"sheet101.jpg","vol025_sheet102.jpg":"sheet102.jpg","vol025_sheet103.jpg":"sheet103.jpg"}[key]
