@@ -208,6 +208,7 @@ def summarize(recs):
             'is_lodger': r['related'] in LODGER_CODES,
             'is_employee': r['related'] in EMPLOYEE_CODES,
             'occ_bucket': occ_bucket(r.get('occ1950') or r.get('occ')),
+            'origin': bpl_label(r.get('bpl')),
         })
 
     return {

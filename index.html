@@ -91,15 +91,22 @@
   </div>
 </div>
 <script>
-const COLOR_MODES = [
-  {k:'pct_black', label:'% Black'},
-  {k:'pct_rented', label:'% Rented'},
-  {k:'persons_per_household', label:'Persons/hh'},
-  {k:'lodger_pct', label:'Has lodger/boarder'},
+// Every category a resident-level field can be filtered on. 'field' is the
+// property on each entry of census_by_year[yr].residents. Values are
+// discovered from the data itself (see collectVariableValues), so a newly
+// added origin country or occupation bucket shows up automatically.
+const VARIABLES = [
+  {k:'race', label:'Race', field:'race'},
+  {k:'tenure', label:'Tenure', field:'ownership'},
+  {k:'lodger', label:'Lodger / boarder', field:'is_lodger', boolLabels:['Lodger/boarder','Not a lodger/boarder']},
+  {k:'occupation', label:'Occupation field', field:'occ_bucket'},
+  {k:'origin', label:'Country / state of origin', field:'origin'},
 ];
 const YEARS = ['1900','1910','1920','1930','1940'];
 let DATA = null;
-let colorBy = 'pct_black';
+let variable = 'race';   // which VARIABLES[k] is active
+let value = 'Black';     // which specific value within that variable is active
+let VALUE_OPTIONS = {};  // variable key -> [[value,totalCount], ...] discovered from data
 let mode = 'building';
 let selected = [];  // array of address objects
 let addrMarkers = [];
@@ -114,16 +121,76 @@ function latestYearData(a){
   for(let i=YEARS.length-1;i>=0;i--){ if(a.census_by_year[YEARS[i]]) return a.census_by_year[YEARS[i]]; }
   return null;
 }
+
+// Resolve a single resident's value for a given variable (handles the
+// boolean lodger field specially; everything else is a plain string field).
+function residentValue(r, v){
+  if(v.k==='lodger') return r.is_lodger==null ? null : (r.is_lodger ? v.boolLabels[0] : v.boolLabels[1]);
+  const val = r[v.field] ?? null;
+  if(val==='N/A') return null;  // unknown tenure, not a real category to select
+  return val;
+}
+
+// Scan every resident in the whole dataset once to discover which specific
+// values exist for each variable (every race, every occupation bucket that
+// occurs, every country/state of origin that occurs) — so the value dropdown
+// is never a hand-picked, hidden-data-prone shortlist.
+function collectVariableValues(){
+  const tallies = {}; VARIABLES.forEach(v=> tallies[v.k] = {});
+  DATA.addresses.forEach(a=>{
+    if(!a.census_by_year) return;
+    YEARS.forEach(yr=>{
+      const d = a.census_by_year[yr];
+      if(!d || !d.residents) return;
+      d.residents.forEach(r=>{
+        VARIABLES.forEach(v=>{
+          const val = residentValue(r, v);
+          if(val==null) return;
+          tallies[v.k][val] = (tallies[v.k][val]||0)+1;
+        });
+      });
+    });
+  });
+  VALUE_OPTIONS = {};
+  VARIABLES.forEach(v=>{ VALUE_OPTIONS[v.k] = Object.entries(tallies[v.k]).sort((a,b)=>b[1]-a[1]); });
+}
+
+// Share of a resident list matching variable==value, among those with a
+// known (non-null) value for that field — the same computation drives the
+// map color, the trend chart, and the neighborhood overview, so they can
+// never disagree with each other.
+function shareForResidents(residents, v, val){
+  if(!residents || !residents.length) return null;
+  let known=0, match=0;
+  residents.forEach(r=>{
+    const rv = residentValue(r, v);
+    if(rv==null) return;
+    known++;
+    if(rv===val) match++;
+  });
+  if(!known) return null;
+  return {pct: Math.round(1000*match/known)/10, n: known, match};
+}
+
+function yearShareSeries(addrs, v, val){
+  return YEARS.map(yr=>{
+    let residents = [];
+    addrs.forEach(a=>{
+      const d = a.census_by_year && a.census_by_year[yr];
+      if(d && d.residents) residents = residents.concat(d.residents);
+    });
+    const s = shareForResidents(residents, v, val);
+    return s ? s.pct : null;
+  });
+}
+
 function colorFor(a){
   const d = latestYearData(a);
-  if(!d) return '#999';
-  if(colorBy==='lodger_pct') return d.n_lodger>0 ? '#8c3b2e' : '#bcae8f';
-  let val, lo=0, hi=100;
-  if(colorBy==='pct_black') val = d.pct_black;
-  else if(colorBy==='pct_rented') val = d.pct_rented==null ? null : d.pct_rented;
-  else if(colorBy==='persons_per_household'){ val = d.persons_per_household; lo=1; hi=6; }
-  if(val==null) return '#999';
-  const t = Math.max(0, Math.min(1, (val-lo)/(hi-lo)));
+  if(!d || !d.residents) return '#999';
+  const v = VARIABLES.find(x=>x.k===variable);
+  const s = shareForResidents(d.residents, v, value);
+  if(!s) return '#999';
+  const t = Math.max(0, Math.min(1, s.pct/100));
   return lerpColor('#f2e9d8', '#8c3b2e', t);
 }
 
@@ -131,35 +198,35 @@ function uid(a){ return a.sheet+'|'+a.block_id+'|'+a.address; }
 
 function renderLegend(){
   const el = document.getElementById('mapLegend');
-  if(!el) return;
-  const m = COLOR_MODES.find(c=>c.k===colorBy);
-  if(colorBy==='lodger_pct'){
-    el.innerHTML = `<div class="lgTitle">${m.label}</div>
-      <div class="lgSwatchRow"><span class="lgSwatch" style="background:#8c3b2e"></span>Has a lodger/boarder</div>
-      <div class="lgSwatchRow"><span class="lgSwatch" style="background:#bcae8f"></span>No lodger/boarder</div>
-      <div class="lgSwatchRow"><span class="lgSwatch" style="background:#999"></span>No census match</div>`;
-    return;
-  }
-  let lo=0, hi=100, loLabel='0%', hiLabel='100%';
-  if(colorBy==='persons_per_household'){ lo=1; hi=6; loLabel='1'; hiLabel='6+'; }
-  else if(colorBy==='pct_rented'){ loLabel='0% (owned)'; hiLabel='100% (rented)'; }
-  el.innerHTML = `<div class="lgTitle">${m.label}</div>
+  if(!el || !value) return;
+  const v = VARIABLES.find(x=>x.k===variable);
+  el.innerHTML = `<div class="lgTitle">% ${value} <span style="font-weight:400;">(${v.label})</span></div>
     <div class="lgGrad" style="background:linear-gradient(to right, #f2e9d8, #8c3b2e);"></div>
-    <div class="lgEnds"><span>${loLabel}</span><span>${hiLabel}</span></div>
+    <div class="lgEnds"><span>0%</span><span>100%</span></div>
     <div class="lgSwatchRow"><span class="lgSwatch" style="background:#999"></span>No census match</div>
-    <div class="lgNote">Shaded by each address's most recent census year on record.</div>`;
+    <div class="lgNote">Shaded by each address's most recent census year on record. Change the variable/value below — the map, and every chart in both panels, update together.</div>`;
+}
+
+function onVariableChanged(){
+  redrawMarkers(); renderLegend(); renderSelection(); renderNeighborhood();
 }
 
 function renderControls(){
   const cRow = document.getElementById('colorByRow');
-  cRow.innerHTML = '<span class="stat" style="align-self:center;">Color by:</span>';
-  COLOR_MODES.forEach(m=>{
-    const b = document.createElement('button');
-    b.textContent = m.label;
-    b.className = (colorBy===m.k) ? 'active' : '';
-    b.onclick = ()=>{ colorBy = m.k; renderControls(); redrawMarkers(); renderLegend(); };
-    cRow.appendChild(b);
-  });
+  const opts = VALUE_OPTIONS[variable] || [];
+  if(!opts.find(([v])=>v===value) && opts.length) value = opts[0][0];
+  cRow.innerHTML = `<span class="stat" style="align-self:center;width:100%;">Map &amp; chart variable — selecting a value here drives the map color and every chart below, in both panels:</span>
+    <select id="varSelect">${VARIABLES.map(x=>`<option value="${x.k}" ${x.k===variable?'selected':''}>${x.label}</option>`).join('')}</select>
+    <select id="valSelect">${opts.map(([v,count])=>`<option value="${v}" ${v===value?'selected':''}>${v} (${count})</option>`).join('')}</select>`;
+  document.getElementById('varSelect').onchange = (e)=>{
+    variable = e.target.value;
+    const o = VALUE_OPTIONS[variable] || [];
+    value = o.length ? o[0][0] : null;
+    renderControls();
+    onVariableChanged();
+  };
+  document.getElementById('valSelect').onchange = (e)=>{ value = e.target.value; onVariableChanged(); };
+
   const mRow = document.getElementById('modeRow');
   mRow.innerHTML = '<span class="stat" style="align-self:center;">Select by:</span>';
   [['building','Building'],['block','Block face'],['freeform','Draw an area']].forEach(([k,label])=>{
@@ -299,34 +366,42 @@ function renderYearGrid(addrs, title){
 
   const matchCounts = YEARS.map(y=> agg[y] ? `${y}: ${agg[y].n}` : `${y}: —`).join(' · ');
 
-  // Race & tenure (two lines, 0-100%)
-  const raceTenureChart = trendChart([
-    {values: YEARS.map(y=>agg[y]?.pb ?? null), color:'#8c3b2e'},
-    {values: YEARS.map(y=>agg[y]?.pr ?? null), color:'#6b7a8f', dash:'4,3'},
-  ], {yMin:0, yMax:100, fmt:v=>Math.round(v)+'%'});
-  const raceTenureLegend = `<div class="legend" style="margin-top:2px;"><span><i style="background:#8c3b2e"></i>% Black</span><span><i style="background:#6b7a8f"></i>% Rented</span></div>`;
+  // The one chart that's always driven by the global variable/value picker —
+  // this is the exact same number used to color the map, for any variable
+  // (race, tenure, lodger status, a specific occupation field, a specific
+  // country/state of origin), not a fixed pre-aggregated handful of metrics.
+  const selVar = VARIABLES.find(x=>x.k===variable);
+  let selectedChart = '';
+  if(selVar && value){
+    const series = yearShareSeries(addrs, selVar, value);
+    const chart = trendChart([{values: series, color:'#8c3b2e'}], {yMin:0, yMax:100, fmt:v=>Math.round(v)+'%'});
+    selectedChart = chartCard(`% ${value}`, `(${selVar.label.toLowerCase()}, among residents with a known value)`, chart);
+  }
 
-  // Household density
+  // Household density (always shown — not a categorical variable, so it isn't
+  // part of the picker, but it's never folded into anything else either)
   const pplVals = yrsWithData.map(y=>agg[y].ppl).filter(v=>v!=null);
   const pplMin = Math.max(0, Math.floor(Math.min(...pplVals,1))-0.5);
   const pplMax = Math.ceil(Math.max(...pplVals,1))+0.5;
   const densityChart = trendChart([{values: YEARS.map(y=>agg[y]?.ppl ?? null), color:'#b08968'}],
     {yMin:pplMin, yMax:pplMax, fmt:v=>v.toFixed(1)});
 
-  // Lodger/boarder share
-  const lodgerChart = trendChart([{values: YEARS.map(y=>agg[y]?.lp ?? null), color:'#8c3b2e'}],
-    {yMin:0, yMax:100, fmt:v=>Math.round(v)+'%'});
-
-  // Foreign-born share
-  const foreignChart = trendChart([{values: YEARS.map(y=>agg[y]?.pctForeign ?? null), color:'#4a5a73'}],
-    {yMin:0, yMax:100, fmt:v=>Math.round(v)+'%'});
+  // Full origin breakdown, every value that occurs (not a pre-picked top-N),
+  // computed straight from residents' origin field like everything else here.
+  const originVar = VARIABLES.find(x=>x.k==='origin');
   const originLines = YEARS.map(y=>{
-    const d = agg[y];
-    if(!d || !d.topOrigins || !d.topOrigins.length) return null;
-    return `<div style="margin-bottom:2px;"><b>${y}:</b> ${d.topOrigins.map(([l,p])=>`${l} ${p}%`).join(', ')}</div>`;
+    let residents = [];
+    addrs.forEach(a=>{ const d=a.census_by_year && a.census_by_year[y]; if(d && d.residents) residents = residents.concat(d.residents); });
+    const counts = {};
+    residents.forEach(r=>{ const v=residentValue(r, originVar); if(v!=null) counts[v]=(counts[v]||0)+1; });
+    const known = Object.values(counts).reduce((s,v)=>s+v,0);
+    if(!known) return null;
+    const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1])
+      .map(([l,c])=>`${l===value?'<b>':''}${l} ${Math.round(1000*c/known)/10}%${l===value?'</b>':''}`);
+    return `<div style="margin-bottom:2px;"><b>${y}:</b> ${entries.join(', ')}</div>`;
   }).filter(Boolean).join('');
   const originsHtml = originLines ? `<div class="cellsub" style="line-height:1.5;margin-top:4px;">${originLines}</div>`
-    : `<div class="cellsub" style="margin-top:4px;">No foreign-born residents matched in this selection.</div>`;
+    : `<div class="cellsub" style="margin-top:4px;">No origin data matched in this selection.</div>`;
 
   // Occupational income score (proxy)
   const scoreVals = yrsWithData.map(y=>agg[y].avgScore).filter(v=>v!=null);
@@ -344,7 +419,7 @@ function renderYearGrid(addrs, title){
   const occBars = YEARS.map(y=>{
     const d = agg[y];
     if(!d || !d.occDist || !d.occDist.length) return `<div style="flex:1;min-width:48px;"><div class="cellsub" style="text-align:center;">${y}</div><div style="height:26px;border-radius:3px;background:var(--line);"></div></div>`;
-    const bars = d.occDist.map(([label,pct])=>`<span style="width:${pct}%;background:${occColor(label)}" title="${label}: ${pct}%"></span>`).join('');
+    const bars = d.occDist.map(([label,pct])=>`<span style="width:${pct}%;background:${occColor(label)};${variable==='occupation'&&label===value?'outline:2px solid var(--ink);outline-offset:-2px;':''}" title="${label}: ${pct}%"></span>`).join('');
     return `<div style="flex:1;min-width:48px;">
       <div class="cellsub" style="text-align:center;">${y}</div>
       <div class="minibar" style="width:100%;height:26px;">${bars}</div>
@@ -356,21 +431,24 @@ function renderYearGrid(addrs, title){
   return `<div class="block"><h2>${title}</h2>
     <div class="stat" style="margin-bottom:10px;">${addrs.length} addresses in selection — matched by year: ${matchCounts}</div>
 
-    ${chartCard('Race & tenure', '(% Black, % Rented)', raceTenureChart, raceTenureLegend)}
+    ${selectedChart}
     ${chartCard('Persons per household', '', densityChart)}
-    ${chartCard('Lodger / boarder share', '(% of residents)', lodgerChart)}
-    ${chartCard('Foreign-born share', '(% of residents)', foreignChart, originsHtml)}
 
-    <div style="margin-bottom:6px;">
-      <div style="font-size:11.5px;color:var(--ink);font-weight:600;">Occupation mix <span style="font-weight:400;color:var(--muted);">(share of workers)</span></div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11.5px;color:var(--ink);font-weight:600;">Occupation mix <span style="font-weight:400;color:var(--muted);">(share of workers, every category broken out)</span></div>
       <div style="display:flex;gap:4px;margin-top:4px;">${occBars}</div>
       <div class="legend" style="margin-top:5px;">${occLegend}</div>
+    </div>
+
+    <div style="margin-bottom:6px;">
+      <div style="font-size:11.5px;color:var(--ink);font-weight:600;">Countries / states of origin by year <span style="font-weight:400;color:var(--muted);">(foreign-born and native-born, every one that matched)</span></div>
+      ${originsHtml}
     </div>
 
     ${scoreChart ? chartCard('Occupational income score', '(proxy, 0–80)', scoreChart) : ''}
     ${realEcon ? `<div class="stat" style="margin-bottom:10px;">Actual reported figures — ${realEcon}</div>` : ''}
 
-    <div class="caveat" style="margin-top:2px;padding-top:0;border-top:none;">Occupational income score is a proxy (median 1950 income by occupation type), used because the census did not collect wage/income data before 1940 — it tracks occupational standing, not actual earnings. Avg wage income and rent above are the real reported figures, available for 1940 only.</div>
+    <div class="caveat" style="margin-top:2px;padding-top:0;border-top:none;">Occupational income score is a proxy (median 1950 income by occupation type), used because the census did not collect wage/income data before 1940 — it tracks occupational standing, not actual earnings. Avg wage income and rent above are the real reported figures, available for 1940 only. Pick any variable and value above (including a specific occupation field or a specific country/state of origin) — the map and this chart recompute from the same underlying per-resident records, so they always agree.</div>
     </div>`;
 }
 
@@ -517,6 +595,7 @@ function finishShape(){
 
 fetch('otr_geo_data.json').then(r=>r.json()).then(d=>{
   DATA = d;
+  collectVariableValues();
   renderControls();
   renderNeighborhood();
   initMap();
@@ -524,13 +603,13 @@ fetch('otr_geo_data.json').then(r=>r.json()).then(d=>{
   document.getElementById('clearBtn').onclick = ()=>{ selected=[]; cancelDrawing(); renderSelection(); };
   document.getElementById('finishShapeBtn').onclick = finishShape;
   document.getElementById('cancelShapeBtn').onclick = ()=>{ cancelDrawing(); renderHint(); };
+  const nAddr = DATA.addresses.length, nCensus = DATA.addresses.filter(a=>a.census_by_year).length;
   document.getElementById('caveat').innerHTML =
-    `<b>Status:</b> ${Object.keys(DATA.sheets).length} Sanborn sheet pieces now placed on real geographic coordinates ` +
-    `(from hand-placed georeferencing, not pixel positions). Address anchoring + census matching (the dots, and the ` +
-    `composition panels) still only covers sheets 101–103 (574 addresses); the rest of the sheets are visible on the map ` +
-    `but have no address points yet — this is expected as georeferencing/anchoring continues sheet by sheet. ` +
-    `Sheets 102 and 103's addresses are precisely remapped from the full sheet's pixel space into the "a" split piece's ` +
-    `own georeference (recovered via feature matching between the full sheet and the piece image). ` +
+    `<b>Status:</b> ${Object.keys(DATA.sheets).length} Sanborn sheet pieces placed on real geographic coordinates ` +
+    `(from hand-placed georeferencing, not pixel positions), across 4 sheets (101, 102, 103, 135). ${nAddr} addresses are ` +
+    `anchored, ${nCensus} of them matched to census records. Sheets 102, 103 and 135's addresses are precisely remapped ` +
+    `from the full sheet's pixel space into each one's own trimmed-piece georeference (recovered via feature matching ` +
+    `between the full sheet scan and the piece image). ` +
     `<b>Not yet in this extract:</b> educational attainment (never pulled — would need a further IPUMS extract with EDUC) ` +
     `and home value (reported by too few owners in this renter-heavy neighborhood to be meaningful — well under 1% of ` +
     `records across all years). Monthly rent is shown where the 1940 sample reports it.`;
