@@ -301,11 +301,6 @@ function yearAggregates(addrs){
   return out;
 }
 
-const OCC_ORDER = ['Professional/technical','Managers/officials/proprietors','Clerical','Sales',
-  'Craftsmen/foremen','Operatives','Service workers','Laborers (non-farm)','Farmers/farm laborers','Other/unclassified'];
-const OCC_COLORS = ['#4a7c6f','#6b8f71','#a8b86a','#d9b44a','#c97d3f','#b24d3f','#8c3b2e','#6b7a8f','#4a5a73','#9a9a9a'];
-const occColor = label => OCC_COLORS[OCC_ORDER.indexOf(label)] ?? '#999';
-
 // A small multi-series line chart across the 5 census years. Gaps (years with
 // no data) simply break the line rather than interpolating through them.
 function trendChart(seriesDefs, opts={}){
@@ -358,6 +353,76 @@ function chartCard(label, sub, chartHtml, legendHtml){
   </div>`;
 }
 
+// Stable color per value, ranked by that value's overall frequency across the
+// whole dataset (so a color always means the same thing in every chart).
+const PALETTE = ['#4a7c6f','#6b8f71','#a8b86a','#d9b44a','#c97d3f','#b24d3f','#8c3b2e','#6b7a8f','#4a5a73','#7d6b8f','#a65b5b','#5ba67d'];
+function valueColor(vKey, val){
+  const opts = VALUE_OPTIONS[vKey] || [];
+  const idx = opts.findIndex(([v])=>v===val);
+  if(idx<0 || idx>=PALETTE.length) return '#9a9a9a';
+  return PALETTE[idx];
+}
+
+// Called from inline onclick handlers inside the charts themselves — clicking
+// any segment or legend swatch, in either panel, picks that exact
+// variable+value and immediately recolors the map and every chart.
+function selectVariableValue(vKey, val){
+  variable = vKey; value = val;
+  renderControls();
+  onVariableChanged();
+}
+function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+// Delegated listener (attached once) instead of inline onclick — survives
+// every re-render of either panel and needs no attribute-escaping gymnastics
+// for origin/occupation values that might contain quotes or ampersands.
+document.addEventListener('click', (e)=>{
+  const t = e.target.closest('[data-var]');
+  if(t) selectVariableValue(t.getAttribute('data-var'), t.getAttribute('data-val'));
+});
+
+// One stacked bar per census year, for ANY variable (race, tenure, lodger
+// status, occupation field, or origin) — every value that actually occurs
+// gets its own segment (only the longest-tail values beyond the palette
+// collapse into a non-clickable "Other"), and every segment/legend entry is
+// clickable: click it, and the map + every chart recolor by that exact value.
+function categoryBreakdown(addrs, v){
+  const topVals = (VALUE_OPTIONS[v.k] || []).slice(0, PALETTE.length).map(([val])=>val);
+  const bars = YEARS.map(yr=>{
+    let residents = [];
+    addrs.forEach(a=>{ const d = a.census_by_year && a.census_by_year[yr]; if(d && d.residents) residents = residents.concat(d.residents); });
+    const counts = {};
+    residents.forEach(r=>{ const val = residentValue(r, v); if(val!=null) counts[val] = (counts[val]||0)+1; });
+    const known = Object.values(counts).reduce((s,c)=>s+c,0);
+    if(!known) return `<div style="flex:1;min-width:48px;"><div class="cellsub" style="text-align:center;">${yr}</div><div style="height:26px;border-radius:3px;background:var(--line);"></div></div>`;
+    let otherCount = 0; const seg = [];
+    Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([val,c])=>{
+      if(topVals.includes(val)) seg.push([val,c]); else otherCount += c;
+    });
+    if(otherCount>0) seg.push(['Other', otherCount]);
+    const segHtml = seg.map(([val,c])=>{
+      const pct = Math.round(1000*c/known)/10;
+      const isOther = val==='Other';
+      const col = isOther ? '#bcae8f' : valueColor(v.k, val);
+      const isSel = (variable===v.k && val===value);
+      const dataAttrs = isOther ? '' : ` data-var="${v.k}" data-val="${escapeAttr(val)}" style="cursor:pointer;"`;
+      return `<span style="width:${pct}%;background:${col};${isSel?'outline:2px solid var(--ink);outline-offset:-2px;':''}" title="${val}: ${pct}%"${dataAttrs}></span>`;
+    }).join('');
+    return `<div style="flex:1;min-width:48px;">
+      <div class="cellsub" style="text-align:center;">${yr}</div>
+      <div class="minibar" style="width:100%;height:26px;">${segHtml}</div>
+    </div>`;
+  }).join('');
+  const legend = topVals.map(val=>{
+    const isSel = (variable===v.k && val===value);
+    return `<span style="cursor:pointer;${isSel?'font-weight:700;color:var(--ink);':''}" data-var="${v.k}" data-val="${escapeAttr(val)}"><i style="background:${valueColor(v.k,val)}"></i>${val}</span>`;
+  }).join('');
+  return `<div style="margin-bottom:14px;">
+    <div style="font-size:11.5px;color:var(--ink);font-weight:600;">${v.label} <span style="font-weight:400;color:var(--muted);">(click a segment or a legend entry to map it)</span></div>
+    <div style="display:flex;gap:4px;margin-top:4px;">${bars}</div>
+    <div class="legend" style="margin-top:5px;">${legend}</div>
+  </div>`;
+}
+
 function renderYearGrid(addrs, title){
   if(!addrs.length) return `<div class="block"><h2>${title}</h2><div class="stat">No matched census data.</div></div>`;
   const agg = yearAggregates(addrs);
@@ -386,22 +451,9 @@ function renderYearGrid(addrs, title){
   const densityChart = trendChart([{values: YEARS.map(y=>agg[y]?.ppl ?? null), color:'#b08968'}],
     {yMin:pplMin, yMax:pplMax, fmt:v=>v.toFixed(1)});
 
-  // Full origin breakdown, every value that occurs (not a pre-picked top-N),
-  // computed straight from residents' origin field like everything else here.
-  const originVar = VARIABLES.find(x=>x.k==='origin');
-  const originLines = YEARS.map(y=>{
-    let residents = [];
-    addrs.forEach(a=>{ const d=a.census_by_year && a.census_by_year[y]; if(d && d.residents) residents = residents.concat(d.residents); });
-    const counts = {};
-    residents.forEach(r=>{ const v=residentValue(r, originVar); if(v!=null) counts[v]=(counts[v]||0)+1; });
-    const known = Object.values(counts).reduce((s,v)=>s+v,0);
-    if(!known) return null;
-    const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1])
-      .map(([l,c])=>`${l===value?'<b>':''}${l} ${Math.round(1000*c/known)/10}%${l===value?'</b>':''}`);
-    return `<div style="margin-bottom:2px;"><b>${y}:</b> ${entries.join(', ')}</div>`;
-  }).filter(Boolean).join('');
-  const originsHtml = originLines ? `<div class="cellsub" style="line-height:1.5;margin-top:4px;">${originLines}</div>`
-    : `<div class="cellsub" style="margin-top:4px;">No origin data matched in this selection.</div>`;
+  // Every categorical variable gets its own clickable breakdown chart —
+  // nothing is excluded or left as plain text.
+  const breakdowns = VARIABLES.map(v=>categoryBreakdown(addrs, v)).join('');
 
   // Occupational income score (proxy)
   const scoreVals = yrsWithData.map(y=>agg[y].avgScore).filter(v=>v!=null);
@@ -415,35 +467,13 @@ function renderYearGrid(addrs, title){
     return parts.length ? `${y}: ${parts.join(', ')}` : null;
   }).filter(Boolean).join(' · ');
 
-  // Occupation mix: one labeled stacked bar per year
-  const occBars = YEARS.map(y=>{
-    const d = agg[y];
-    if(!d || !d.occDist || !d.occDist.length) return `<div style="flex:1;min-width:48px;"><div class="cellsub" style="text-align:center;">${y}</div><div style="height:26px;border-radius:3px;background:var(--line);"></div></div>`;
-    const bars = d.occDist.map(([label,pct])=>`<span style="width:${pct}%;background:${occColor(label)};${variable==='occupation'&&label===value?'outline:2px solid var(--ink);outline-offset:-2px;':''}" title="${label}: ${pct}%"></span>`).join('');
-    return `<div style="flex:1;min-width:48px;">
-      <div class="cellsub" style="text-align:center;">${y}</div>
-      <div class="minibar" style="width:100%;height:26px;">${bars}</div>
-      <div class="cellsub" style="text-align:center;white-space:normal;line-height:1.3;margin-top:2px;">${d.topOcc[0] ? d.topOcc[0][0] : ''}</div>
-    </div>`;
-  }).join('');
-  const occLegend = OCC_ORDER.map((label,i)=>`<span><i style="background:${OCC_COLORS[i]}"></i>${label}</span>`).join('');
-
   return `<div class="block"><h2>${title}</h2>
     <div class="stat" style="margin-bottom:10px;">${addrs.length} addresses in selection — matched by year: ${matchCounts}</div>
 
     ${selectedChart}
     ${chartCard('Persons per household', '', densityChart)}
 
-    <div style="margin-bottom:14px;">
-      <div style="font-size:11.5px;color:var(--ink);font-weight:600;">Occupation mix <span style="font-weight:400;color:var(--muted);">(share of workers, every category broken out)</span></div>
-      <div style="display:flex;gap:4px;margin-top:4px;">${occBars}</div>
-      <div class="legend" style="margin-top:5px;">${occLegend}</div>
-    </div>
-
-    <div style="margin-bottom:6px;">
-      <div style="font-size:11.5px;color:var(--ink);font-weight:600;">Countries / states of origin by year <span style="font-weight:400;color:var(--muted);">(foreign-born and native-born, every one that matched)</span></div>
-      ${originsHtml}
-    </div>
+    ${breakdowns}
 
     ${scoreChart ? chartCard('Occupational income score', '(proxy, 0–80)', scoreChart) : ''}
     ${realEcon ? `<div class="stat" style="margin-bottom:10px;">Actual reported figures — ${realEcon}</div>` : ''}
